@@ -760,7 +760,20 @@ Return ONLY the caption + hashtags. Nothing else.`;
 }
 
 const catImageMap = {
-  'Bridal Lehenga & Looks': 'Indian bride in ornate red lehenga, traditional bridal jewelry maang tikka nath, wedding ceremony',
+  'Bridal Lehenga & Looks': 'indian-bride-wedding',
+  'Wedding Photography': 'indian-wedding-couple',
+  'Wedding Venue & Decoration': 'wedding-decoration-flowers',
+  'Bridal Makeup Artist': 'bridal-makeup',
+  'Wedding Catering & Food Stalls': 'indian-wedding-food',
+  'Mehndi & Haldi Ceremony': 'mehndi-henna',
+  'Wedding Band & DJ': 'wedding-celebration',
+  'Destination Wedding': 'wedding-outdoor',
+  'Wedding Invitation & Cards': 'wedding-invitation',
+  'Wedding Cake & Sweets': 'wedding-cake'
+};
+
+const catPollinationsMap = {
+  'Bridal Lehenga & Looks': 'beautiful Indian bride in ornate red lehenga, traditional bridal jewelry maang tikka nath, wedding ceremony',
   'Wedding Photography': 'Indian wedding couple romantic portrait, professional photography, golden hour lighting',
   'Wedding Venue & Decoration': 'luxury Indian wedding mandap decoration, marigold flowers, fairy lights, floral arch',
   'Bridal Makeup Artist': 'Indian bridal makeup close up, flawless skin, gold eyeshadow, traditional bridal look',
@@ -773,12 +786,17 @@ const catImageMap = {
 };
 
 function buildImageUrl(cat, detail, style) {
-  const base = catImageMap[cat] || 'Indian wedding celebration';
+  const base = catPollinationsMap[cat] || 'Indian wedding celebration';
   const parts = [base];
   if (detail) parts.push(detail);
   parts.push(style);
-  parts.push('ultra realistic, 8k, Instagram photo, professional wedding photography');
-  return `https://image.pollinations.ai/prompt/${encodeURIComponent(parts.join(', '))}?width=1080&height=1080&nologo=true&enhance=true&seed=${Date.now()}`;
+  parts.push('ultra realistic, professional photography, Instagram worthy');
+  const seed = Math.floor(Math.random() * 99999);
+  return `https://image.pollinations.ai/prompt/${encodeURIComponent(parts.join(', '))}?width=1080&height=1080&nologo=true&enhance=true&seed=${seed}&model=flux`;
+}
+
+function buildPollinationsUrl(cat, detail, style) {
+  return buildImageUrl(cat, detail, style);
 }
 
 function showLoadingCard() {
@@ -817,8 +835,13 @@ function showLoadingCard() {
 }
 
 function showIgCard(cap, url) {
-  const hashPart = cap.match(/(#\S+\s?)+$/s)?.[0] || '';
-  const mainText = cap.slice(0, cap.length - hashPart.length).trim();
+  const pollinationsUrl = buildPollinationsUrl(cat, document.getElementById('customDetail').value, imgStyle);
+
+  const lines = cap.split('\n').filter(l => l.trim());
+  const hashLines = lines.filter(l => l.trim().startsWith('#'));
+  const textLines = lines.filter(l => !l.trim().startsWith('#'));
+  const mainText = textLines.join('\n').trim();
+  const hashtagStr = hashLines.join(' ').trim();
 
   document.getElementById('igWrap').innerHTML = `
     <div class="ig-wrap">
@@ -833,11 +856,17 @@ function showIgCard(cap, url) {
       <div class="ig-img-box">
         <div class="img-overlay" id="imgOverlay">
           <div class="loader-ring"></div>
-          <div class="loader-text">AI image loading (~15s)...</div>
+          <div class="loader-text" id="loaderMsg">Loading image...</div>
         </div>
-        <img id="postImg" src="${url}" alt="Post"
+        <img id="postImg" src="${url}"
           onload="this.style.opacity=1; document.getElementById('imgOverlay').classList.add('hidden');"
-          onerror="document.getElementById('imgOverlay').innerHTML='<div style=color:#555;font-size:12px;padding:20px;text-align:center>Image generation can take up to 30s.<br>Try clicking Open Image button below.</div>'" />
+          onerror="
+            document.getElementById('loaderMsg').textContent='Trying AI image...';
+            this.src='${pollinationsUrl}';
+            this.onerror=function(){
+              document.getElementById('imgOverlay').innerHTML='<div style=color:#666;font-size:12px;padding:20px;text-align:center>Click Open Image below to view</div>';
+            };
+          " />
       </div>
       <div class="ig-style-bar">
         <div class="style-dot active"></div>
@@ -853,7 +882,7 @@ function showIgCard(cap, url) {
       <div class="ig-likes">1,247 likes</div>
       <div class="ig-caption-box">
         <span class="uname">utsaav_in</span>${escHtml(mainText)}
-        ${hashPart ? `<br><br><span class="hashtags">${escHtml(hashPart.trim())}</span>` : ''}
+        ${hashtagStr ? `<br><br><span class="hashtags">${escHtml(hashtagStr)}</span>` : ''}
       </div>
       <div class="ig-time">just now</div>
     </div>`;
