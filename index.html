@@ -412,14 +412,15 @@ function showPost(cap,url){
   const main=tLines.join('\n').trim();
   const htags=hLines.join(' ').trim();
   const escaped=e=>e.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const firstLine = escaped(tLines[0]||'');
+  const secondLine = escaped(tLines[1]||'');
 
-  // Picsum fallback by category seed
   const isB64 = url.startsWith('data:');
   const imgHtml = isB64
     ? `<img src="${url}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onload="document.getElementById('iLoader').classList.add('gone')" />`
     : `<img src="${url}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s"
         onload="this.style.opacity=1;document.getElementById('iLoader').classList.add('gone')"
-        onerror="document.getElementById('iLoader').innerHTML='<div style=color:#666;font-size:11px;padding:16px;text-align:center>Image failed. Click Open Image.</div>'" />`;
+        onerror="document.getElementById('iLoader').innerHTML='<div style=color:#666;font-size:11px;padding:16px;text-align:center>Image failed.</div>'" />`;
 
   document.getElementById('igWrap').innerHTML=`
   <div class="ig-wrap">
@@ -429,8 +430,26 @@ function showPost(cap,url){
       <div class="ig-dots">···</div>
     </div>
     <div class="ig-img-box">
-      <div class="img-loader" id="iLoader"><div class="ring"></div><div class="ring-text">${isB64?'Rendering AI image...':'Loading...'}</div></div>
+      <div class="img-loader" id="iLoader"><div class="ring"></div><div class="ring-text">Loading...</div></div>
       ${imgHtml}
+
+      <!-- LOGO overlay top-left -->
+      <div style="position:absolute;top:12px;left:12px;display:flex;align-items:center;gap:8px;z-index:3">
+        <div style="width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,#E8472A,#F5A623);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:20px;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.4)">U</div>
+        <div>
+          <div style="color:#fff;font-weight:800;font-size:15px;text-shadow:0 1px 4px rgba(0,0,0,0.8);letter-spacing:1px">UTSAAV</div>
+          <div style="color:rgba(255,255,255,0.8);font-size:11px;text-shadow:0 1px 3px rgba(0,0,0,0.8)">utsaav.in</div>
+        </div>
+      </div>
+
+      <!-- Caption text overlay bottom -->
+      <div style="position:absolute;bottom:0;left:0;right:0;z-index:3;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.5) 60%,transparent 100%);padding:40px 14px 14px">
+        <div style="color:#fff;font-weight:700;font-size:14px;line-height:1.4;text-shadow:0 1px 4px rgba(0,0,0,0.9);margin-bottom:3px">${firstLine}</div>
+        <div style="color:rgba(255,255,255,0.8);font-size:12px;line-height:1.4;text-shadow:0 1px 3px rgba(0,0,0,0.9)">${secondLine}</div>
+      </div>
+
+      <!-- utsaav.in watermark bottom-right -->
+      <div style="position:absolute;bottom:10px;right:12px;z-index:4;color:rgba(255,255,255,0.5);font-size:10px;text-shadow:0 1px 3px rgba(0,0,0,0.8)">utsaav.in</div>
     </div>
     <div class="ig-dots-bar"><div class="idot on"></div><div class="idot"></div><div class="idot"></div></div>
     <div class="ig-actions">
