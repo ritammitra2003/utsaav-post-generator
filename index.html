@@ -221,12 +221,12 @@ select option{background:#1f1f1f}
   <div class="modal">
     <div class="modal-logo"><span>UTSAAV</span></div>
     <div class="modal-sub">Instagram Post Generator · AI Powered</div>
-    <div class="modal-label">Gemini API Key (Free)</div>
-    <input class="modal-input" type="password" id="keyInput" placeholder="AIzaSy..." autocomplete="off"/>
+    <div class="modal-label">Groq API Key (Free)</div>
+    <input class="modal-input" type="password" id="keyInput" placeholder="gsk_..." autocomplete="off"/>
     <div class="modal-hint">
-      Get free key: <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a><br>
-      Sign in → "Create API Key" → Copy the <b style="color:#aaa">AIzaSy...</b> key<br>
-      <span style="color:#333">Key saved in browser only. Never shared.</span>
+      Free key: <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a><br>
+      Login → "Create API Key" → copy <b style="color:#aaa">gsk_...</b> key<br>
+      <span style="color:#333">Sirf browser mein save hoga. Kahi share nahi hoga.</span>
     </div>
     <button class="modal-btn" onclick="saveKey()">Save & Start →</button>
     <div class="modal-err" id="modalErr"></div>
@@ -261,8 +261,8 @@ function openModal(){
 }
 function saveKey(){
   const v=document.getElementById('keyInput').value.trim();
-  if(!v.startsWith('AIza')&&!v.startsWith('gsk_')){
-    document.getElementById('modalErr').textContent='Key must start with AIza (Gemini) or gsk_ (Groq)';
+  if(!v.startsWith('gsk_')){
+    document.getElementById('modalErr').textContent='Groq key chahiye — gsk_ se start hona chahiye';
     return;
   }
   localStorage.setItem('utpost_key',v);
@@ -271,7 +271,7 @@ function saveKey(){
 }
 function updateKeyUI(on){
   document.getElementById('keyDot').className='key-dot'+(on?' on':'');
-  document.getElementById('keyLabel').textContent=on?'🔑 Key Set':'Set API Key';
+  document.getElementById('keyLabel').textContent=on?'🔑 Groq Key Set':'Set Groq API Key';
 }
 
 window.addEventListener('load',()=>{
@@ -312,52 +312,30 @@ async function generate(){
   status.className='status'; status.textContent='';
   document.getElementById('actRow').style.display='none';
   document.getElementById('capCard').classList.remove('show');
-  setStep(20,'Writing caption with AI...');
+  setStep(30,'Writing caption with Groq AI...');
   showLoader();
 
   try {
-    if(key.startsWith('AIza')){
-      caption = await geminiCaption(key,cat,tone,detail,lang,emoji);
-    } else {
-      caption = await groqCaption(key,cat,tone,detail,lang,emoji);
-    }
-
+    caption = await groqCaption(key,cat,tone,detail,lang,emoji);
     document.getElementById('capText').textContent=caption;
     document.getElementById('capCard').classList.add('show');
-    setStep(60,'Generating image...');
 
-    imgUrl = await generateImage(key,cat,detail);
+    setStep(80,'Loading image...');
+    imgUrl = getUnsplashUrl(cat);
     showPost(caption,imgUrl);
 
     setStep(100,'Done!');
-    setTimeout(clearStep,800);
+    setTimeout(clearStep,600);
     document.getElementById('actRow').style.display='flex';
     status.className='status ok';
-    status.textContent='✓ Caption ready · Image loading...';
+    status.textContent='✓ Post ready!';
   } catch(e){
     clearStep();
     status.className='status err';
-    status.textContent='✗ '+( e.message||'Failed. Try again.');
+    status.textContent='✗ '+(e.message||'Failed. Try again.');
     showError(e.message||'Error');
   }
   btn.disabled=false; lbl.textContent='Generate Post';
-}
-
-async function geminiCaption(key,cat,tone,detail,lang,emoji){
-  const emap={'Balanced (3-5 emojis)':'3-5 emojis','Heavy (lots of emojis)':'use emojis heavily','Minimal (1-2 emojis)':'max 2 emojis'};
-  const prompt=buildPrompt(cat,tone,detail,lang,emap[emoji]||'3-5 emojis');
-  const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`,{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})
-  });
-  if(!res.ok){
-    const e=await res.json().catch(()=>({}));
-    if(res.status===400||res.status===403){ localStorage.removeItem('utpost_key'); updateKeyUI(false); openModal(); throw new Error('Invalid Gemini key'); }
-    throw new Error(e.error?.message||'Gemini API Error '+res.status);
-  }
-  const d=await res.json();
-  return d.candidates[0].content.parts[0].text;
 }
 
 async function groqCaption(key,cat,tone,detail,lang,emoji){
@@ -370,7 +348,7 @@ async function groqCaption(key,cat,tone,detail,lang,emoji){
   });
   if(!res.ok){
     const e=await res.json().catch(()=>({}));
-    if(res.status===401){ localStorage.removeItem('utpost_key'); updateKeyUI(false); openModal(); throw new Error('Invalid Groq key'); }
+    if(res.status===401){ localStorage.removeItem('utpost_key'); updateKeyUI(false); openModal(); throw new Error('Invalid Groq key — reset karke dobara daalo'); }
     throw new Error(e.error?.message||'Groq Error '+res.status);
   }
   const d=await res.json();
@@ -396,40 +374,19 @@ Rules:
 Return ONLY caption + hashtags. Nothing else.`;
 }
 
-async function generateImage(key, cat, detail){
-  const base = imgPrompts[cat] || 'Indian wedding celebration';
-  const full = detail ? `${base}, ${detail}` : base;
-  const prompt = full + ', photorealistic, professional photography, 4k, beautiful, vibrant';
-
-  // Hugging Face free inference - no key needed
-  try {
-    const res = await fetch('https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ inputs: prompt, parameters: { width: 768, height: 768 } })
-    });
-    if(res.ok){
-      const blob = await res.blob();
-      if(blob.size > 1000) return URL.createObjectURL(blob);
-    }
-  } catch(e){ console.log('HF failed') }
-
-  // Fallback: reliable Unsplash wedding photos (hardcoded IDs)
-  const photos = {
-    'Bridal Lehenga & Looks':'photo-1583939003579-730e3918a45a',
-    'Wedding Photography':'photo-1519741497674-611481863552',
-    'Wedding Venue & Decoration':'photo-1519225421980-715cb0215aed',
-    'Bridal Makeup Artist':'photo-1522337360788-8b13dee7a37e',
-    'Wedding Catering & Food':'photo-1414235077428-338989a2e8c0',
-    'Mehndi & Haldi Ceremony':'photo-1595407753234-0882f1e77954',
-    'Wedding Band & DJ':'photo-1492684223066-81342ee5ff30',
-    'Destination Wedding':'photo-1507003211169-0a1dd7228f2d',
-    'Wedding Invitation Cards':'photo-1560250097-0b93528c311a',
-    'Wedding Cake & Sweets':'photo-1535254973040-607b474cb50d'
-  };
-  const id = photos[cat] || 'photo-1519741497674-611481863552';
-  return `https://images.unsplash.com/${id}?w=720&h=720&fit=crop&auto=format`;
-}
+const unsplashPhotos = {
+  'Bridal Lehenga & Looks':   'https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=720&h=720&fit=crop',
+  'Wedding Photography':       'https://images.unsplash.com/photo-1519741497674-611481863552?w=720&h=720&fit=crop',
+  'Wedding Venue & Decoration':'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=720&h=720&fit=crop',
+  'Bridal Makeup Artist':      'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=720&h=720&fit=crop',
+  'Wedding Catering & Food':   'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=720&h=720&fit=crop',
+  'Mehndi & Haldi Ceremony':   'https://images.unsplash.com/photo-1595407753234-0882f1e77954?w=720&h=720&fit=crop',
+  'Wedding Band & DJ':         'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=720&h=720&fit=crop',
+  'Destination Wedding':       'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=720&h=720&fit=crop',
+  'Wedding Invitation Cards':  'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=720&h=720&fit=crop',
+  'Wedding Cake & Sweets':     'https://images.unsplash.com/photo-1535254973040-607b474cb50d?w=720&h=720&fit=crop'
+};
+function getUnsplashUrl(cat){ return unsplashPhotos[cat]||unsplashPhotos['Wedding Photography']; }
 
 function showLoader(){
   document.getElementById('igWrap').innerHTML=`
