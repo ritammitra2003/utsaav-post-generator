@@ -324,7 +324,7 @@ async function generate(){
 
     document.getElementById('capText').textContent=caption;
     document.getElementById('capCard').classList.add('show');
-    setStep(60,'Generating image with Gemini Imagen...');
+    setStep(60,'Generating image...');
 
     imgUrl = await generateImage(key,cat,detail);
     showPost(caption,imgUrl);
@@ -346,7 +346,7 @@ async function generate(){
 async function geminiCaption(key,cat,tone,detail,lang,emoji){
   const emap={'Balanced (3-5 emojis)':'3-5 emojis','Heavy (lots of emojis)':'use emojis heavily','Minimal (1-2 emojis)':'max 2 emojis'};
   const prompt=buildPrompt(cat,tone,detail,lang,emap[emoji]||'3-5 emojis');
-  const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`,{
+  const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`,{
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})
@@ -399,36 +399,36 @@ Return ONLY caption + hashtags. Nothing else.`;
 async function generateImage(key, cat, detail){
   const base = imgPrompts[cat] || 'Indian wedding celebration';
   const full = detail ? `${base}, ${detail}` : base;
-  const prompt = full + ', photorealistic, professional wedding photography, Instagram worthy, high quality';
+  const prompt = full + ', photorealistic, professional photography, 4k, beautiful, vibrant';
 
-  // Try Gemini Imagen 3
-  if(key.startsWith('AIza')){
-    try {
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${key}`,{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({
-          instances:[{prompt}],
-          parameters:{sampleCount:1}
-        })
-      });
-      if(res.ok){
-        const d = await res.json();
-        const b64 = d.predictions?.[0]?.bytesBase64Encoded;
-        if(b64) return 'data:image/png;base64,'+b64;
-      }
-    } catch(e){ console.log('Imagen failed, using fallback') }
-  }
+  // Hugging Face free inference - no key needed
+  try {
+    const res = await fetch('https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ inputs: prompt, parameters: { width: 768, height: 768 } })
+    });
+    if(res.ok){
+      const blob = await res.blob();
+      if(blob.size > 1000) return URL.createObjectURL(blob);
+    }
+  } catch(e){ console.log('HF failed') }
 
-  // Fallback: Picsum real photo
-  const seeds={
-    'Bridal Lehenga & Looks':'1027','Wedding Photography':'1005',
-    'Wedding Venue & Decoration':'1039','Bridal Makeup Artist':'1062',
-    'Wedding Catering & Food':'292','Mehndi & Haldi Ceremony':'1080',
-    'Wedding Band & DJ':'164','Destination Wedding':'1015',
-    'Wedding Invitation Cards':'326','Wedding Cake & Sweets':'425'
+  // Fallback: reliable Unsplash wedding photos (hardcoded IDs)
+  const photos = {
+    'Bridal Lehenga & Looks':'photo-1583939003579-730e3918a45a',
+    'Wedding Photography':'photo-1519741497674-611481863552',
+    'Wedding Venue & Decoration':'photo-1519225421980-715cb0215aed',
+    'Bridal Makeup Artist':'photo-1522337360788-8b13dee7a37e',
+    'Wedding Catering & Food':'photo-1414235077428-338989a2e8c0',
+    'Mehndi & Haldi Ceremony':'photo-1595407753234-0882f1e77954',
+    'Wedding Band & DJ':'photo-1492684223066-81342ee5ff30',
+    'Destination Wedding':'photo-1507003211169-0a1dd7228f2d',
+    'Wedding Invitation Cards':'photo-1560250097-0b93528c311a',
+    'Wedding Cake & Sweets':'photo-1535254973040-607b474cb50d'
   };
-  return `https://picsum.photos/seed/${seeds[cat]||'101'}/720/720`;
+  const id = photos[cat] || 'photo-1519741497674-611481863552';
+  return `https://images.unsplash.com/${id}?w=720&h=720&fit=crop&auto=format`;
 }
 
 function showLoader(){
