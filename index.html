@@ -5,437 +5,119 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Utsaav Post Generator</title>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --accent: #E8472A;
-  --accent2: #F5A623;
-  --bg: #0a0a0a;
-  --surface: #161616;
-  --surface2: #1f1f1f;
-  --border: #2a2a2a;
-  --text: #f0f0f0;
-  --muted: #666;
-  --soft: #aaa;
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --acc:#E8472A;--acc2:#F5A623;
+  --bg:#0a0a0a;--surf:#161616;--surf2:#1f1f1f;
+  --bdr:#2a2a2a;--txt:#f0f0f0;--mut:#666;--soft:#aaa;
 }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
 
-/* TOP BAR */
-.topbar {
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 14px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.brand { display: flex; align-items: center; gap: 10px; }
-.brand-logo {
-  width: 34px; height: 34px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 800; font-size: 16px; color: white;
-}
-.brand-name { font-weight: 700; font-size: 18px; letter-spacing: 1px; }
-.brand-tag { font-size: 11px; color: var(--muted); margin-top: 1px; }
-.badge {
-  background: #1a1a1a;
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 4px 12px;
-  font-size: 11px;
-  color: var(--soft);
-}
+.topbar{background:var(--surf);border-bottom:1px solid var(--bdr);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-logo{width:34px;height:34px;background:linear-gradient(135deg,var(--acc),var(--acc2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:#fff}
+.brand-name{font-weight:700;font-size:18px;letter-spacing:1px}
+.brand-tag{font-size:11px;color:var(--mut);margin-top:1px}
+.key-btn{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--soft);cursor:pointer;padding:5px 12px;border:1px solid var(--bdr);border-radius:20px;background:transparent;transition:border-color .15s}
+.key-btn:hover{border-color:#444}
+.key-dot{width:7px;height:7px;border-radius:50%;background:#555;transition:background .3s}
+.key-dot.on{background:#4caf50}
 
-/* LAYOUT */
-.layout {
-  display: grid;
-  grid-template-columns: 360px 1fr;
-  min-height: calc(100vh - 63px);
-}
-@media(max-width:800px) { .layout { grid-template-columns: 1fr; } }
+.layout{display:grid;grid-template-columns:340px 1fr;min-height:calc(100vh - 63px)}
+@media(max-width:780px){.layout{grid-template-columns:1fr}}
 
-/* SIDEBAR */
-.sidebar {
-  background: var(--surface);
-  border-right: 1px solid var(--border);
-  padding: 20px;
-  overflow-y: auto;
-  max-height: calc(100vh - 63px);
-}
-.section-label {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: var(--muted);
-  margin-bottom: 10px;
-  margin-top: 20px;
-}
-.section-label:first-child { margin-top: 0; }
+.sidebar{background:var(--surf);border-right:1px solid var(--bdr);padding:18px;overflow-y:auto;max-height:calc(100vh - 63px)}
+.slabel{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--mut);margin:16px 0 8px}
+.slabel:first-child{margin-top:0}
 
-/* CATEGORIES */
-.cat-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-}
-.cat-btn {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  color: var(--soft);
-  padding: 9px 6px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.15s;
-  text-align: center;
-  line-height: 1.4;
-}
-.cat-btn:hover { border-color: #444; color: var(--text); }
-.cat-btn.active {
-  background: #E8472A18;
-  border-color: var(--accent);
-  color: #ff6a50;
-  font-weight: 600;
-}
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.cat-btn{background:var(--surf2);border:1px solid var(--bdr);border-radius:9px;color:var(--soft);padding:8px 5px;font-size:12px;cursor:pointer;transition:all .15s;text-align:center;line-height:1.4}
+.cat-btn:hover{border-color:#444;color:var(--txt)}
+.cat-btn.active{background:#E8472A18;border-color:var(--acc);color:#ff6a50;font-weight:600}
 
-/* TONE CHIPS */
-.chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.chip {
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  border: 1px solid var(--border);
-  background: var(--surface2);
-  color: var(--soft);
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.chip:hover { border-color: #555; color: var(--text); }
-.chip.active { background: #F5A62318; border-color: var(--accent2); color: var(--accent2); }
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{padding:5px 11px;border-radius:20px;font-size:12px;border:1px solid var(--bdr);background:var(--surf2);color:var(--soft);cursor:pointer;transition:all .15s}
+.chip:hover{border-color:#555;color:var(--txt)}
+.chip.active{background:#F5A62318;border-color:var(--acc2);color:var(--acc2)}
 
-/* INPUTS */
-.field { margin-bottom: 12px; }
-.field label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 5px; }
-input[type=text], select, textarea {
-  width: 100%;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text);
-  padding: 9px 11px;
-  font-size: 13px;
-  font-family: inherit;
-  outline: none;
-  transition: border-color 0.15s;
-}
-input[type=text]:focus, select:focus, textarea:focus { border-color: var(--accent); }
-select option { background: #1f1f1f; }
-textarea { resize: vertical; min-height: 64px; }
+.field{margin-bottom:11px}
+.field label{display:block;font-size:11px;color:var(--mut);margin-bottom:4px}
+input[type=text],select{width:100%;background:var(--surf2);border:1px solid var(--bdr);border-radius:8px;color:var(--txt);padding:9px 11px;font-size:13px;font-family:inherit;outline:none;transition:border-color .15s}
+input[type=text]:focus,select:focus{border-color:var(--acc)}
+select option{background:#1f1f1f}
 
-/* GENERATE BTN */
-.gen-btn {
-  width: 100%;
-  margin-top: 4px;
-  padding: 13px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  border: none;
-  border-radius: 10px;
-  color: white;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  letter-spacing: 0.5px;
-  transition: opacity 0.2s, transform 0.1s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-.gen-btn:hover { opacity: 0.88; }
-.gen-btn:active { transform: scale(0.98); }
-.gen-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.gen-btn{width:100%;margin-top:6px;padding:13px;background:linear-gradient(135deg,var(--acc),var(--acc2));border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .2s,transform .1s;font-family:inherit}
+.gen-btn:hover{opacity:.88}
+.gen-btn:active{transform:scale(.98)}
+.gen-btn:disabled{opacity:.4;cursor:not-allowed}
 
-/* MAIN AREA */
-.main {
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
+.main{padding:24px;display:flex;flex-direction:column;align-items:center;gap:16px}
 
-/* STEP INDICATOR */
-.steps {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  width: 100%;
-  max-width: 480px;
-}
-.step {
-  flex: 1;
-  height: 3px;
-  background: var(--border);
-  border-radius: 2px;
-  transition: background 0.4s;
-}
-.step.done { background: var(--accent); }
-.step.active { background: var(--accent2); }
-.step-text {
-  font-size: 11px;
-  color: var(--muted);
-  text-align: center;
-  width: 100%;
-  max-width: 480px;
-  margin-top: -8px;
-}
+.step-bar{width:100%;max-width:420px;height:3px;background:var(--bdr);border-radius:2px;overflow:hidden;display:none}
+.step-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--acc),var(--acc2));transition:width .4s ease;border-radius:2px}
+.step-msg{font-size:11px;color:var(--mut);text-align:center;width:100%;max-width:420px;margin-top:-4px;min-height:16px}
 
-/* INSTAGRAM PREVIEW */
-.ig-wrap {
-  width: 100%;
-  max-width: 420px;
-  background: #000;
-  border: 1px solid #2a2a2a;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
-}
+.ig-wrap{width:100%;max-width:420px;background:#000;border:1px solid #2a2a2a;border-radius:16px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.5)}
+.ig-header{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid #1a1a1a}
+.ig-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#E8472A,#F5A623);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:#fff;flex-shrink:0}
+.ig-username{font-weight:700;font-size:13px;color:#fff}
+.ig-loc{font-size:10px;color:#888;margin-top:1px}
+.ig-dots{margin-left:auto;color:#888;font-size:18px}
 
-.ig-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 14px;
-  border-bottom: 1px solid #1a1a1a;
-}
-.ig-avatar {
-  width: 38px; height: 38px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #E8472A, #F5A623, #E8472A);
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 800; font-size: 15px; color: white;
-  flex-shrink: 0;
-}
-.ig-name-row { flex: 1; }
-.ig-username { font-weight: 700; font-size: 13px; color: #fff; }
-.ig-subloc { font-size: 10px; color: #888; margin-top: 1px; }
-.ig-dots { color: #888; font-size: 18px; cursor: pointer; }
+.ig-img-box{position:relative;width:100%;padding-top:100%;background:#111;overflow:hidden}
+.ig-img-box img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s}
+.img-loader{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#0d0d0d;z-index:2;transition:opacity .4s}
+.img-loader.gone{opacity:0;pointer-events:none}
+.ring{width:38px;height:38px;border:3px solid #222;border-top:3px solid var(--acc);border-right:3px solid var(--acc2);border-radius:50%;animation:spin .85s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ring-text{font-size:12px;color:#555}
 
-.ig-img-box {
-  position: relative;
-  width: 100%;
-  padding-top: 100%;
-  background: #111;
-  overflow: hidden;
-}
-.ig-img-box img {
-  position: absolute;
-  inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-}
-.img-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  background: #0d0d0d;
-  transition: opacity 0.4s;
-  z-index: 2;
-}
-.img-overlay.hidden { opacity: 0; pointer-events: none; }
-.loader-ring {
-  width: 40px; height: 40px;
-  border: 3px solid #222;
-  border-top: 3px solid var(--accent);
-  border-right: 3px solid var(--accent2);
-  border-radius: 50%;
-  animation: spin 0.9s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-.loader-text { font-size: 12px; color: #555; }
+.ig-dots-bar{display:flex;justify-content:center;gap:4px;padding:6px 0;background:#000}
+.idot{width:6px;height:6px;border-radius:50%;background:#333}
+.idot.on{background:#3b9ae1;width:18px;border-radius:3px}
 
-/* IG STYLE indicator dots */
-.ig-style-bar {
-  display: flex;
-  justify-content: center;
-  gap: 4px;
-  padding: 6px 0;
-  background: #000;
-  border-bottom: 1px solid #111;
-}
-.style-dot { width: 6px; height: 6px; border-radius: 50%; background: #333; transition: all 0.3s; }
-.style-dot.active { background: #3b9ae1; width: 18px; border-radius: 3px; }
+.ig-actions{display:flex;align-items:center;padding:10px 14px 6px;gap:14px}
+.ig-ico{font-size:22px;cursor:pointer}
+.ig-bm{margin-left:auto}
+.ig-likes{padding:0 14px 4px;font-size:13px;font-weight:700;color:#fff}
+.ig-caption{padding:0 14px 14px;font-size:13px;color:#ccc;line-height:1.55}
+.ig-caption .uname{color:#fff;font-weight:700;margin-right:5px}
+.ig-caption .htags{color:#4A9EFF}
+.ig-time{padding:0 14px 14px;font-size:10px;color:#555}
 
-.ig-actions-row {
-  display: flex;
-  align-items: center;
-  padding: 10px 14px 6px;
-  gap: 14px;
-}
-.ig-icon { font-size: 24px; cursor: pointer; transition: transform 0.15s; }
-.ig-icon:hover { transform: scale(1.15); }
-.ig-bookmark { margin-left: auto; }
-.ig-likes { padding: 0 14px 4px; font-size: 13px; font-weight: 700; color: #fff; }
-.ig-caption-box { padding: 0 14px 14px; font-size: 13px; color: #ccc; line-height: 1.55; }
-.ig-caption-box .uname { color: #fff; font-weight: 700; margin-right: 6px; }
-.hashtags { color: #4A9EFF; }
-.ig-time { padding: 0 14px 14px; font-size: 10px; color: #555; }
+.placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:360px;gap:14px;text-align:center;padding:30px}
+.ph-icon{font-size:52px;opacity:.12}
+.ph-t{font-size:14px;color:#555}
+.ph-s{font-size:12px;color:#333}
 
-/* PLACEHOLDER */
-.placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 380px;
-  gap: 16px;
-  text-align: center;
-  padding: 30px;
-}
-.ph-icon { font-size: 56px; opacity: 0.15; }
-.ph-title { font-size: 15px; color: #555; }
-.ph-sub { font-size: 12px; color: #333; }
+.cap-card{width:100%;max-width:420px;background:var(--surf);border:1px solid var(--bdr);border-radius:12px;padding:14px 16px;display:none}
+.cap-card.show{display:block}
+.cap-label{font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.cap-text{font-size:13px;color:var(--soft);line-height:1.6;white-space:pre-wrap;word-break:break-word}
 
-/* BOTTOM ACTIONS */
-.actions-row {
-  display: flex;
-  gap: 8px;
-  width: 100%;
-  max-width: 420px;
-}
-.act-btn {
-  flex: 1;
-  padding: 10px 6px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--soft);
-  font-size: 12px;
-  cursor: pointer;
-  text-align: center;
-  transition: all 0.15s;
-  font-family: inherit;
-}
-.act-btn:hover { border-color: #444; color: var(--text); }
-.act-btn.primary {
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  border: none;
-  color: white;
-  font-weight: 700;
-}
-.act-btn.primary:hover { opacity: 0.85; }
+.act-row{display:flex;gap:8px;width:100%;max-width:420px;display:none}
+.act-btn{flex:1;padding:10px 6px;border-radius:10px;border:1px solid var(--bdr);background:var(--surf);color:var(--soft);font-size:12px;cursor:pointer;text-align:center;transition:all .15s;font-family:inherit}
+.act-btn:hover{border-color:#444;color:var(--txt)}
+.act-btn.pri{background:linear-gradient(135deg,var(--acc),var(--acc2));border:none;color:#fff;font-weight:700}
+.act-btn.pri:hover{opacity:.85}
 
-.status-bar {
-  font-size: 12px;
-  color: var(--muted);
-  min-height: 16px;
-  text-align: center;
-}
-.status-bar.ok { color: #4caf50; }
-.status-bar.err { color: var(--accent); }
+.status{font-size:12px;color:var(--mut);min-height:16px;text-align:center}
+.status.ok{color:#4caf50}
+.status.err{color:var(--acc)}
 
-/* API KEY MODAL */
-.modal-bg {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.85);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 999;
-}
-.modal-box {
-  background: #161616;
-  border: 1px solid #2a2a2a;
-  border-radius: 16px;
-  padding: 28px;
-  width: 90%; max-width: 420px;
-}
-.modal-logo { font-size: 22px; font-weight: 800; letter-spacing: 1px; margin-bottom: 4px; }
-.modal-logo span { background: linear-gradient(135deg,#E8472A,#F5A623); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-.modal-sub { font-size: 12px; color: #666; margin-bottom: 20px; }
-.modal-label { font-size: 11px; color: #888; margin-bottom: 6px; }
-.modal-input {
-  width: 100%;
-  background: #1f1f1f;
-  border: 1px solid #333;
-  border-radius: 8px;
-  color: #f0f0f0;
-  padding: 11px 13px;
-  font-size: 13px;
-  font-family: monospace;
-  outline: none;
-  margin-bottom: 6px;
-  transition: border-color 0.15s;
-}
-.modal-input:focus { border-color: #E8472A; }
-.modal-hint { font-size: 11px; color: #444; margin-bottom: 18px; }
-.modal-hint a { color: #4A9EFF; text-decoration: none; }
-.modal-btn {
-  width: 100%;
-  padding: 12px;
-  background: linear-gradient(135deg,#E8472A,#F5A623);
-  border: none; border-radius: 10px;
-  color: white; font-size: 14px; font-weight: 700;
-  cursor: pointer; font-family: inherit;
-}
-.modal-btn:disabled { opacity: 0.4; }
-.modal-err { font-size: 12px; color: #E8472A; margin-top: 8px; min-height: 16px; }
-
-/* API key topbar indicator */
-.key-status {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 11px; color: #666;
-  cursor: pointer;
-  padding: 5px 10px;
-  border: 1px solid #2a2a2a;
-  border-radius: 20px;
-  transition: border-color 0.15s;
-}
-.key-status:hover { border-color: #444; color: #aaa; }
-.key-dot { width: 7px; height: 7px; border-radius: 50%; background: #4caf50; }
-
-/* CAPTION PREVIEW CARD */
-.caption-card {
-  width: 100%;
-  max-width: 420px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 14px 16px;
-  display: none;
-}
-.caption-card.show { display: block; }
-.cap-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-.cap-text { font-size: 13px; color: var(--soft); line-height: 1.6; white-space: pre-wrap; }
-
-/* Image style selector */
-.img-style-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-}
-.img-style-btn {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 8px 4px;
-  font-size: 11px;
-  color: var(--soft);
-  cursor: pointer;
-  text-align: center;
-  transition: all 0.15s;
-  line-height: 1.4;
-}
-.img-style-btn:hover { border-color: #555; }
-.img-style-btn.active { border-color: var(--accent2); color: var(--accent2); background: #F5A62310; }
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;z-index:999}
+.modal{background:#161616;border:1px solid #2a2a2a;border-radius:16px;padding:28px;width:90%;max-width:400px}
+.modal-logo{font-size:22px;font-weight:800;letter-spacing:1px;margin-bottom:3px}
+.modal-logo span{background:linear-gradient(135deg,#E8472A,#F5A623);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.modal-sub{font-size:12px;color:#555;margin-bottom:20px}
+.modal-label{font-size:11px;color:#888;margin-bottom:5px}
+.modal-input{width:100%;background:#1f1f1f;border:1px solid #333;border-radius:8px;color:#f0f0f0;padding:11px 13px;font-size:13px;font-family:monospace;outline:none;margin-bottom:6px;transition:border-color .15s}
+.modal-input:focus{border-color:#E8472A}
+.modal-hint{font-size:11px;color:#444;margin-bottom:16px;line-height:1.6}
+.modal-hint a{color:#4A9EFF;text-decoration:none}
+.modal-btn{width:100%;padding:12px;background:linear-gradient(135deg,#E8472A,#F5A623);border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+.modal-err{font-size:12px;color:#E8472A;margin-top:8px;min-height:16px}
 </style>
 </head>
 <body>
@@ -448,30 +130,29 @@ textarea { resize: vertical; min-height: 64px; }
       <div class="brand-tag">Instagram Post Generator</div>
     </div>
   </div>
-  <div class="key-status" onclick="showKeyModal()" id="keyIndicator">
-    <div class="key-dot" id="keyDot" style="background:#555"></div>
+  <button class="key-btn" onclick="openModal()">
+    <div class="key-dot" id="keyDot"></div>
     <span id="keyLabel">Set API Key</span>
-  </div>
+  </button>
 </div>
 
 <div class="layout">
-  <!-- SIDEBAR -->
   <div class="sidebar">
-    <div class="section-label">Category</div>
+    <div class="slabel">Category</div>
     <div class="cat-grid">
       <div class="cat-btn active" data-cat="Bridal Lehenga & Looks" onclick="pickCat(this)">👰 Bridal Looks</div>
       <div class="cat-btn" data-cat="Wedding Photography" onclick="pickCat(this)">📸 Photography</div>
       <div class="cat-btn" data-cat="Wedding Venue & Decoration" onclick="pickCat(this)">🏛️ Venue & Decor</div>
       <div class="cat-btn" data-cat="Bridal Makeup Artist" onclick="pickCat(this)">💄 Makeup</div>
-      <div class="cat-btn" data-cat="Wedding Catering & Food Stalls" onclick="pickCat(this)">🍽️ Catering</div>
+      <div class="cat-btn" data-cat="Wedding Catering & Food" onclick="pickCat(this)">🍽️ Catering</div>
       <div class="cat-btn" data-cat="Mehndi & Haldi Ceremony" onclick="pickCat(this)">🌿 Mehndi/Haldi</div>
       <div class="cat-btn" data-cat="Wedding Band & DJ" onclick="pickCat(this)">🎵 Band & DJ</div>
       <div class="cat-btn" data-cat="Destination Wedding" onclick="pickCat(this)">✈️ Destination</div>
-      <div class="cat-btn" data-cat="Wedding Invitation & Cards" onclick="pickCat(this)">💌 Invitations</div>
+      <div class="cat-btn" data-cat="Wedding Invitation Cards" onclick="pickCat(this)">💌 Invitations</div>
       <div class="cat-btn" data-cat="Wedding Cake & Sweets" onclick="pickCat(this)">🎂 Cake</div>
     </div>
 
-    <div class="section-label">Caption Tone</div>
+    <div class="slabel">Caption Tone</div>
     <div class="chips">
       <div class="chip active" onclick="pickTone(this)">Romantic ❤️</div>
       <div class="chip" onclick="pickTone(this)">Elegant ✨</div>
@@ -481,32 +162,22 @@ textarea { resize: vertical; min-height: 64px; }
       <div class="chip" onclick="pickTone(this)">Witty & Bold 🔥</div>
     </div>
 
-    <div class="section-label">Image Style</div>
-    <div class="img-style-grid">
-      <div class="img-style-btn active" data-style="cinematic, golden hour, bokeh" onclick="pickStyle(this)">🎬 Cinematic</div>
-      <div class="img-style-btn" data-style="magazine editorial, high fashion, professional" onclick="pickStyle(this)">📖 Editorial</div>
-      <div class="img-style-btn" data-style="vibrant colors, festive, joyful" onclick="pickStyle(this)">🎨 Vibrant</div>
-      <div class="img-style-btn" data-style="moody, dark atmosphere, dramatic lighting" onclick="pickStyle(this)">🌑 Moody</div>
-      <div class="img-style-btn" data-style="soft pastel, dreamy, ethereal" onclick="pickStyle(this)">🌸 Dreamy</div>
-      <div class="img-style-btn" data-style="candid, documentary, real wedding" onclick="pickStyle(this)">📷 Candid</div>
-    </div>
-
-    <div class="section-label">Details</div>
+    <div class="slabel">Details</div>
     <div class="field">
       <label>Custom detail (optional)</label>
-      <input type="text" id="customDetail" placeholder="Red lehenga, Kolkata venue, winter evening..."/>
+      <input type="text" id="customDetail" placeholder="Red lehenga, Kolkata venue, winter..."/>
     </div>
     <div class="field">
       <label>Language</label>
-      <select id="langSelect">
-        <option value="English">English</option>
-        <option value="Hinglish (mix of Hindi and English)">Hinglish</option>
-        <option value="Bengali">Bengali</option>
+      <select id="langSel">
+        <option>English</option>
+        <option>Hinglish (Hindi + English mix)</option>
+        <option>Bengali</option>
       </select>
     </div>
     <div class="field">
       <label>Emoji style</label>
-      <select id="emojiStyle">
+      <select id="emojiSel">
         <option>Balanced (3-5 emojis)</option>
         <option>Heavy (lots of emojis)</option>
         <option>Minimal (1-2 emojis)</option>
@@ -514,414 +185,328 @@ textarea { resize: vertical; min-height: 64px; }
     </div>
 
     <button class="gen-btn" id="genBtn" onclick="generate()">
-      <span>✨</span><span id="genLabel">Generate Post</span>
+      <span>✨</span><span id="genLbl">Generate Post</span>
     </button>
   </div>
 
-  <!-- MAIN PREVIEW -->
   <div class="main">
-    <div class="steps" id="stepsRow" style="display:none;">
-      <div class="step" id="s1"></div>
-      <div class="step" id="s2"></div>
-      <div class="step" id="s3"></div>
-    </div>
-    <div class="step-text" id="stepText"></div>
+    <div class="step-bar" id="stepBar"><div class="step-fill" id="stepFill"></div></div>
+    <div class="step-msg" id="stepMsg"></div>
 
-    <!-- IG Card -->
-    <div id="igWrap" style="width:100%;max-width:420px;">
-      <!-- Placeholder -->
-      <div id="placeholder" class="placeholder">
-        <div class="ph-icon">📸</div>
-        <div class="ph-title">Your post preview will appear here</div>
-        <div class="ph-sub">Choose a category and click Generate</div>
+    <div id="igWrap" style="width:100%;max-width:420px">
+      <div class="placeholder">
+        <div class="ph-icon">📱</div>
+        <div class="ph-t">Post preview will appear here</div>
+        <div class="ph-s">Select category → Generate</div>
       </div>
     </div>
 
-    <!-- Caption card -->
-    <div class="caption-card" id="captionCard">
-      <div class="cap-label">Full Caption (copy-ready)</div>
-      <div class="cap-text" id="fullCaption"></div>
+    <div class="cap-card" id="capCard">
+      <div class="cap-label">Full Caption — Copy Ready</div>
+      <div class="cap-text" id="capText"></div>
     </div>
 
-    <!-- Action buttons -->
-    <div class="actions-row" id="actionsRow" style="display:none;">
-      <button class="act-btn" onclick="copyCaption()">📋 Copy Caption</button>
-      <button class="act-btn" onclick="openImage()">🖼️ Open Image</button>
-      <button class="act-btn primary" onclick="generate()">🔄 Regenerate</button>
+    <div class="act-row" id="actRow">
+      <button class="act-btn" onclick="copyCaption()">📋 Copy</button>
+      <button class="act-btn" onclick="openImg()">🖼️ Open Image</button>
+      <button class="act-btn pri" onclick="generate()">🔄 Regenerate</button>
     </div>
 
-    <div class="status-bar" id="status"></div>
+    <div class="status" id="statusEl"></div>
   </div>
 </div>
 
-<!-- API KEY MODAL -->
-<div class="modal-bg" id="keyModal">
-  <div class="modal-box">
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
     <div class="modal-logo"><span>UTSAAV</span></div>
-    <div class="modal-sub">Instagram Post Generator · Powered by Claude AI</div>
-    <div class="modal-label">Your Anthropic API Key</div>
-    <input class="modal-input" type="password" id="keyInput" placeholder="sk-ant-api03-..." autocomplete="off" />
+    <div class="modal-sub">Instagram Post Generator · AI Powered</div>
+    <div class="modal-label">Gemini API Key (Free)</div>
+    <input class="modal-input" type="password" id="keyInput" placeholder="AIzaSy..." autocomplete="off"/>
     <div class="modal-hint">
-      Groq key (free): <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a> → copy your <b style="color:#aaa">gsk_...</b> key<br>
-      Key is saved only in your browser. Never shared anywhere.
+      Get free key: <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a><br>
+      Sign in → "Create API Key" → Copy the <b style="color:#aaa">AIzaSy...</b> key<br>
+      <span style="color:#333">Key saved in browser only. Never shared.</span>
     </div>
-    <button class="modal-btn" onclick="saveKey()">Save & Continue →</button>
-    <div class="modal-err" id="keyErr"></div>
+    <button class="modal-btn" onclick="saveKey()">Save & Start →</button>
+    <div class="modal-err" id="modalErr"></div>
   </div>
 </div>
 
 <script>
 let cat = 'Bridal Lehenga & Looks';
 let tone = 'Romantic';
-let imgStyle = 'cinematic, golden hour, bokeh';
 let caption = '';
 let imgUrl = '';
 
-function getKey() { return localStorage.getItem('utsaav_api_key') || ''; }
+const imgPrompts = {
+  'Bridal Lehenga & Looks':'beautiful Indian bride red lehenga traditional bridal jewelry maang tikka wedding ceremony',
+  'Wedding Photography':'Indian wedding couple romantic portrait professional photography golden hour',
+  'Wedding Venue & Decoration':'luxury Indian wedding mandap floral decoration marigold fairy lights',
+  'Bridal Makeup Artist':'Indian bridal makeup flawless skin gold eye shadow traditional bridal look close up',
+  'Wedding Catering & Food':'Indian wedding feast spread traditional Bengali cuisine colorful dishes',
+  'Mehndi & Haldi Ceremony':'Indian bridal mehndi intricate henna on hands haldi ceremony turmeric',
+  'Wedding Band & DJ':'Indian wedding baraat procession dhol players festive lights groom on horse',
+  'Destination Wedding':'scenic Indian destination wedding outdoor ceremony mountain landscape',
+  'Wedding Invitation Cards':'elegant Indian wedding invitation card gold embossing floral design',
+  'Wedding Cake & Sweets':'Indian wedding multi tier cake traditional sweets mithai festive desserts'
+};
 
-function saveKey() {
-  const val = document.getElementById('keyInput').value.trim();
-  if (!val.startsWith('gsk_') && !val.startsWith('sk-ant-')) {
-    document.getElementById('keyErr').textContent = 'Invalid key. Must start with gsk_ (Groq) or sk-ant- (Anthropic)';
+// Key management
+function getKey(){ return localStorage.getItem('utpost_key')||''; }
+function openModal(){
+  const k=getKey(); if(k) document.getElementById('keyInput').value=k;
+  document.getElementById('modalBg').style.display='flex';
+  document.getElementById('modalErr').textContent='';
+}
+function saveKey(){
+  const v=document.getElementById('keyInput').value.trim();
+  if(!v.startsWith('AIza')&&!v.startsWith('gsk_')){
+    document.getElementById('modalErr').textContent='Key must start with AIza (Gemini) or gsk_ (Groq)';
     return;
   }
-  localStorage.setItem('utsaav_api_key', val);
-  document.getElementById('keyModal').style.display = 'none';
+  localStorage.setItem('utpost_key',v);
+  document.getElementById('modalBg').style.display='none';
   updateKeyUI(true);
 }
-
-function showKeyModal() {
-  const k = getKey();
-  if (k) document.getElementById('keyInput').value = k;
-  document.getElementById('keyModal').style.display = 'flex';
-  document.getElementById('keyErr').textContent = '';
+function updateKeyUI(on){
+  document.getElementById('keyDot').className='key-dot'+(on?' on':'');
+  document.getElementById('keyLabel').textContent=on?'🔑 Key Set':'Set API Key';
 }
 
-function updateKeyUI(hasKey) {
-  document.getElementById('keyDot').style.background = hasKey ? '#4caf50' : '#555';
-  document.getElementById('keyLabel').textContent = hasKey ? '🔑 API Key Set' : 'Set API Key';
-}
-
-// On load
-window.addEventListener('load', () => {
-  const k = getKey();
-  if (!k) {
-    document.getElementById('keyModal').style.display = 'flex';
-  } else {
-    document.getElementById('keyModal').style.display = 'none';
-    updateKeyUI(true);
-  }
-  document.getElementById('keyInput').addEventListener('keydown', e => { if(e.key==='Enter') saveKey(); });
+window.addEventListener('load',()=>{
+  const k=getKey();
+  document.getElementById('modalBg').style.display=k?'none':'flex';
+  updateKeyUI(!!k);
+  document.getElementById('keyInput').addEventListener('keydown',e=>{ if(e.key==='Enter') saveKey(); });
 });
 
-function pickCat(el) {
-  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  cat = el.dataset.cat;
+function pickCat(el){
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active'); cat=el.dataset.cat;
 }
-function pickTone(el) {
-  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  tone = el.textContent.replace(/[^\w\s&]/g,'').trim();
-}
-function pickStyle(el) {
-  document.querySelectorAll('.img-style-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  imgStyle = el.dataset.style;
+function pickTone(el){
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active'); tone=el.textContent.replace(/[^\w\s&]/g,'').trim();
 }
 
-function setStep(n, msg) {
-  document.getElementById('stepsRow').style.display = 'flex';
-  document.getElementById('stepText').textContent = msg;
-  ['s1','s2','s3'].forEach((id,i) => {
-    const el = document.getElementById(id);
-    el.className = 'step' + (i+1 < n ? ' done' : i+1 === n ? ' active' : '');
-  });
+function setStep(pct,msg){
+  document.getElementById('stepBar').style.display='block';
+  document.getElementById('stepFill').style.width=pct+'%';
+  document.getElementById('stepMsg').textContent=msg;
 }
+function clearStep(){ document.getElementById('stepBar').style.display='none'; document.getElementById('stepMsg').textContent=''; }
 
-async function generate() {
-  const btn = document.getElementById('genBtn');
-  const lbl = document.getElementById('genLabel');
-  const status = document.getElementById('status');
-  const detail = document.getElementById('customDetail').value;
-  const lang = document.getElementById('langSelect').value;
-  const emojiStyle = document.getElementById('emojiStyle').value;
+async function generate(){
+  const key=getKey();
+  if(!key){ openModal(); return; }
 
-  btn.disabled = true;
-  lbl.textContent = 'Generating...';
-  status.className = 'status-bar';
-  status.textContent = '';
+  const btn=document.getElementById('genBtn');
+  const lbl=document.getElementById('genLbl');
+  const status=document.getElementById('statusEl');
+  const detail=document.getElementById('customDetail').value;
+  const lang=document.getElementById('langSel').value;
+  const emoji=document.getElementById('emojiSel').value;
 
-  setStep(1, 'Step 1/3 — Writing caption with AI...');
-  showLoadingCard();
-  document.getElementById('actionsRow').style.display = 'none';
-  document.getElementById('captionCard').classList.remove('show');
+  btn.disabled=true; lbl.textContent='Generating...';
+  status.className='status'; status.textContent='';
+  document.getElementById('actRow').style.display='none';
+  document.getElementById('capCard').classList.remove('show');
+  setStep(20,'Writing caption with AI...');
+  showLoader();
 
   try {
-    caption = await getCaption(cat, tone, detail, lang, emojiStyle);
-    document.getElementById('fullCaption').textContent = caption;
-    document.getElementById('captionCard').classList.add('show');
+    if(key.startsWith('AIza')){
+      caption = await geminiCaption(key,cat,tone,detail,lang,emoji);
+    } else {
+      caption = await groqCaption(key,cat,tone,detail,lang,emoji);
+    }
 
-    setStep(2, 'Step 2/3 — Generating AI image...');
-    imgUrl = buildImageUrl(cat, detail, imgStyle);
-    showIgCard(caption, imgUrl);
+    document.getElementById('capText').textContent=caption;
+    document.getElementById('capCard').classList.add('show');
+    setStep(60,'Generating image with Gemini Imagen...');
 
-    setStep(3, 'Step 3/3 — Post ready!');
-    document.getElementById('stepsRow').style.display = 'none';
-    document.getElementById('stepText').textContent = '';
-    document.getElementById('actionsRow').style.display = 'flex';
-    status.className = 'status-bar ok';
-    status.textContent = '✓ Caption ready · Image loading (may take ~15s from Pollinations AI)';
-  } catch(e) {
-    status.className = 'status-bar err';
-    status.textContent = '✗ ' + (e.message || 'Generation failed. Try again.');
-    document.getElementById('igWrap').innerHTML = `<div class="placeholder"><div class="ph-icon">❌</div><div class="ph-title" style="color:#E8472A">Failed</div><div class="ph-sub">${e.message||'Unknown error'}</div></div>`;
-    document.getElementById('stepsRow').style.display = 'none';
+    imgUrl = await generateImage(key,cat,detail);
+    showPost(caption,imgUrl);
+
+    setStep(100,'Done!');
+    setTimeout(clearStep,800);
+    document.getElementById('actRow').style.display='flex';
+    status.className='status ok';
+    status.textContent='✓ Caption ready · Image loading...';
+  } catch(e){
+    clearStep();
+    status.className='status err';
+    status.textContent='✗ '+( e.message||'Failed. Try again.');
+    showError(e.message||'Error');
   }
-
-  btn.disabled = false;
-  lbl.textContent = 'Generate Post';
+  btn.disabled=false; lbl.textContent='Generate Post';
 }
 
-async function getCaption(cat, tone, detail, lang, emojiPref) {
-  const apiKey = getKey();
-  if (!apiKey) { showKeyModal(); throw new Error('API key not set'); }
+async function geminiCaption(key,cat,tone,detail,lang,emoji){
+  const emap={'Balanced (3-5 emojis)':'3-5 emojis','Heavy (lots of emojis)':'use emojis heavily','Minimal (1-2 emojis)':'max 2 emojis'};
+  const prompt=buildPrompt(cat,tone,detail,lang,emap[emoji]||'3-5 emojis');
+  const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})
+  });
+  if(!res.ok){
+    const e=await res.json().catch(()=>({}));
+    if(res.status===400||res.status===403){ localStorage.removeItem('utpost_key'); updateKeyUI(false); openModal(); throw new Error('Invalid Gemini key'); }
+    throw new Error(e.error?.message||'Gemini API Error '+res.status);
+  }
+  const d=await res.json();
+  return d.candidates[0].content.parts[0].text;
+}
 
-  const emojiMap = { 'Balanced (3-5 emojis)': '3-5 emojis total', 'Heavy (lots of emojis)': 'use emojis generously', 'Minimal (1-2 emojis)': 'maximum 2 emojis' };
-  const emojiInstr = emojiMap[emojiPref] || '3-5 emojis';
+async function groqCaption(key,cat,tone,detail,lang,emoji){
+  const emap={'Balanced (3-5 emojis)':'3-5 emojis','Heavy (lots of emojis)':'use emojis heavily','Minimal (1-2 emojis)':'max 2 emojis'};
+  const prompt=buildPrompt(cat,tone,detail,lang,emap[emoji]||'3-5 emojis');
+  const res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+    body:JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:900,messages:[{role:'user',content:prompt}]})
+  });
+  if(!res.ok){
+    const e=await res.json().catch(()=>({}));
+    if(res.status===401){ localStorage.removeItem('utpost_key'); updateKeyUI(false); openModal(); throw new Error('Invalid Groq key'); }
+    throw new Error(e.error?.message||'Groq Error '+res.status);
+  }
+  const d=await res.json();
+  return d.choices[0].message.content;
+}
 
-  const isGroq = apiKey.startsWith('gsk_');
-  const url = isGroq
-    ? 'https://api.groq.com/openai/v1/chat/completions'
-    : 'https://api.anthropic.com/v1/messages';
+function buildPrompt(cat,tone,detail,lang,emoji){
+  return `You are the Instagram social media manager for Utsaav — a West Bengal-based wedding & event services marketplace at utsaav.in.
 
-  const prompt = `You are the social media manager for Utsaav — a West Bengal-based wedding & event services marketplace (utsaav.in). You create viral Instagram captions for the brand.
-
-Write an Instagram caption for: **${cat}**
+Write a viral Instagram caption for: ${cat}
 Tone: ${tone}
 Language: ${lang}
-Emoji usage: ${emojiInstr}
-${detail ? `Extra detail: ${detail}` : ''}
+Emoji: ${emoji}
+${detail?`Detail: ${detail}`:''}
 
 Rules:
-- 3-6 lines of compelling caption text
-- Naturally mention utsaav.in or "Link in bio" as CTA
-- End with 18-22 hashtags (mix: popular Indian wedding hashtags + West Bengal specific + niche category tags)
-- NO generic intros like "Are you looking for..." — start with impact
-- Make it feel real and human, not AI-written
+- Start with impact — no generic openers
+- 3-5 lines of caption
+- Include utsaav.in or "link in bio" as CTA
+- End with 18-22 hashtags (popular Indian wedding + West Bengal + niche tags)
+- Sound real and human, not AI
 
-Return ONLY the caption + hashtags. Nothing else.`;
+Return ONLY caption + hashtags. Nothing else.`;
+}
 
-  let res;
-  if (isGroq) {
-    res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-      },
-      body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-  } else {
-    res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
+async function generateImage(key, cat, detail){
+  const base = imgPrompts[cat] || 'Indian wedding celebration';
+  const full = detail ? `${base}, ${detail}` : base;
+  const prompt = full + ', photorealistic, professional wedding photography, Instagram worthy, high quality';
+
+  // Try Gemini Imagen 3
+  if(key.startsWith('AIza')){
+    try {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${key}`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          instances:[{prompt}],
+          parameters:{sampleCount:1}
+        })
+      });
+      if(res.ok){
+        const d = await res.json();
+        const b64 = d.predictions?.[0]?.bytesBase64Encoded;
+        if(b64) return 'data:image/png;base64,'+b64;
+      }
+    } catch(e){ console.log('Imagen failed, using fallback') }
   }
 
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    if (res.status === 401) {
-      localStorage.removeItem('utsaav_api_key');
-      updateKeyUI(false);
-      showKeyModal();
-      throw new Error('Invalid API key');
-    }
-    throw new Error(err.error?.message || 'API Error ' + res.status);
-  }
-
-  const data = await res.json();
-  if (isGroq) return data.choices[0].message.content;
-  return data.content[0].text;
+  // Fallback: Picsum real photo
+  const seeds={
+    'Bridal Lehenga & Looks':'1027','Wedding Photography':'1005',
+    'Wedding Venue & Decoration':'1039','Bridal Makeup Artist':'1062',
+    'Wedding Catering & Food':'292','Mehndi & Haldi Ceremony':'1080',
+    'Wedding Band & DJ':'164','Destination Wedding':'1015',
+    'Wedding Invitation Cards':'326','Wedding Cake & Sweets':'425'
+  };
+  return `https://picsum.photos/seed/${seeds[cat]||'101'}/720/720`;
 }
 
-const catImageMap = {
-  'Bridal Lehenga & Looks': 'indian-bride-wedding',
-  'Wedding Photography': 'indian-wedding-couple',
-  'Wedding Venue & Decoration': 'wedding-decoration-flowers',
-  'Bridal Makeup Artist': 'bridal-makeup',
-  'Wedding Catering & Food Stalls': 'indian-wedding-food',
-  'Mehndi & Haldi Ceremony': 'mehndi-henna',
-  'Wedding Band & DJ': 'wedding-celebration',
-  'Destination Wedding': 'wedding-outdoor',
-  'Wedding Invitation & Cards': 'wedding-invitation',
-  'Wedding Cake & Sweets': 'wedding-cake'
-};
-
-const catPollinationsMap = {
-  'Bridal Lehenga & Looks': 'beautiful Indian bride in ornate red lehenga, traditional bridal jewelry maang tikka nath, wedding ceremony',
-  'Wedding Photography': 'Indian wedding couple romantic portrait, professional photography, golden hour lighting',
-  'Wedding Venue & Decoration': 'luxury Indian wedding mandap decoration, marigold flowers, fairy lights, floral arch',
-  'Bridal Makeup Artist': 'Indian bridal makeup close up, flawless skin, gold eyeshadow, traditional bridal look',
-  'Wedding Catering & Food Stalls': 'Indian wedding feast spread, traditional Bengali cuisine, colorful dishes',
-  'Mehndi & Haldi Ceremony': 'Indian bridal mehndi intricate henna on hands, haldi ceremony turmeric',
-  'Wedding Band & DJ': 'Indian wedding baraat procession, dhol players, festive lights, groom on horse',
-  'Destination Wedding': 'scenic Indian destination wedding outdoor ceremony, mountains or beach',
-  'Wedding Invitation & Cards': 'elegant Indian wedding invitation card, gold embossing, floral design',
-  'Wedding Cake & Sweets': 'Indian wedding cake multi tier, traditional sweets mithai, festive desserts'
-};
-
-function buildImageUrl(cat, detail, style) {
-  const base = catPollinationsMap[cat] || 'Indian wedding celebration';
-  const parts = [base];
-  if (detail) parts.push(detail);
-  parts.push(style);
-  parts.push('photorealistic, professional photography');
-  const seed = Math.floor(Math.random() * 99999);
-  return `https://image.pollinations.ai/prompt/${encodeURIComponent(parts.join(', '))}?width=768&height=768&model=flux&nologo=true&seed=${seed}`;
+function showLoader(){
+  document.getElementById('igWrap').innerHTML=`
+  <div class="ig-wrap">
+    <div class="ig-header">
+      <div class="ig-avatar">U</div>
+      <div><div class="ig-username">utsaav_in</div><div class="ig-loc">West Bengal, India</div></div>
+      <div class="ig-dots">···</div>
+    </div>
+    <div class="ig-img-box">
+      <div class="img-loader"><div class="ring"></div><div class="ring-text">Generating...</div></div>
+      <img src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0"/>
+    </div>
+    <div class="ig-likes">—</div>
+    <div class="ig-caption"><span class="uname">utsaav_in</span><span style="color:#333">Writing caption...</span></div>
+  </div>`;
 }
 
-const unsplashKeywords = {
-  'Bridal Lehenga & Looks': 'indian,bride,wedding',
-  'Wedding Photography': 'indian,wedding,couple',
-  'Wedding Venue & Decoration': 'wedding,decoration,flowers',
-  'Bridal Makeup Artist': 'bride,makeup,beauty',
-  'Wedding Catering & Food Stalls': 'indian,food,wedding',
-  'Mehndi & Haldi Ceremony': 'mehndi,henna,wedding',
-  'Wedding Band & DJ': 'wedding,celebration,music',
-  'Destination Wedding': 'wedding,outdoor,destination',
-  'Wedding Invitation & Cards': 'wedding,invitation,elegant',
-  'Wedding Cake & Sweets': 'wedding,cake,dessert'
-};
+function showPost(cap,url){
+  const lines=cap.split('\n').filter(l=>l.trim());
+  const hLines=lines.filter(l=>l.trim().startsWith('#'));
+  const tLines=lines.filter(l=>!l.trim().startsWith('#'));
+  const main=tLines.join('\n').trim();
+  const htags=hLines.join(' ').trim();
+  const escaped=e=>e.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
-function buildFallbackUrl(cat) {
-  const kw = unsplashKeywords[cat] || 'indian,wedding';
-  return `https://source.unsplash.com/768x768/?${kw}&t=${Date.now()}`;
+  // Picsum fallback by category seed
+  const isB64 = url.startsWith('data:');
+  const imgHtml = isB64
+    ? `<img src="${url}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onload="document.getElementById('iLoader').classList.add('gone')" />`
+    : `<img src="${url}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s"
+        onload="this.style.opacity=1;document.getElementById('iLoader').classList.add('gone')"
+        onerror="document.getElementById('iLoader').innerHTML='<div style=color:#666;font-size:11px;padding:16px;text-align:center>Image failed. Click Open Image.</div>'" />`;
+
+  document.getElementById('igWrap').innerHTML=`
+  <div class="ig-wrap">
+    <div class="ig-header">
+      <div class="ig-avatar">U</div>
+      <div><div class="ig-username">utsaav_in</div><div class="ig-loc">West Bengal, India</div></div>
+      <div class="ig-dots">···</div>
+    </div>
+    <div class="ig-img-box">
+      <div class="img-loader" id="iLoader"><div class="ring"></div><div class="ring-text">${isB64?'Rendering AI image...':'Loading...'}</div></div>
+      ${imgHtml}
+    </div>
+    <div class="ig-dots-bar"><div class="idot on"></div><div class="idot"></div><div class="idot"></div></div>
+    <div class="ig-actions">
+      <span class="ig-ico">🤍</span><span class="ig-ico">💬</span><span class="ig-ico">📤</span>
+      <span class="ig-ico ig-bm">🔖</span>
+    </div>
+    <div class="ig-likes">1,247 likes</div>
+    <div class="ig-caption">
+      <span class="uname">utsaav_in</span>${escaped(main)}
+      ${htags?`<br><br><span class="htags">${escaped(htags)}</span>`:''}
+    </div>
+    <div class="ig-time">just now</div>
+  </div>`;
 }
 
-function buildPollinationsUrl(cat, detail, style) {
-  return buildImageUrl(cat, detail, style);
+function showError(msg){
+  document.getElementById('igWrap').innerHTML=`
+  <div class="placeholder">
+    <div class="ph-icon" style="opacity:.3">⚠️</div>
+    <div class="ph-t" style="color:var(--acc)">${msg}</div>
+    <div class="ph-s">Check your API key and try again</div>
+  </div>`;
 }
 
-function showLoadingCard() {
-  document.getElementById('igWrap').innerHTML = `
-    <div class="ig-wrap">
-      <div class="ig-header">
-        <div class="ig-avatar">U</div>
-        <div class="ig-name-row">
-          <div class="ig-username">utsaav_in</div>
-          <div class="ig-subloc">West Bengal, India</div>
-        </div>
-        <div class="ig-dots">···</div>
-      </div>
-      <div class="ig-img-box">
-        <div class="img-overlay" id="imgOverlay">
-          <div class="loader-ring"></div>
-          <div class="loader-text" id="loaderMsg">Generating image...</div>
-        </div>
-        <img id="postImg" src="" alt="" style="opacity:0;transition:opacity 0.5s;" />
-      </div>
-      <div class="ig-style-bar">
-        <div class="style-dot active"></div>
-        <div class="style-dot"></div>
-        <div class="style-dot"></div>
-      </div>
-      <div class="ig-actions-row">
-        <span class="ig-icon">🤍</span>
-        <span class="ig-icon">💬</span>
-        <span class="ig-icon">📤</span>
-        <span class="ig-icon ig-bookmark">🔖</span>
-      </div>
-      <div class="ig-likes">1,247 likes</div>
-      <div class="ig-caption-box"><span class="uname">utsaav_in</span><span style="color:#444">Writing caption...</span></div>
-      <div class="ig-time">just now</div>
-    </div>`;
-}
-
-function showIgCard(cap, url) {
-  const pollinationsUrl = buildPollinationsUrl(cat, document.getElementById('customDetail').value, imgStyle);
-
-  const lines = cap.split('\n').filter(l => l.trim());
-  const hashLines = lines.filter(l => l.trim().startsWith('#'));
-  const textLines = lines.filter(l => !l.trim().startsWith('#'));
-  const mainText = textLines.join('\n').trim();
-  const hashtagStr = hashLines.join(' ').trim();
-
-  document.getElementById('igWrap').innerHTML = `
-    <div class="ig-wrap">
-      <div class="ig-header">
-        <div class="ig-avatar">U</div>
-        <div class="ig-name-row">
-          <div class="ig-username">utsaav_in</div>
-          <div class="ig-subloc">West Bengal, India</div>
-        </div>
-        <div class="ig-dots">···</div>
-      </div>
-      <div class="ig-img-box">
-        <div class="img-overlay" id="imgOverlay">
-          <div class="loader-ring"></div>
-          <div class="loader-text" id="loaderMsg">Loading image...</div>
-        </div>
-        <img id="postImg" src="${url}"
-          onload="this.style.opacity=1; document.getElementById('imgOverlay').classList.add('hidden');"
-          onerror="
-            document.getElementById('loaderMsg').textContent='Trying backup image...';
-            this.onerror=function(){ document.getElementById('imgOverlay').innerHTML='<div style=color:#666;font-size:12px;padding:20px;text-align:center>Image unavailable.<br>Click Open Image to try directly.</div>'; };
-            this.src='https://source.unsplash.com/768x768/?indian,wedding&t=${Date.now()}';
-          " />
-      </div>
-      <div class="ig-style-bar">
-        <div class="style-dot active"></div>
-        <div class="style-dot"></div>
-        <div class="style-dot"></div>
-      </div>
-      <div class="ig-actions-row">
-        <span class="ig-icon">🤍</span>
-        <span class="ig-icon">💬</span>
-        <span class="ig-icon">📤</span>
-        <span class="ig-icon ig-bookmark">🔖</span>
-      </div>
-      <div class="ig-likes">1,247 likes</div>
-      <div class="ig-caption-box">
-        <span class="uname">utsaav_in</span>${escHtml(mainText)}
-        ${hashtagStr ? `<br><br><span class="hashtags">${escHtml(hashtagStr)}</span>` : ''}
-      </div>
-      <div class="ig-time">just now</div>
-    </div>`;
-}
-
-function escHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-function copyCaption() {
-  if (!caption) return;
-  navigator.clipboard.writeText(caption).then(() => {
-    const s = document.getElementById('status');
-    s.className = 'status-bar ok';
-    s.textContent = '✓ Caption copied to clipboard!';
-    setTimeout(() => { s.textContent = ''; }, 2500);
+function copyCaption(){
+  if(!caption) return;
+  navigator.clipboard.writeText(caption).then(()=>{
+    const s=document.getElementById('statusEl');
+    s.className='status ok'; s.textContent='✓ Caption copied!';
+    setTimeout(()=>s.textContent='',2500);
   });
 }
-
-function openImage() {
-  if (!imgUrl) return;
-  window.open(imgUrl, '_blank');
-}
+function openImg(){ if(imgUrl) window.open(imgUrl,'_blank'); }
 </script>
 </body>
 </html>
