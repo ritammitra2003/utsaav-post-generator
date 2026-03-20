@@ -790,9 +790,27 @@ function buildImageUrl(cat, detail, style) {
   const parts = [base];
   if (detail) parts.push(detail);
   parts.push(style);
-  parts.push('ultra realistic, professional photography, Instagram worthy');
+  parts.push('photorealistic, professional photography');
   const seed = Math.floor(Math.random() * 99999);
-  return `https://image.pollinations.ai/prompt/${encodeURIComponent(parts.join(', '))}?width=1080&height=1080&nologo=true&enhance=true&seed=${seed}&model=flux`;
+  return `https://image.pollinations.ai/prompt/${encodeURIComponent(parts.join(', '))}?width=768&height=768&model=flux&nologo=true&seed=${seed}`;
+}
+
+const unsplashKeywords = {
+  'Bridal Lehenga & Looks': 'indian,bride,wedding',
+  'Wedding Photography': 'indian,wedding,couple',
+  'Wedding Venue & Decoration': 'wedding,decoration,flowers',
+  'Bridal Makeup Artist': 'bride,makeup,beauty',
+  'Wedding Catering & Food Stalls': 'indian,food,wedding',
+  'Mehndi & Haldi Ceremony': 'mehndi,henna,wedding',
+  'Wedding Band & DJ': 'wedding,celebration,music',
+  'Destination Wedding': 'wedding,outdoor,destination',
+  'Wedding Invitation & Cards': 'wedding,invitation,elegant',
+  'Wedding Cake & Sweets': 'wedding,cake,dessert'
+};
+
+function buildFallbackUrl(cat) {
+  const kw = unsplashKeywords[cat] || 'indian,wedding';
+  return `https://source.unsplash.com/768x768/?${kw}&t=${Date.now()}`;
 }
 
 function buildPollinationsUrl(cat, detail, style) {
@@ -861,11 +879,9 @@ function showIgCard(cap, url) {
         <img id="postImg" src="${url}"
           onload="this.style.opacity=1; document.getElementById('imgOverlay').classList.add('hidden');"
           onerror="
-            document.getElementById('loaderMsg').textContent='Trying AI image...';
-            this.src='${pollinationsUrl}';
-            this.onerror=function(){
-              document.getElementById('imgOverlay').innerHTML='<div style=color:#666;font-size:12px;padding:20px;text-align:center>Click Open Image below to view</div>';
-            };
+            document.getElementById('loaderMsg').textContent='Trying backup image...';
+            this.onerror=function(){ document.getElementById('imgOverlay').innerHTML='<div style=color:#666;font-size:12px;padding:20px;text-align:center>Image unavailable.<br>Click Open Image to try directly.</div>'; };
+            this.src='https://source.unsplash.com/768x768/?indian,wedding&t=${Date.now()}';
           " />
       </div>
       <div class="ig-style-bar">
