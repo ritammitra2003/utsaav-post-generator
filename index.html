@@ -207,9 +207,9 @@ select option{background:#1f1f1f}
     </div>
 
     <div class="act-row" id="actRow">
-      <button class="act-btn" onclick="copyCaption()">📋 Copy</button>
-      <button class="act-btn" onclick="openImg()">🖼️ Open Image</button>
-      <button class="act-btn pri" onclick="generate()">🔄 Regenerate</button>
+      <button class="act-btn" onclick="copyCaption()">📋 Copy Caption</button>
+      <button class="act-btn pri" onclick="downloadPost()">⬇️ Download Image</button>
+      <button class="act-btn" onclick="generate()">🔄 Regenerate</button>
     </div>
 
     <div class="status" id="statusEl"></div>
@@ -463,7 +463,127 @@ function copyCaption(){
     setTimeout(()=>s.textContent='',2500);
   });
 }
-function openImg(){ if(imgUrl) window.open(imgUrl,'_blank'); }
+
+async function downloadPost(){
+  if(!imgUrl){ alert('Pehle post generate karo!'); return; }
+  const status=document.getElementById('statusEl');
+  status.className='status'; status.textContent='⏳ Image ban rahi hai...';
+
+  try {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1080; canvas.height = 1080;
+    const ctx = canvas.getContext('2d');
+
+    // Load background image via proxy to avoid CORS
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    await new Promise((resolve, reject) => {
+      img.onload = resolve;
+      img.onerror = reject;
+      img.src = imgUrl + (imgUrl.includes('?') ? '&' : '?') + 'fm=jpg';
+    });
+
+    // Draw background
+    ctx.drawImage(img, 0, 0, 1080, 1080);
+
+    // Dark gradient overlay at bottom
+    const grad = ctx.createLinearGradient(0, 500, 0, 1080);
+    grad.addColorStop(0, 'rgba(0,0,0,0)');
+    grad.addColorStop(0.4, 'rgba(0,0,0,0.6)');
+    grad.addColorStop(1, 'rgba(0,0,0,0.88)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 1080, 1080);
+
+    // UTSAAV logo — top left
+    const logoX = 40, logoY = 40;
+    // Logo background circle
+    const lgGrad = ctx.createLinearGradient(logoX, logoY, logoX+70, logoY+70);
+    lgGrad.addColorStop(0,'#E8472A'); lgGrad.addColorStop(1,'#F5A623');
+    ctx.fillStyle = lgGrad;
+    roundRect(ctx, logoX, logoY, 70, 70, 14);
+    ctx.fill();
+    // Logo U text
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 38px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('U', logoX+35, logoY+50);
+    // UTSAAV text next to logo
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 28px Arial';
+    ctx.textAlign = 'left';
+    ctx.fillText('UTSAAV', logoX+82, logoY+44);
+    ctx.fillStyle = 'rgba(255,255,255,0.55)';
+    ctx.font = '16px Arial';
+    ctx.fillText('utsaav.in', logoX+82, logoY+65);
+
+    // Category tag — top right
+    const lines=caption.split('\n').filter(l=>l.trim());
+    const hLines=lines.filter(l=>l.trim().startsWith('#'));
+    const tLines=lines.filter(l=>!l.trim().startsWith('#'));
+    const mainText = tLines.join(' ').trim();
+
+    // Short quote — first 2 lines on image
+    const firstLine = tLines[0]||'';
+    const secondLine = tLines[1]||'';
+
+    ctx.fillStyle='rgba(232,71,42,0.9)';
+    roundRect(ctx, 40, 880, 1000, 5, 3);
+    ctx.fill();
+
+    // Main caption lines on image
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 36px Arial';
+    ctx.textAlign = 'left';
+    wrapText(ctx, firstLine, 40, 760, 1000, 44);
+
+    ctx.fillStyle = 'rgba(255,255,255,0.8)';
+    ctx.font = '28px Arial';
+    wrapText(ctx, secondLine, 40, 820, 1000, 36);
+
+    // Website watermark bottom right
+    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+    ctx.font = '22px Arial';
+    ctx.textAlign = 'right';
+    ctx.fillText('utsaav.in', 1040, 1050);
+
+    // Download
+    const link = document.createElement('a');
+    link.download = 'utsaav-post.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    status.className='status ok'; status.textContent='✓ Image download ho gayi!';
+  } catch(e) {
+    console.error(e);
+    // Fallback: just open image
+    window.open(imgUrl,'_blank');
+    status.className='status ok'; status.textContent='✓ Image new tab mein khuli!';
+  }
+}
+
+function roundRect(ctx, x, y, w, h, r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.lineTo(x+w-r,y); ctx.arcTo(x+w,y,x+w,y+r,r);
+  ctx.lineTo(x+w,y+h-r); ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+  ctx.lineTo(x+r,y+h); ctx.arcTo(x,y+h,x,y+h-r,r);
+  ctx.lineTo(x,y+r); ctx.arcTo(x,y,x+r,y,r);
+  ctx.closePath();
+}
+
+function wrapText(ctx, text, x, y, maxW, lineH){
+  if(!text) return;
+  const words = text.split(' ');
+  let line = '';
+  for(let w of words){
+    const test = line + w + ' ';
+    if(ctx.measureText(test).width > maxW && line){
+      ctx.fillText(line.trim(), x, y);
+      line = w + ' '; y += lineH;
+    } else { line = test; }
+  }
+  if(line) ctx.fillText(line.trim(), x, y);
+}
+
 </script>
 </body>
 </html>
