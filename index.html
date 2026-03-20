@@ -1,1217 +1,881 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>✨ Utsaav — Social Media Post Generator</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Noto+Sans+Devanagari:wght@300;400;600&display=swap" rel="stylesheet">
+<title>Utsaav Post Generator</title>
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+* { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --navy: #06091e;
-  --deep: #0f1340;
-  --mid: #1a1f5e;
-  --gold: #f0b429;
-  --gold2: #ffd770;
-  --saffron: #ff8c00;
-  --accent: #f0b429;
-  --accent2: #ffd770;
-  --text: #e8e0ff;
-  --muted: #8a85b8;
-  --bg: #06091e;
-  --card: rgba(255,255,255,0.04);
-  --border: rgba(255,255,255,0.08);
+  --accent: #E8472A;
+  --accent2: #F5A623;
+  --bg: #0a0a0a;
+  --surface: #161616;
+  --surface2: #1f1f1f;
+  --border: #2a2a2a;
+  --text: #f0f0f0;
+  --muted: #666;
+  --soft: #aaa;
 }
-
 body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background: var(--bg);
   color: var(--text);
-  font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif;
   min-height: 100vh;
-  background-image:
-    radial-gradient(ellipse 60% 40% at 20% 10%, rgba(124,58,237,0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 50% at 80% 80%, rgba(255,140,0,0.08) 0%, transparent 60%);
-  transition: background 0.5s;
 }
 
-/* HEADER */
-header {
-  text-align: center;
-  padding: 2.5rem 1rem 1.2rem;
-  position: relative; z-index: 1;
+/* TOP BAR */
+.topbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-.logo-row {
-  display: flex; align-items: center; justify-content: center; gap: 14px;
-  margin-bottom: 6px;
-}
-.logo-icon {
-  width: 48px; height: 48px;
-  background: linear-gradient(135deg, var(--gold), var(--saffron));
-  border-radius: 14px;
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand-logo {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 8px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 24px;
-  box-shadow: 0 0 20px rgba(240,180,41,0.35);
-  transition: background 0.5s;
+  font-weight: 800; font-size: 16px; color: white;
 }
-header h1 {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
-  font-weight: 900;
-  background: linear-gradient(135deg, var(--gold2), var(--gold), var(--saffron));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: 2px;
-}
-header p { color: var(--muted); font-size: 0.82rem; margin-top: 3px; letter-spacing: 1px; }
-
-/* CONTAINER */
-.container {
-  max-width: 1140px; margin: 0 auto; padding: 0 1.25rem 4rem;
-  position: relative; z-index: 1;
-}
-
-/* API KEY */
-.api-panel {
-  background: var(--card);
-  border: 1px solid rgba(240,180,41,0.18);
-  border-radius: 14px;
-  padding: 1rem 1.4rem;
-  margin-bottom: 1.5rem;
-  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-}
-.api-panel label { font-size: 0.8rem; color: var(--gold); font-weight: 500; white-space: nowrap; }
-.api-panel input {
-  flex: 1; min-width: 200px;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 9px; color: var(--text);
-  font-size: 0.85rem; padding: 0.55rem 0.9rem;
-  font-family: 'Poppins', monospace; outline: none;
-  transition: border-color 0.2s;
-}
-.api-panel input:focus { border-color: var(--gold); }
-.api-panel input::placeholder { color: var(--muted); }
-.api-status {
-  font-size: 0.75rem; padding: 3px 10px; border-radius: 20px;
-  background: rgba(124,58,237,0.2); border: 1px solid rgba(124,58,237,0.4);
-  color: #a78bfa; white-space: nowrap;
-}
-.api-status.ok { background: rgba(5,150,105,0.2); border-color: rgba(5,150,105,0.4); color: #34d399; }
-
-/* CATEGORY TABS */
-.cat-scroll {
-  overflow-x: auto; margin-bottom: 1.5rem;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-.cat-scroll::-webkit-scrollbar { display: none; }
-.cat-tabs {
-  display: flex; gap: 8px; padding: 4px 2px;
-  width: max-content;
-}
-.cat-tab {
-  display: flex; flex-direction: column; align-items: center; gap: 4px;
-  padding: 10px 18px;
-  background: var(--card);
+.brand-name { font-weight: 700; font-size: 18px; letter-spacing: 1px; }
+.brand-tag { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.badge {
+  background: #1a1a1a;
   border: 1px solid var(--border);
-  border-radius: 12px;
-  cursor: pointer; transition: all 0.25s;
-  white-space: nowrap; min-width: 86px;
-  color: var(--muted); font-size: 0.78rem;
-  font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif;
-}
-.cat-tab .ct-icon { font-size: 1.5rem; }
-.cat-tab:hover { border-color: rgba(240,180,41,0.3); color: var(--text); }
-.cat-tab.active {
-  background: rgba(240,180,41,0.1);
-  border-color: var(--accent);
-  color: var(--accent);
-  box-shadow: 0 0 14px rgba(240,180,41,0.12);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 11px;
+  color: var(--soft);
 }
 
-/* CONTROLS */
-.controls {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem;
-  margin-bottom: 1.8rem;
+/* LAYOUT */
+.layout {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  min-height: calc(100vh - 63px);
 }
-@media (max-width: 640px) { .controls { grid-template-columns: 1fr; } }
+@media(max-width:800px) { .layout { grid-template-columns: 1fr; } }
 
-.control-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 14px; padding: 1.2rem;
+/* SIDEBAR */
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 20px;
+  overflow-y: auto;
+  max-height: calc(100vh - 63px);
 }
-.control-card h3 {
-  font-size: 0.72rem; text-transform: uppercase; letter-spacing: 2px;
-  color: var(--accent); margin-bottom: 10px; font-weight: 500;
-}
-
-.type-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 7px; }
-.type-pill {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.09);
-  border-radius: 9px; padding: 9px 7px;
-  cursor: pointer; transition: all 0.2s;
-  text-align: center; font-size: 0.75rem;
+.section-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
   color: var(--muted);
-  display: flex; flex-direction: column; align-items: center; gap: 3px;
-  font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif;
+  margin-bottom: 10px;
+  margin-top: 20px;
 }
-.type-pill .pill-icon { font-size: 1.2rem; }
-.type-pill:hover { border-color: rgba(240,180,41,0.35); color: var(--text); }
-.type-pill.active {
-  background: rgba(240,180,41,0.1);
-  border-color: var(--accent);
-  color: var(--accent);
-  box-shadow: 0 0 10px rgba(240,180,41,0.12);
-}
+.section-label:first-child { margin-top: 0; }
 
-/* OPTIONS */
-.opt-row { display: flex; flex-direction: column; gap: 10px; }
-.opt-row label { font-size: 0.75rem; color: var(--muted); margin-bottom: 3px; display: block; }
-.fancy-select, .fancy-input {
-  width: 100%;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 9px; color: var(--text);
-  font-size: 0.85rem; padding: 0.55rem 0.9rem;
-  font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif;
-  outline: none; transition: border-color 0.2s;
-  appearance: none; cursor: pointer;
+/* CATEGORIES */
+.cat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
 }
-.fancy-select:focus, .fancy-input:focus { border-color: var(--accent); }
-.fancy-input::placeholder { color: var(--muted); }
-
-.lang-toggle {
-  display: flex; background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.09);
-  border-radius: 9px; overflow: hidden;
-}
-.lang-btn {
-  flex: 1; padding: 7px; border: none; background: transparent;
-  color: var(--muted); cursor: pointer; font-size: 0.82rem;
-  font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif; transition: all 0.2s;
-}
-.lang-btn.active { background: rgba(240,180,41,0.12); color: var(--accent); font-weight: 500; }
-
-.date-row { display: flex; align-items: center; gap: 7px; }
-.date-row input[type=date] { flex: 1; }
-.today-btn {
-  background: rgba(240,180,41,0.08);
-  border: 1px solid rgba(240,180,41,0.25);
-  border-radius: 7px; color: var(--accent);
-  font-size: 0.72rem; padding: 5px 9px; cursor: pointer;
-  font-family: 'Poppins', sans-serif; white-space: nowrap; transition: all 0.2s;
-}
-.today-btn:hover { background: rgba(240,180,41,0.18); }
-
-/* GENERATE BUTTON */
-.gen-btn {
-  width: 100%; padding: 0.95rem;
-  background: linear-gradient(135deg, var(--accent), var(--saffron));
-  border: none; border-radius: 13px;
-  color: #1a0800; font-weight: 700; font-size: 0.95rem;
-  font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif;
-  cursor: pointer; margin-bottom: 1.8rem;
-  letter-spacing: 0.5px; transition: all 0.25s;
-  display: flex; align-items: center; justify-content: center; gap: 9px;
-  box-shadow: 0 4px 20px rgba(240,180,41,0.28);
-}
-.gen-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(240,180,41,0.38); }
-.gen-btn:active { transform: translateY(0); }
-.gen-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-/* OUTPUT */
-.output-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; align-items: start;
-}
-@media (max-width: 768px) { .output-grid { grid-template-columns: 1fr; } }
-
-.post-wrap {
-  position: relative; border-radius: 18px; overflow: hidden;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(240,180,41,0.18);
-}
-#postCanvas { width: 100%; display: block; border-radius: 18px; }
-.post-placeholder {
-  aspect-ratio: 1;
-  background: rgba(255,255,255,0.02);
-  border: 2px dashed rgba(240,180,41,0.18);
-  border-radius: 18px;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: 10px; color: var(--muted); font-size: 0.85rem;
-  text-align: center; padding: 2rem;
-}
-.post-placeholder span { font-size: 2.8rem; opacity: 0.35; }
-
-.caption-panel { display: flex; flex-direction: column; gap: 14px; }
-.caption-card {
-  background: var(--card);
+.cat-btn {
+  background: var(--surface2);
   border: 1px solid var(--border);
-  border-radius: 14px; padding: 1.1rem;
+  border-radius: 10px;
+  color: var(--soft);
+  padding: 9px 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+  line-height: 1.4;
 }
-.caption-card h4 {
-  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px;
-  color: var(--accent); margin-bottom: 8px; font-weight: 500;
+.cat-btn:hover { border-color: #444; color: var(--text); }
+.cat-btn.active {
+  background: #E8472A18;
+  border-color: var(--accent);
+  color: #ff6a50;
+  font-weight: 600;
 }
-.caption-text {
-  font-size: 0.85rem; line-height: 1.7; color: var(--text);
-  white-space: pre-wrap; min-height: 70px;
-  font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif;
-}
-.hashtags-text { font-size: 0.8rem; color: #818cf8; line-height: 1.8; }
-.caption-text.placeholder-text,
-.hashtags-text.placeholder-text { color: var(--muted); font-style: italic; opacity: 0.55; }
 
-.action-row { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 9px; }
-.act-btn {
-  flex: 1; min-width: 100px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.09);
-  border-radius: 9px; color: var(--text); font-size: 0.77rem;
-  padding: 7px 10px; cursor: pointer;
-  font-family: 'Poppins', sans-serif; transition: all 0.2s; text-align: center;
+/* TONE CHIPS */
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--soft);
+  cursor: pointer;
+  transition: all 0.15s;
 }
-.act-btn:hover { background: rgba(255,255,255,0.09); border-color: rgba(240,180,41,0.28); }
-.act-btn.primary {
-  background: rgba(240,180,41,0.1); border-color: rgba(240,180,41,0.3); color: var(--accent);
-}
-.act-btn.primary:hover { background: rgba(240,180,41,0.18); }
+.chip:hover { border-color: #555; color: var(--text); }
+.chip.active { background: #F5A62318; border-color: var(--accent2); color: var(--accent2); }
 
-/* LOADING */
-.loading-overlay {
-  position: absolute; inset: 0;
-  background: rgba(6,9,30,0.88); border-radius: 18px;
-  display: none; align-items: center; justify-content: center;
-  flex-direction: column; gap: 14px; backdrop-filter: blur(4px);
+/* INPUTS */
+.field { margin-bottom: 12px; }
+.field label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 5px; }
+input[type=text], select, textarea {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  padding: 9px 11px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
 }
-.loading-overlay.visible { display: flex; }
-.spinner {
+input[type=text]:focus, select:focus, textarea:focus { border-color: var(--accent); }
+select option { background: #1f1f1f; }
+textarea { resize: vertical; min-height: 64px; }
+
+/* GENERATE BTN */
+.gen-btn {
+  width: 100%;
+  margin-top: 4px;
+  padding: 13px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: opacity 0.2s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.gen-btn:hover { opacity: 0.88; }
+.gen-btn:active { transform: scale(0.98); }
+.gen-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* MAIN AREA */
+.main {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* STEP INDICATOR */
+.steps {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  width: 100%;
+  max-width: 480px;
+}
+.step {
+  flex: 1;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  transition: background 0.4s;
+}
+.step.done { background: var(--accent); }
+.step.active { background: var(--accent2); }
+.step-text {
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+  width: 100%;
+  max-width: 480px;
+  margin-top: -8px;
+}
+
+/* INSTAGRAM PREVIEW */
+.ig-wrap {
+  width: 100%;
+  max-width: 420px;
+  background: #000;
+  border: 1px solid #2a2a2a;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+}
+
+.ig-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #1a1a1a;
+}
+.ig-avatar {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #E8472A, #F5A623, #E8472A);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 15px; color: white;
+  flex-shrink: 0;
+}
+.ig-name-row { flex: 1; }
+.ig-username { font-weight: 700; font-size: 13px; color: #fff; }
+.ig-subloc { font-size: 10px; color: #888; margin-top: 1px; }
+.ig-dots { color: #888; font-size: 18px; cursor: pointer; }
+
+.ig-img-box {
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+  background: #111;
+  overflow: hidden;
+}
+.ig-img-box img {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.img-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: #0d0d0d;
+  transition: opacity 0.4s;
+  z-index: 2;
+}
+.img-overlay.hidden { opacity: 0; pointer-events: none; }
+.loader-ring {
   width: 40px; height: 40px;
-  border: 3px solid rgba(240,180,41,0.18);
-  border-top-color: var(--accent);
+  border: 3px solid #222;
+  border-top: 3px solid var(--accent);
+  border-right: 3px solid var(--accent2);
   border-radius: 50%;
   animation: spin 0.9s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
-.loading-text { color: var(--accent); font-size: 0.85rem; }
+.loader-text { font-size: 12px; color: #555; }
 
-/* TOAST */
-.toast {
-  position: fixed; bottom: 2rem; right: 2rem;
-  background: rgba(5,150,105,0.92); color: white; padding: 11px 18px;
-  border-radius: 11px; font-size: 0.85rem;
-  transform: translateY(100px); opacity: 0;
-  transition: all 0.3s; z-index: 1000; backdrop-filter: blur(10px);
+/* IG STYLE indicator dots */
+.ig-style-bar {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px 0;
+  background: #000;
+  border-bottom: 1px solid #111;
 }
-.toast.show { transform: translateY(0); opacity: 1; }
-.toast.error { background: rgba(220,38,38,0.92); }
+.style-dot { width: 6px; height: 6px; border-radius: 50%; background: #333; transition: all 0.3s; }
+.style-dot.active { background: #3b9ae1; width: 18px; border-radius: 3px; }
 
-/* STAR BG */
-@keyframes twinkle { 0%, 100% { opacity: 0.25; } 50% { opacity: 0.9; } }
-.star-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-.star {
-  position: absolute; width: 2px; height: 2px;
-  background: white; border-radius: 50%;
-  animation: twinkle 3s ease-in-out infinite;
+.ig-actions-row {
+  display: flex;
+  align-items: center;
+  padding: 10px 14px 6px;
+  gap: 14px;
 }
+.ig-icon { font-size: 24px; cursor: pointer; transition: transform 0.15s; }
+.ig-icon:hover { transform: scale(1.15); }
+.ig-bookmark { margin-left: auto; }
+.ig-likes { padding: 0 14px 4px; font-size: 13px; font-weight: 700; color: #fff; }
+.ig-caption-box { padding: 0 14px 14px; font-size: 13px; color: #ccc; line-height: 1.55; }
+.ig-caption-box .uname { color: #fff; font-weight: 700; margin-right: 6px; }
+.hashtags { color: #4A9EFF; }
+.ig-time { padding: 0 14px 14px; font-size: 10px; color: #555; }
 
-/* CONDITIONAL SECTIONS */
-.opt-section { display: none; }
-.opt-section.visible { display: block; }
+/* PLACEHOLDER */
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 380px;
+  gap: 16px;
+  text-align: center;
+  padding: 30px;
+}
+.ph-icon { font-size: 56px; opacity: 0.15; }
+.ph-title { font-size: 15px; color: #555; }
+.ph-sub { font-size: 12px; color: #333; }
+
+/* BOTTOM ACTIONS */
+.actions-row {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  max-width: 420px;
+}
+.act-btn {
+  flex: 1;
+  padding: 10px 6px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--soft);
+  font-size: 12px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+.act-btn:hover { border-color: #444; color: var(--text); }
+.act-btn.primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border: none;
+  color: white;
+  font-weight: 700;
+}
+.act-btn.primary:hover { opacity: 0.85; }
+
+.status-bar {
+  font-size: 12px;
+  color: var(--muted);
+  min-height: 16px;
+  text-align: center;
+}
+.status-bar.ok { color: #4caf50; }
+.status-bar.err { color: var(--accent); }
+
+/* API KEY MODAL */
+.modal-bg {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 999;
+}
+.modal-box {
+  background: #161616;
+  border: 1px solid #2a2a2a;
+  border-radius: 16px;
+  padding: 28px;
+  width: 90%; max-width: 420px;
+}
+.modal-logo { font-size: 22px; font-weight: 800; letter-spacing: 1px; margin-bottom: 4px; }
+.modal-logo span { background: linear-gradient(135deg,#E8472A,#F5A623); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.modal-sub { font-size: 12px; color: #666; margin-bottom: 20px; }
+.modal-label { font-size: 11px; color: #888; margin-bottom: 6px; }
+.modal-input {
+  width: 100%;
+  background: #1f1f1f;
+  border: 1px solid #333;
+  border-radius: 8px;
+  color: #f0f0f0;
+  padding: 11px 13px;
+  font-size: 13px;
+  font-family: monospace;
+  outline: none;
+  margin-bottom: 6px;
+  transition: border-color 0.15s;
+}
+.modal-input:focus { border-color: #E8472A; }
+.modal-hint { font-size: 11px; color: #444; margin-bottom: 18px; }
+.modal-hint a { color: #4A9EFF; text-decoration: none; }
+.modal-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg,#E8472A,#F5A623);
+  border: none; border-radius: 10px;
+  color: white; font-size: 14px; font-weight: 700;
+  cursor: pointer; font-family: inherit;
+}
+.modal-btn:disabled { opacity: 0.4; }
+.modal-err { font-size: 12px; color: #E8472A; margin-top: 8px; min-height: 16px; }
+
+/* API key topbar indicator */
+.key-status {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: #666;
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid #2a2a2a;
+  border-radius: 20px;
+  transition: border-color 0.15s;
+}
+.key-status:hover { border-color: #444; color: #aaa; }
+.key-dot { width: 7px; height: 7px; border-radius: 50%; background: #4caf50; }
+
+/* CAPTION PREVIEW CARD */
+.caption-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: none;
+}
+.caption-card.show { display: block; }
+.cap-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.cap-text { font-size: 13px; color: var(--soft); line-height: 1.6; white-space: pre-wrap; }
+
+/* Image style selector */
+.img-style-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.img-style-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 4px;
+  font-size: 11px;
+  color: var(--soft);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+  line-height: 1.4;
+}
+.img-style-btn:hover { border-color: #555; }
+.img-style-btn.active { border-color: var(--accent2); color: var(--accent2); background: #F5A62310; }
 </style>
 </head>
 <body>
 
-<div class="star-bg" id="starBg"></div>
-
-<header>
-  <div class="logo-row">
-    <div class="logo-icon" id="logoIcon">🎊</div>
-    <h1>UTSAAV POST GENERATOR</h1>
-  </div>
-  <p>✦ Instagram / Facebook Post Generator ✦ Powered by Groq AI ✦</p>
-</header>
-
-<div class="container">
-
-  <!-- API KEY -->
-  <div class="api-panel">
-    <label>🔑 Groq API Key</label>
-    <input type="password" id="apiKeyInput" placeholder="gsk_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" />
-    <span class="api-status" id="apiStatus">Not saved</span>
-    <button class="today-btn" onclick="saveApiKey()">Save Key</button>
-  </div>
-
-  <!-- CATEGORY TABS -->
-  <div class="cat-scroll">
-    <div class="cat-tabs" id="catTabs"></div>
-  </div>
-
-  <!-- CONTROLS -->
-  <div class="controls">
-    <div class="control-card">
-      <h3 id="typeCardTitle">📋 Post Type</h3>
-      <div class="type-grid" id="typeGrid"></div>
-    </div>
-
-    <div class="control-card">
-      <h3>⚙️ Options</h3>
-      <div class="opt-row">
-
-        <!-- Rashi (Astrology only) -->
-        <div class="opt-section" id="sec-rashi">
-          <label>Rashi / Zodiac Sign</label>
-          <select class="fancy-select" id="rashiSelect">
-            <option value="Mesh (Aries)">♈ Mesh — Aries</option>
-            <option value="Vrishabh (Taurus)">♉ Vrishabh — Taurus</option>
-            <option value="Mithun (Gemini)">♊ Mithun — Gemini</option>
-            <option value="Kark (Cancer)">♋ Kark — Cancer</option>
-            <option value="Singh (Leo)">♌ Singh — Leo</option>
-            <option value="Kanya (Virgo)">♍ Kanya — Virgo</option>
-            <option value="Tula (Libra)">♎ Tula — Libra</option>
-            <option value="Vrishchik (Scorpio)">♏ Vrishchik — Scorpio</option>
-            <option value="Dhanu (Sagittarius)">♐ Dhanu — Sagittarius</option>
-            <option value="Makar (Capricorn)">♑ Makar — Capricorn</option>
-            <option value="Kumbh (Aquarius)">♒ Kumbh — Aquarius</option>
-            <option value="Meen (Pisces)">♓ Meen — Pisces</option>
-          </select>
-        </div>
-
-        <!-- Custom detail (all other categories) -->
-        <div class="opt-section" id="sec-detail">
-          <label id="detailLabel">Vendor / Business Name</label>
-          <input type="text" class="fancy-input" id="detailInput" placeholder="e.g. Sharma Events, Kolkata" />
-        </div>
-
-        <!-- Language -->
-        <div>
-          <label>Language / भाषा</label>
-          <div class="lang-toggle">
-            <button class="lang-btn active" id="langHi" onclick="setLang('hi')">हिन्दी</button>
-            <button class="lang-btn" id="langEn" onclick="setLang('en')">English</button>
-            <button class="lang-btn" id="langBn" onclick="setLang('bn')">বাংলা</button>
-          </div>
-        </div>
-
-        <!-- Date -->
-        <div>
-          <label>Date / तारीख</label>
-          <div class="date-row">
-            <input type="date" class="fancy-input" id="dateInput" />
-            <button class="today-btn" onclick="setToday()">Today</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- GENERATE -->
-  <button class="gen-btn" id="generateBtn" onclick="generate()">
-    <span id="genBtnIcon">✨</span>
-    <span id="genBtnText">Post Generate Karo</span>
-  </button>
-
-  <!-- OUTPUT -->
-  <div class="output-grid">
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-logo">U</div>
     <div>
-      <div class="post-wrap" id="postWrap">
-        <div class="post-placeholder" id="postPlaceholder">
-          <span id="placeholderIcon">🎊</span>
-          <div>Category choose karo aur<br><strong>"Generate"</strong> dabao</div>
-          <div style="font-size:0.72rem; opacity:0.45;">1080 × 1080 Instagram Post</div>
-        </div>
-        <canvas id="postCanvas" width="1080" height="1080" style="display:none;"></canvas>
-        <div class="loading-overlay" id="loadingOverlay">
-          <div class="spinner"></div>
-          <div class="loading-text" id="loadingText">AI se content aa raha hai...</div>
-        </div>
-      </div>
-      <div class="action-row" style="margin-top:12px;">
-        <button class="act-btn primary" onclick="downloadPost()">⬇ Download Image</button>
-        <button class="act-btn" onclick="regenerate()">🔄 Dobara Generate</button>
-      </div>
-    </div>
-
-    <div class="caption-panel">
-      <div class="caption-card">
-        <h4>📝 Caption</h4>
-        <div class="caption-text placeholder-text" id="captionText">Pehle post generate karo...</div>
-        <div class="action-row">
-          <button class="act-btn" onclick="copyText('caption')">📋 Copy Caption</button>
-        </div>
-      </div>
-      <div class="caption-card">
-        <h4># Hashtags</h4>
-        <div class="hashtags-text placeholder-text" id="hashtagsText">Hashtags yahan aayenge...</div>
-        <div class="action-row">
-          <button class="act-btn" onclick="copyText('hashtags')">📋 Copy Hashtags</button>
-        </div>
-      </div>
-      <div class="caption-card">
-        <h4>💡 Posting Tip</h4>
-        <div style="font-size:0.8rem; line-height:1.7; color:var(--muted);" id="scheduleTip">
-          Best time to post on Instagram:<br>
-          <strong style="color:var(--accent);">7:00 – 9:00 AM</strong> (morning reach)<br>
-          <strong style="color:var(--accent);">12:00 – 1:00 PM</strong> (lunch scroll)<br>
-          <strong style="color:var(--accent);">7:00 – 9:00 PM</strong> (evening prime)<br>
-          <em>Consistency se reach badhti hai! 🚀</em>
-        </div>
-      </div>
+      <div class="brand-name">UTSAAV</div>
+      <div class="brand-tag">Instagram Post Generator</div>
     </div>
   </div>
-
+  <div class="key-status" onclick="showKeyModal()" id="keyIndicator">
+    <div class="key-dot" id="keyDot" style="background:#555"></div>
+    <span id="keyLabel">Set API Key</span>
+  </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="section-label">Category</div>
+    <div class="cat-grid">
+      <div class="cat-btn active" data-cat="Bridal Lehenga & Looks" onclick="pickCat(this)">👰 Bridal Looks</div>
+      <div class="cat-btn" data-cat="Wedding Photography" onclick="pickCat(this)">📸 Photography</div>
+      <div class="cat-btn" data-cat="Wedding Venue & Decoration" onclick="pickCat(this)">🏛️ Venue & Decor</div>
+      <div class="cat-btn" data-cat="Bridal Makeup Artist" onclick="pickCat(this)">💄 Makeup</div>
+      <div class="cat-btn" data-cat="Wedding Catering & Food Stalls" onclick="pickCat(this)">🍽️ Catering</div>
+      <div class="cat-btn" data-cat="Mehndi & Haldi Ceremony" onclick="pickCat(this)">🌿 Mehndi/Haldi</div>
+      <div class="cat-btn" data-cat="Wedding Band & DJ" onclick="pickCat(this)">🎵 Band & DJ</div>
+      <div class="cat-btn" data-cat="Destination Wedding" onclick="pickCat(this)">✈️ Destination</div>
+      <div class="cat-btn" data-cat="Wedding Invitation & Cards" onclick="pickCat(this)">💌 Invitations</div>
+      <div class="cat-btn" data-cat="Wedding Cake & Sweets" onclick="pickCat(this)">🎂 Cake</div>
+    </div>
+
+    <div class="section-label">Caption Tone</div>
+    <div class="chips">
+      <div class="chip active" onclick="pickTone(this)">Romantic ❤️</div>
+      <div class="chip" onclick="pickTone(this)">Elegant ✨</div>
+      <div class="chip" onclick="pickTone(this)">Fun & Vibrant 🎉</div>
+      <div class="chip" onclick="pickTone(this)">Luxurious 👑</div>
+      <div class="chip" onclick="pickTone(this)">Emotional 🥹</div>
+      <div class="chip" onclick="pickTone(this)">Witty & Bold 🔥</div>
+    </div>
+
+    <div class="section-label">Image Style</div>
+    <div class="img-style-grid">
+      <div class="img-style-btn active" data-style="cinematic, golden hour, bokeh" onclick="pickStyle(this)">🎬 Cinematic</div>
+      <div class="img-style-btn" data-style="magazine editorial, high fashion, professional" onclick="pickStyle(this)">📖 Editorial</div>
+      <div class="img-style-btn" data-style="vibrant colors, festive, joyful" onclick="pickStyle(this)">🎨 Vibrant</div>
+      <div class="img-style-btn" data-style="moody, dark atmosphere, dramatic lighting" onclick="pickStyle(this)">🌑 Moody</div>
+      <div class="img-style-btn" data-style="soft pastel, dreamy, ethereal" onclick="pickStyle(this)">🌸 Dreamy</div>
+      <div class="img-style-btn" data-style="candid, documentary, real wedding" onclick="pickStyle(this)">📷 Candid</div>
+    </div>
+
+    <div class="section-label">Details</div>
+    <div class="field">
+      <label>Custom detail (optional)</label>
+      <input type="text" id="customDetail" placeholder="Red lehenga, Kolkata venue, winter evening..."/>
+    </div>
+    <div class="field">
+      <label>Language</label>
+      <select id="langSelect">
+        <option value="English">English</option>
+        <option value="Hinglish (mix of Hindi and English)">Hinglish</option>
+        <option value="Bengali">Bengali</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Emoji style</label>
+      <select id="emojiStyle">
+        <option>Balanced (3-5 emojis)</option>
+        <option>Heavy (lots of emojis)</option>
+        <option>Minimal (1-2 emojis)</option>
+      </select>
+    </div>
+
+    <button class="gen-btn" id="genBtn" onclick="generate()">
+      <span>✨</span><span id="genLabel">Generate Post</span>
+    </button>
+  </div>
+
+  <!-- MAIN PREVIEW -->
+  <div class="main">
+    <div class="steps" id="stepsRow" style="display:none;">
+      <div class="step" id="s1"></div>
+      <div class="step" id="s2"></div>
+      <div class="step" id="s3"></div>
+    </div>
+    <div class="step-text" id="stepText"></div>
+
+    <!-- IG Card -->
+    <div id="igWrap" style="width:100%;max-width:420px;">
+      <!-- Placeholder -->
+      <div id="placeholder" class="placeholder">
+        <div class="ph-icon">📸</div>
+        <div class="ph-title">Your post preview will appear here</div>
+        <div class="ph-sub">Choose a category and click Generate</div>
+      </div>
+    </div>
+
+    <!-- Caption card -->
+    <div class="caption-card" id="captionCard">
+      <div class="cap-label">Full Caption (copy-ready)</div>
+      <div class="cap-text" id="fullCaption"></div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="actions-row" id="actionsRow" style="display:none;">
+      <button class="act-btn" onclick="copyCaption()">📋 Copy Caption</button>
+      <button class="act-btn" onclick="openImage()">🖼️ Open Image</button>
+      <button class="act-btn primary" onclick="generate()">🔄 Regenerate</button>
+    </div>
+
+    <div class="status-bar" id="status"></div>
+  </div>
+</div>
+
+<!-- API KEY MODAL -->
+<div class="modal-bg" id="keyModal">
+  <div class="modal-box">
+    <div class="modal-logo"><span>UTSAAV</span></div>
+    <div class="modal-sub">Instagram Post Generator · Powered by Claude AI</div>
+    <div class="modal-label">Your Anthropic API Key</div>
+    <input class="modal-input" type="password" id="keyInput" placeholder="sk-ant-api03-..." autocomplete="off" />
+    <div class="modal-hint">
+      Groq key (free): <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a> → copy your <b style="color:#aaa">gsk_...</b> key<br>
+      Key is saved only in your browser. Never shared anywhere.
+    </div>
+    <button class="modal-btn" onclick="saveKey()">Save & Continue →</button>
+    <div class="modal-err" id="keyErr"></div>
+  </div>
+</div>
 
 <script>
-// ═══════════════════════════════════════════════
-// CONFIG — Categories, Types, Themes, Prompts
-// ═══════════════════════════════════════════════
-const CATEGORIES = [
-  {
-    id: 'astrology', label: 'Jyotish', icon: '🔮',
-    detailLabel: null, // rashi dropdown instead
-    theme: {
-      bg1: '#050820', bg2: '#0e0d3a', bg3: '#1a0f3c',
-      accent: '#f0b429', accent2: '#ffd770',
-      symbol: '🔮', tagline: 'Astrology • Vastu • Panchang'
-    },
-    types: [
-      { id: 'rashifal', icon: '♈', label: 'Daily Rashifal' },
-      { id: 'nakshatra', icon: '🌙', label: 'Nakshatra Today' },
-      { id: 'vastu', icon: '🏠', label: 'Vastu Tip' },
-      { id: 'mantra', icon: '🕉️', label: 'Mantra of Day' },
-      { id: 'gyaan', icon: '📚', label: 'Jyotish Gyaan' },
-      { id: 'lucky', icon: '⭐', label: 'Lucky Elements' }
-    ]
-  },
-  {
-    id: 'wedding', label: 'Shaadi', icon: '💍',
-    detailLabel: 'Vendor / Business Name + Location',
-    theme: {
-      bg1: '#130008', bg2: '#2d0020', bg3: '#1a0015',
-      accent: '#ff6b9d', accent2: '#ffb3cc',
-      symbol: '💍', tagline: 'Wedding • Decor • Planning'
-    },
-    types: [
-      { id: 'promo', icon: '📣', label: 'Booking Promo' },
-      { id: 'vendor', icon: '✨', label: 'Vendor Spotlight' },
-      { id: 'tip', icon: '💡', label: 'Wedding Tips' },
-      { id: 'package', icon: '💎', label: 'Package Offer' },
-      { id: 'review', icon: '⭐', label: 'Client Review' },
-      { id: 'decor', icon: '🌸', label: 'Decor Inspo' }
-    ]
-  },
-  {
-    id: 'birthday', label: 'Birthday', icon: '🎂',
-    detailLabel: 'Person Name + Age (e.g. Rahul, 25)',
-    theme: {
-      bg1: '#1a0800', bg2: '#3d1200', bg3: '#200d00',
-      accent: '#ff6b35', accent2: '#ffd700',
-      symbol: '🎂', tagline: 'Celebrations • Parties • Events'
-    },
-    types: [
-      { id: 'wish', icon: '🎉', label: 'Birthday Wish' },
-      { id: 'package', icon: '🎁', label: 'Party Package' },
-      { id: 'venue', icon: '🏛️', label: 'Venue Promo' },
-      { id: 'offer', icon: '🔥', label: 'Special Offer' },
-      { id: 'decor', icon: '🎈', label: 'Decor Theme' },
-      { id: 'tips', icon: '💡', label: 'Party Tips' }
-    ]
-  },
-  {
-    id: 'makeup', label: 'Makeup', icon: '💄',
-    detailLabel: 'Artist / Salon Name + Location',
-    theme: {
-      bg1: '#0d0018', bg2: '#2a003d', bg3: '#1a0025',
-      accent: '#e040fb', accent2: '#f8b4ff',
-      symbol: '💄', tagline: 'Makeup • Bridal • Beauty'
-    },
-    types: [
-      { id: 'bridal', icon: '👰', label: 'Bridal Makeup' },
-      { id: 'service', icon: '✨', label: 'Service Showcase' },
-      { id: 'tip', icon: '💡', label: 'Beauty Tips' },
-      { id: 'promo', icon: '📣', label: 'Artist Promo' },
-      { id: 'look', icon: '🎨', label: 'Look of the Day' },
-      { id: 'offer', icon: '🔥', label: 'Special Offer' }
-    ]
-  },
-  {
-    id: 'lodge', label: 'Lodge', icon: '🏨',
-    detailLabel: 'Lodge / Venue Name + Location',
-    theme: {
-      bg1: '#001520', bg2: '#002d40', bg3: '#001a2a',
-      accent: '#00bcd4', accent2: '#80deea',
-      symbol: '🏨', tagline: 'Venue • Banquet • Stay'
-    },
-    types: [
-      { id: 'showcase', icon: '🏛️', label: 'Venue Showcase' },
-      { id: 'room', icon: '🛏️', label: 'Room Feature' },
-      { id: 'hall', icon: '🎪', label: 'Event Hall' },
-      { id: 'offer', icon: '🔥', label: 'Booking Deal' },
-      { id: 'amenity', icon: '✨', label: 'Amenities' },
-      { id: 'review', icon: '⭐', label: 'Guest Review' }
-    ]
-  },
-  {
-    id: 'pandit', label: 'Pandit', icon: '🕉️',
-    detailLabel: 'Pandit Name / Service Type',
-    theme: {
-      bg1: '#1a0500', bg2: '#3d0a00', bg3: '#200800',
-      accent: '#ff5722', accent2: '#ffab91',
-      symbol: '🕉️', tagline: 'Puja • Vidhi • Shastra'
-    },
-    types: [
-      { id: 'service', icon: '🪔', label: 'Puja Service' },
-      { id: 'festival', icon: '🎆', label: 'Festival Info' },
-      { id: 'ritual', icon: '📿', label: 'Ritual Benefits' },
-      { id: 'muhurat', icon: '⏰', label: 'Shubh Muhurat' },
-      { id: 'booking', icon: '📅', label: 'Booking CTA' },
-      { id: 'tip', icon: '🌸', label: 'Spiritual Tip' }
-    ]
-  },
-  {
-    id: 'photography', label: 'Photography', icon: '📸',
-    detailLabel: 'Studio / Photographer Name + Location',
-    theme: {
-      bg1: '#0a0a0a', bg2: '#1a1a1a', bg3: '#111111',
-      accent: '#90a4ae', accent2: '#eceff1',
-      symbol: '📸', tagline: 'Photography • Videography • Studio'
-    },
-    types: [
-      { id: 'portfolio', icon: '🖼️', label: 'Portfolio Post' },
-      { id: 'wedding', icon: '💒', label: 'Wedding Shoot' },
-      { id: 'package', icon: '📦', label: 'Package Promo' },
-      { id: 'tips', icon: '💡', label: 'Photo Tips' },
-      { id: 'bts', icon: '🎬', label: 'Behind the Scenes' },
-      { id: 'review', icon: '⭐', label: 'Client Review' }
-    ]
-  },
-  {
-    id: 'catering', label: 'Catering', icon: '🍽️',
-    detailLabel: 'Catering Business Name + Location',
-    theme: {
-      bg1: '#1a0800', bg2: '#3d1500', bg3: '#221000',
-      accent: '#ff8f00', accent2: '#ffd54f',
-      symbol: '🍽️', tagline: 'Catering • Food • Events'
-    },
-    types: [
-      { id: 'menu', icon: '📋', label: 'Menu Highlight' },
-      { id: 'package', icon: '🎁', label: 'Package Promo' },
-      { id: 'cuisine', icon: '🍛', label: 'Special Cuisine' },
-      { id: 'event', icon: '🎪', label: 'Event Catering' },
-      { id: 'offer', icon: '🔥', label: 'Special Offer' },
-      { id: 'review', icon: '⭐', label: 'Client Review' }
-    ]
-  },
-  {
-    id: 'dj', label: 'DJ / Music', icon: '🎵',
-    detailLabel: 'DJ / Band Name + Location',
-    theme: {
-      bg1: '#00001a', bg2: '#0a0035', bg3: '#050020',
-      accent: '#00e5ff', accent2: '#b3f0ff',
-      symbol: '🎵', tagline: 'DJ • Music • Entertainment'
-    },
-    types: [
-      { id: 'promo', icon: '📣', label: 'DJ Promo' },
-      { id: 'package', icon: '🎁', label: 'Package Offer' },
-      { id: 'style', icon: '🎶', label: 'Music Style' },
-      { id: 'equipment', icon: '🔊', label: 'Equipment' },
-      { id: 'booking', icon: '📅', label: 'Booking CTA' },
-      { id: 'review', icon: '⭐', label: 'Client Review' }
-    ]
+let cat = 'Bridal Lehenga & Looks';
+let tone = 'Romantic';
+let imgStyle = 'cinematic, golden hour, bokeh';
+let caption = '';
+let imgUrl = '';
+
+function getKey() { return localStorage.getItem('utsaav_api_key') || ''; }
+
+function saveKey() {
+  const val = document.getElementById('keyInput').value.trim();
+  if (!val.startsWith('gsk_') && !val.startsWith('sk-ant-')) {
+    document.getElementById('keyErr').textContent = 'Invalid key. Must start with gsk_ (Groq) or sk-ant- (Anthropic)';
+    return;
   }
-];
+  localStorage.setItem('utsaav_api_key', val);
+  document.getElementById('keyModal').style.display = 'none';
+  updateKeyUI(true);
+}
 
-// ═══════════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════════
-let currentCatId = 'astrology';
-let currentType = 'rashifal';
-let currentLang = 'hi';
-let lastContent = null;
+function showKeyModal() {
+  const k = getKey();
+  if (k) document.getElementById('keyInput').value = k;
+  document.getElementById('keyModal').style.display = 'flex';
+  document.getElementById('keyErr').textContent = '';
+}
 
-function currentCat() { return CATEGORIES.find(c => c.id === currentCatId); }
+function updateKeyUI(hasKey) {
+  document.getElementById('keyDot').style.background = hasKey ? '#4caf50' : '#555';
+  document.getElementById('keyLabel').textContent = hasKey ? '🔑 API Key Set' : 'Set API Key';
+}
 
-// ═══════════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════════
-document.addEventListener('DOMContentLoaded', () => {
-  setToday();
-  generateStars();
-  buildCatTabs();
-  selectCategory('astrology');
-  const saved = localStorage.getItem('groq_api_key');
-  if (saved) { document.getElementById('apiKeyInput').value = saved; setStatus('Key saved ✓', true); }
+// On load
+window.addEventListener('load', () => {
+  const k = getKey();
+  if (!k) {
+    document.getElementById('keyModal').style.display = 'flex';
+  } else {
+    document.getElementById('keyModal').style.display = 'none';
+    updateKeyUI(true);
+  }
+  document.getElementById('keyInput').addEventListener('keydown', e => { if(e.key==='Enter') saveKey(); });
 });
 
-function generateStars() {
-  const bg = document.getElementById('starBg');
-  for (let i = 0; i < 60; i++) {
-    const s = document.createElement('div');
-    s.className = 'star';
-    s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*4}s;animation-duration:${2.5+Math.random()*3}s;opacity:${Math.random()*0.6}`;
-    bg.appendChild(s);
-  }
-}
-
-function buildCatTabs() {
-  const tabs = document.getElementById('catTabs');
-  CATEGORIES.forEach(cat => {
-    const t = document.createElement('div');
-    t.className = 'cat-tab';
-    t.dataset.id = cat.id;
-    t.innerHTML = `<span class="ct-icon">${cat.icon}</span>${cat.label}`;
-    t.onclick = () => selectCategory(cat.id);
-    tabs.appendChild(t);
-  });
-}
-
-function selectCategory(catId) {
-  currentCatId = catId;
-  const cat = currentCat();
-
-  // Update tabs
-  document.querySelectorAll('.cat-tab').forEach(t => {
-    t.classList.toggle('active', t.dataset.id === catId);
-  });
-
-  // Update accent colors
-  document.documentElement.style.setProperty('--accent', cat.theme.accent);
-  document.documentElement.style.setProperty('--accent2', cat.theme.accent2);
-
-  // Update logo icon + placeholder
-  document.getElementById('logoIcon').textContent = cat.icon;
-  document.getElementById('placeholderIcon').textContent = cat.icon;
-
-  // Build type pills
-  const grid = document.getElementById('typeGrid');
-  grid.innerHTML = '';
-  cat.types.forEach((type, i) => {
-    const p = document.createElement('div');
-    p.className = 'type-pill' + (i === 0 ? ' active' : '');
-    p.dataset.type = type.id;
-    p.innerHTML = `<span class="pill-icon">${type.icon}</span>${type.label}`;
-    p.onclick = () => selectType(p);
-    grid.appendChild(p);
-  });
-  currentType = cat.types[0].id;
-
-  // Show/hide sections
-  const isAstro = catId === 'astrology';
-  document.getElementById('sec-rashi').classList.toggle('visible', isAstro);
-  document.getElementById('sec-detail').classList.toggle('visible', !isAstro);
-
-  if (!isAstro && cat.detailLabel) {
-    document.getElementById('detailLabel').textContent = cat.detailLabel;
-    document.getElementById('detailInput').placeholder = 'e.g. ' + cat.types[0].label + ' details...';
-  }
-}
-
-function selectType(el) {
-  document.querySelectorAll('.type-pill').forEach(p => p.classList.remove('active'));
+function pickCat(el) {
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
-  currentType = el.dataset.type;
+  cat = el.dataset.cat;
+}
+function pickTone(el) {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  tone = el.textContent.replace(/[^\w\s&]/g,'').trim();
+}
+function pickStyle(el) {
+  document.querySelectorAll('.img-style-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  imgStyle = el.dataset.style;
 }
 
-function setLang(lang) {
-  currentLang = lang;
-  ['langHi','langEn','langBn'].forEach(id => {
-    document.getElementById(id).classList.toggle('active', id === 'lang' + lang.charAt(0).toUpperCase() + lang.slice(1));
+function setStep(n, msg) {
+  document.getElementById('stepsRow').style.display = 'flex';
+  document.getElementById('stepText').textContent = msg;
+  ['s1','s2','s3'].forEach((id,i) => {
+    const el = document.getElementById(id);
+    el.className = 'step' + (i+1 < n ? ' done' : i+1 === n ? ' active' : '');
   });
 }
 
-function setToday() {
-  document.getElementById('dateInput').value = new Date().toISOString().split('T')[0];
-}
-
-// ═══════════════════════════════════════════════
-// API KEY
-// ═══════════════════════════════════════════════
-function saveApiKey() {
-  const key = document.getElementById('apiKeyInput').value.trim();
-  if (!key) { showToast('API key daalo pehle!', true); return; }
-  localStorage.setItem('groq_api_key', key);
-  setStatus('Key saved ✓', true);
-  showToast('Groq API Key save ho gaya! ✓');
-}
-function setStatus(msg, ok) {
-  const el = document.getElementById('apiStatus');
-  el.textContent = msg; el.className = 'api-status' + (ok ? ' ok' : '');
-}
-
-// ═══════════════════════════════════════════════
-// PROMPT BUILDER
-// ═══════════════════════════════════════════════
-function buildPrompt() {
-  const date = document.getElementById('dateInput').value;
-  const d = new Date(date);
-  const locales = { hi: 'hi-IN', en: 'en-IN', bn: 'bn-IN' };
-  const dateStr = d.toLocaleDateString(locales[currentLang] || 'hi-IN', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
-  const rashi = document.getElementById('rashiSelect').value;
-  const detail = document.getElementById('detailInput').value.trim() || 'Utsaav Events';
-  const cat = currentCat();
-  const langName = { hi: 'Hindi', en: 'English', bn: 'Bengali' }[currentLang] || 'Hindi';
-  const isHi = currentLang === 'hi';
-  const isEn = currentLang === 'en';
-
-  const sysMap = {
-    hi: `Tum Utsaav.in ke liye ek professional social media content writer ho. Tumhara kaam Indian event services ke liye short, engaging, aur compelling Instagram posts banana hai. Content crisp, clear, aur action-oriented hona chahiye. Sirf post content do, koi explanation mat do. Always mention utsaav.in at end.`,
-    en: `You are a professional social media content writer for Utsaav.in, India's event services marketplace. Create short, engaging, compelling Instagram/Facebook posts for Indian event services. Content must be crisp, action-oriented, and end with utsaav.in. Give only post content, no explanation.`,
-    bn: `Tumi Utsaav.in-er jonno ekjon professional social media content writer. Indian event services-er jonno short, engaging Instagram post toiri koro. Content crisp ebong action-oriented hobe. Sudhu post content dao, kono explanation na. Seshey utsaav.in mention koro.`
-  };
-
-  const system = sysMap[currentLang] || sysMap.hi;
-
-  // ─── ASTROLOGY ───────────────────────────────
-  if (currentCatId === 'astrology') {
-    const prompts = {
-      rashifal: isEn
-        ? `Daily horoscope for ${rashi} on ${dateStr}.\nFormat:\n🔮 ${rashi} | ${dateStr}\n\n[3-4 lines: career, love, health]\n\n✨ Lucky Color: [color]\n🎯 Lucky Number: [number]\n⚡ Today's Tip: [practical tip]\n\n🌟 utsaav.in/astrology`
-        : `${dateStr} ke liye ${rashi} rashi ka daily rashifal likho.\nFormat:\n🔮 ${rashi} | ${dateStr}\n\n[3-4 lines mein career, love, health ke baare mein]\n\n✨ Lucky Color: [color]\n🎯 Lucky Number: [number]\n⚡ Aaj ka Tip: [practical tip]\n\n🌟 utsaav.in/astrology`,
-      nakshatra: isEn
-        ? `Write about today's Nakshatra energy for ${dateStr}. Which nakshatra, its power, what to do/avoid. 4-5 lines. End with utsaav.in/astrology.`
-        : `${dateStr} ke nakshatra ke baare mein likho — aaj kaunsa nakshatra, uski shakti, kya karna chahiye kya nahi. 4-5 lines. End mein utsaav.in/astrology.`,
-      vastu: isEn
-        ? `Powerful Vastu tip for ${dateStr}. Home/office practical suggestion for positive energy.\nFormat:\n🏠 Vastu Tip\n\n[Tip name]\n[2-3 lines]\n[Result]\n\n✨ utsaav.in/astrology`
-        : `${dateStr} ke liye ek powerful Vastu tip do.\nFormat:\n🏠 Aaj ka Vastu Tip\n\n[Tip naam]\n[2-3 lines explanation]\n[Kya result hoga]\n\n✨ utsaav.in/astrology`,
-      mantra: isEn
-        ? `Special mantra for ${dateStr}.\nFormat:\n🕉️ Mantra of the Day\n\n[Mantra in Sanskrit]\n[Transliteration]\n[Meaning: 1-2 lines]\n[When to chant]\n[Benefits]\n\n✨ utsaav.in/astrology`
-        : `${dateStr} ke liye ek special mantra do.\nFormat:\n🕉️ Aaj ka Mantra\n\n[Sanskrit mantra]\n[Transliteration]\n[Arth: 1-2 lines]\n[Kab padhein]\n[Laabh]\n\n✨ utsaav.in/astrology`,
-      gyaan: isEn
-        ? `Interesting Vedic Jyotish fact most people don't know. 3-4 lines. Start with 📚 Jyotish Wisdom. End with utsaav.in/astrology.`
-        : `Vedic Jyotish ke baare mein ek interesting fact do jo log nahi jaante. 3-4 lines easy language mein. 📚 Jyotish Gyaan se shuru karo. utsaav.in/astrology mention karo.`,
-      lucky: isEn
-        ? `Lucky elements for ${dateStr}.\nFormat:\n🌟 Today's Lucky Elements\n\n🎨 Lucky Color: [+why]\n🔢 Lucky Number:\n💎 Lucky Gemstone:\n🧭 Lucky Direction:\n⏰ Lucky Time:\n🌿 Lucky Element:\n\n✨ utsaav.in/astrology`
-        : `${dateStr} ke lucky elements batao.\nFormat:\n🌟 Aaj ke Lucky Elements\n\n🎨 Lucky Color: [+kyu]\n🔢 Lucky Number:\n💎 Lucky Gemstone:\n🧭 Lucky Direction:\n⏰ Lucky Time:\n🌿 Lucky Element:\n\n✨ utsaav.in/astrology`
-    };
-    return { system, user: prompts[currentType] || prompts.rashifal };
-  }
-
-  // ─── WEDDING ──────────────────────────────────
-  if (currentCatId === 'wedding') {
-    const prompts = {
-      promo: `Create a compelling Instagram wedding booking promo post for "${detail}" in ${langName}. Include: what services offered, why choose them, call to action. Use wedding emojis. End with utsaav.in. Max 10 lines.`,
-      vendor: `Create a vendor spotlight post for "${detail}" (wedding service provider) in ${langName}. Highlight their specialty, experience, and uniqueness. Professional yet warm tone. End with utsaav.in. Max 10 lines.`,
-      tip: `Give 3-4 practical wedding planning tips in ${langName} for couples getting married in India. Relatable, helpful, specific. Use emojis. End with "Get the best wedding vendors at utsaav.in". Max 12 lines.`,
-      package: `Create a wedding services package announcement post for "${detail}" in ${langName}. Include: what's included, value, limited offer angle, CTA. Use 💍✨🎊 emojis. End with utsaav.in. Max 10 lines.`,
-      review: `Write a positive client review/testimonial post for wedding services from "${detail}" in ${langName}. Sound genuine and emotional. Include wedding memories, service quality, recommendation. End with utsaav.in. Max 10 lines.`,
-      decor: `Create an inspiring Indian wedding decor ideas post in ${langName}. Share 3-4 trending decoration themes/ideas for ${dateStr}. Visual, aspirational, beautiful descriptions. End with utsaav.in.`
-    };
-    return { system, user: prompts[currentType] || prompts.promo };
-  }
-
-  // ─── BIRTHDAY ─────────────────────────────────
-  if (currentCatId === 'birthday') {
-    const personInfo = detail || 'someone special';
-    const prompts = {
-      wish: `Write a heartfelt, joyful birthday wish Instagram post for ${personInfo} in ${langName}. Celebratory, warm, use 🎂🎉🎈🎁 emojis. Festive Indian style. End with utsaav.in. Max 8 lines.`,
-      package: `Create a birthday party package promo post for "${detail}" venue/organizer in ${langName}. Include: what's included (decor, cake, entertainment), pricing hint, booking urgency. End with utsaav.in. Max 10 lines.`,
-      venue: `Create a birthday party venue promo post for "${detail}" in ${langName}. Highlight atmosphere, capacity, features, what makes it special for celebrations. Use 🎉🎊🎈 emojis. End with utsaav.in. Max 10 lines.`,
-      offer: `Write a birthday special limited-time offer post for "${detail}" in ${langName}. Create urgency, highlight discount or bonus, CTA. Exciting, energetic tone. Use 🔥🎁 emojis. End with utsaav.in. Max 8 lines.`,
-      decor: `Share 3-4 trendy birthday party decoration theme ideas in ${langName} for Indian celebrations. Visual, inspiring, include balloon/floral/theme suggestions. End with utsaav.in.`,
-      tips: `Give 4-5 practical birthday party planning tips in ${langName} for Indian families. Relatable, helpful. Use emojis. End with "Book everything at utsaav.in".`
-    };
-    return { system, user: prompts[currentType] || prompts.wish };
-  }
-
-  // ─── MAKEUP ───────────────────────────────────
-  if (currentCatId === 'makeup') {
-    const prompts = {
-      bridal: `Create a bridal makeup services post for "${detail}" in ${langName}. Highlight: bridal look expertise, skin prep, long-lasting formula, trial session. Elegant, aspirational. Use 💄👰✨ emojis. End with utsaav.in. Max 10 lines.`,
-      service: `Create a makeup services showcase post for "${detail}" in ${langName}. List 4-5 key services (bridal, party, engagement, etc.) with brief descriptions. Professional yet friendly. End with utsaav.in. Max 10 lines.`,
-      tip: `Share 4-5 practical Indian bridal makeup tips in ${langName}. Skin prep, foundation matching for Indian skin tones, heat-proof tips. Helpful, expert tone. End with utsaav.in.`,
-      promo: `Create a makeup artist promo post for "${detail}" in ${langName}. Highlight: experience, certifications, before/after transformations, unique style. Build trust. Use 💄✨💫 emojis. End with utsaav.in. Max 10 lines.`,
-      look: `Create an inspirational "Look of the Day" makeup post for "${detail}" in ${langName}. Describe a stunning bridal/party look — colors used, technique, occasion suitability. Visual and inspiring. End with utsaav.in.`,
-      offer: `Write a makeup special offer post for "${detail}" in ${langName}. Create urgency (limited slots/discount), what's included, how to book. Exciting tone. Use 🔥💄 emojis. End with utsaav.in. Max 8 lines.`
-    };
-    return { system, user: prompts[currentType] || prompts.bridal };
-  }
-
-  // ─── LODGE ────────────────────────────────────
-  if (currentCatId === 'lodge') {
-    const prompts = {
-      showcase: `Create a venue showcase post for "${detail}" in ${langName}. Highlight: location, ambiance, capacity, what events it hosts. Elegant, inviting. Use 🏛️✨🌟 emojis. End with utsaav.in. Max 10 lines.`,
-      room: `Create a room/accommodation highlight post for "${detail}" in ${langName}. Highlight: comfort, amenities, views, pricing value. Warm, welcoming tone. Use 🛏️✨🌿 emojis. End with utsaav.in. Max 10 lines.`,
-      hall: `Create an event hall/banquet promo post for "${detail}" in ${langName}. Highlight: capacity, AV setup, decoration options, catering tie-ups. Professional. Use 🎪✨🎊 emojis. End with utsaav.in. Max 10 lines.`,
-      offer: `Write a special booking deal for "${detail}" in ${langName}. Limited period offer, what's included, how to book. Create urgency. Use 🔥🏨 emojis. End with utsaav.in. Max 8 lines.`,
-      amenity: `Create an amenities highlight post for "${detail}" in ${langName}. List 5-6 key amenities (parking, AC, WiFi, catering, etc.) in an engaging way. Use ✨🌟 emojis. End with utsaav.in.`,
-      review: `Write a glowing guest review/testimonial post for "${detail}" in ${langName}. Sound genuine — mention event type, venue quality, staff behavior, would recommend. End with utsaav.in. Max 10 lines.`
-    };
-    return { system, user: prompts[currentType] || prompts.showcase };
-  }
-
-  // ─── PANDIT ───────────────────────────────────
-  if (currentCatId === 'pandit') {
-    const prompts = {
-      service: `Create a pandit/puja services listing post for "${detail}" in ${langName}. List key services: griha pravesh, satyanarayan, vivah, etc. Build trust, highlight experience. Use 🪔🕉️🌸 emojis. End with utsaav.in. Max 10 lines.`,
-      festival: `Write about an upcoming Hindu festival (relevant to ${dateStr}) in ${langName}. Explain significance, rituals, how to celebrate. Educational and spiritual. Use 🎆🕉️🌸 emojis. End with utsaav.in. Max 12 lines.`,
-      ritual: `Explain the benefits and importance of a key Hindu ritual/puja in ${langName}. Which ritual, its Vedic significance, spiritual and practical benefits. Respectful, informative. Use 📿🪔 emojis. End with utsaav.in.`,
-      muhurat: `Share information about auspicious timing/Shubh Muhurat for ${dateStr} in ${langName}. Which muhurat is good today, for what occasions, astrological basis. Use ⏰🌟🕉️ emojis. End with utsaav.in.`,
-      booking: `Create a pandit booking CTA post for "${detail}" in ${langName}. Encourage followers to book for upcoming ceremonies. What services, how to contact, why book through utsaav.in. Use 📅🪔 emojis. Max 8 lines.`,
-      tip: `Share a spiritual/puja tip or life lesson in ${langName}. Related to daily worship, mindfulness, or Hindu philosophy. Calming, uplifting tone. Use 🌸🕉️🪔 emojis. End with utsaav.in.`
-    };
-    return { system, user: prompts[currentType] || prompts.service };
-  }
-
-  // ─── PHOTOGRAPHY ──────────────────────────────
-  if (currentCatId === 'photography') {
-    const prompts = {
-      portfolio: `Create a photography portfolio showcase post for "${detail}" in ${langName}. Highlight their style, specialties, recent work quality. Artistic, professional. Use 📸🖼️✨ emojis. End with utsaav.in. Max 10 lines.`,
-      wedding: `Create a wedding photography promo post for "${detail}" in ${langName}. Highlight: candid shots, storytelling approach, equipment, experience. Emotional yet professional. Use 💒📸💍 emojis. End with utsaav.in. Max 10 lines.`,
-      package: `Create a photography package announcement for "${detail}" in ${langName}. Include: what's covered, hours, deliverables, value proposition. Use 📦📸 emojis. End with utsaav.in. Max 10 lines.`,
-      tips: `Share 4-5 tips for clients hiring a photographer for their event in ${langName}. What to look for, questions to ask, booking timeline. Helpful, expert tone. End with utsaav.in.`,
-      bts: `Create a "Behind the Scenes" post for "${detail}" photographer/studio in ${langName}. Share what goes into a shoot: prep, lighting, editing, team. Build connection with audience. Use 🎬📸 emojis. End with utsaav.in.`,
-      review: `Write a client testimonial post for photography services from "${detail}" in ${langName}. Genuine, emotional, mention event type and photo quality. End with utsaav.in. Max 10 lines.`
-    };
-    return { system, user: prompts[currentType] || prompts.portfolio };
-  }
-
-  // ─── CATERING ─────────────────────────────────
-  if (currentCatId === 'catering') {
-    const prompts = {
-      menu: `Create a menu highlight post for "${detail}" catering in ${langName}. Showcase signature dishes (3-4 items), describe taste/ingredients vividly. Use 🍽️🍛😋 emojis. End with utsaav.in. Max 10 lines.`,
-      package: `Create a catering package promo post for "${detail}" in ${langName}. Include: package details, per plate pricing hint, what events they cater. Professional. Use 🎁🍽️ emojis. End with utsaav.in. Max 10 lines.`,
-      cuisine: `Create an Indian special cuisine post for "${detail}" catering in ${langName}. Highlight a particular cuisine style (Bengali, Rajasthani, etc.), its uniqueness and authenticity. Use 🍛🌶️🍚 emojis. End with utsaav.in.`,
-      event: `Create an event catering showcase post for "${detail}" in ${langName}. Highlight large-scale event handling capability, variety, presentation. Use 🎪🍽️✨ emojis. End with utsaav.in. Max 10 lines.`,
-      offer: `Write a catering special offer post for "${detail}" in ${langName}. Limited period deal, what's included, minimum order, CTA. Use 🔥🍽️ emojis. End with utsaav.in. Max 8 lines.`,
-      review: `Write a client review post for catering services from "${detail}" in ${langName}. Praise food quality, service, value. Sound genuine. End with utsaav.in. Max 10 lines.`
-    };
-    return { system, user: prompts[currentType] || prompts.menu };
-  }
-
-  // ─── DJ / MUSIC ───────────────────────────────
-  if (currentCatId === 'dj') {
-    const prompts = {
-      promo: `Create a DJ services promo post for "${detail}" in ${langName}. Highlight: genres played, vibe, events covered. Energetic, exciting. Use 🎵🎤🔊 emojis. End with utsaav.in. Max 10 lines.`,
-      package: `Create a DJ package offer post for "${detail}" in ${langName}. Include: what's included (equipment, hours, playlist), pricing hint, events suitable for. Use 🎁🎵 emojis. End with utsaav.in. Max 10 lines.`,
-      style: `Create a music style showcase post for "${detail}" DJ in ${langName}. Describe their genre expertise, crowd reading ability, mixing style. Exciting tone. Use 🎶🔥🎵 emojis. End with utsaav.in.`,
-      equipment: `Create a DJ equipment showcase post for "${detail}" in ${langName}. Highlight pro setup — speakers, lighting, mixer, LEDs. Build trust in quality. Use 🔊💡✨ emojis. End with utsaav.in. Max 10 lines.`,
-      booking: `Create an urgent DJ booking CTA post for "${detail}" in ${langName}. Limited slots, upcoming season busy, how to book fast. Use 📅🎵🔥 emojis. End with utsaav.in. Max 8 lines.`,
-      review: `Write a client review post for DJ services from "${detail}" in ${langName}. Praise energy, professionalism, crowd engagement. Sound genuine, event-specific. End with utsaav.in. Max 10 lines.`
-    };
-    return { system, user: prompts[currentType] || prompts.promo };
-  }
-
-  return { system, user: 'Create an engaging social media post for Utsaav.in event services.' };
-}
-
-function buildHashtags() {
-  const baseTag = '#utsaav #utsaavin #eventservices #india #bengal #westbengal';
-  const catTags = {
-    astrology: '#astrology #jyotish #rashifal #horoscope #vedic #spirituality #ज्योतिष',
-    wedding: '#wedding #shaadi #indianwedding #weddingplanning #bridetobe #weddinginspiration #vivah',
-    birthday: '#birthday #birthdayparty #birthdaycelebration #happybirthday #partyplanning #birthdaydecor',
-    makeup: '#makeup #bridalmakeup #makeupartist #makeuptransformation #indianbridal #beautyservices',
-    lodge: '#venue #weddingvenue #eventspace #banquethall #lodge #venueoftheday #eventplanning',
-    pandit: '#pandit #puja #hindurituals #vedicrituals #spirituality #shubhmuhurat #grihapravesha',
-    photography: '#photography #weddingphotography #photographer #candid #portrait #eventphotography',
-    catering: '#catering #food #indianfood #weddingfood #eventcatering #foodservice #yummy',
-    dj: '#dj #music #djservice #events #weddingdj #entertainment #livemusic'
-  };
-  const typeTags = {
-    rashifal: '#rashifal #dailyhoroscope #zodiac',
-    nakshatra: '#nakshatra #moonphase',
-    bridal: '#bridalmakeup #indianbride',
-    wedding: '#weddingphotography',
-    showcase: '#venueoftheday',
-    package: '#package #offer'
-  };
-  return `${baseTag}\n${catTags[currentCatId] || ''}\n${typeTags[currentType] || ''}`.trim();
-}
-
-// ═══════════════════════════════════════════════
-// GROQ API
-// ═══════════════════════════════════════════════
-async function callGroq(system, user) {
-  const key = localStorage.getItem('groq_api_key') || document.getElementById('apiKeyInput').value.trim();
-  if (!key) throw new Error('API key nahi mila! Pehle Groq API Key daalo aur save karo.');
-  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${key}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'llama-3.3-70b-versatile',
-      max_tokens: 700, temperature: 0.88,
-      messages: [{ role:'system', content:system }, { role:'user', content:user }]
-    })
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.error?.message || `API Error: ${res.status}`);
-  }
-  const data = await res.json();
-  return data.choices[0].message.content.trim();
-}
-
-// ═══════════════════════════════════════════════
-// CANVAS DRAWING
-// ═══════════════════════════════════════════════
-function drawPost(content) {
-  const canvas = document.getElementById('postCanvas');
-  const ctx = canvas.getContext('2d');
-  const S = 1080;
-  const cat = currentCat();
-  const T = cat.theme;
-  const cx = S / 2;
-
-  // Background
-  const bg = ctx.createLinearGradient(0, 0, S, S);
-  bg.addColorStop(0, T.bg1);
-  bg.addColorStop(0.45, T.bg2);
-  bg.addColorStop(1, T.bg3);
-  ctx.fillStyle = bg;
-  ctx.fillRect(0, 0, S, S);
-
-  // Texture overlay
-  for (let i = 0; i < 3000; i++) {
-    ctx.beginPath();
-    ctx.arc(Math.random()*S, Math.random()*S, Math.random()*0.8, 0, Math.PI*2);
-    ctx.fillStyle = `rgba(255,255,255,${Math.random()*0.05})`;
-    ctx.fill();
-  }
-
-  // Glow circles
-  const gColor = hexToRgb(T.accent);
-  for (let ring = 0; ring < 5; ring++) {
-    const r = 160 + ring * 80;
-    const alpha = 0.05 - ring * 0.006;
-    ctx.beginPath();
-    ctx.arc(cx, S/2, r, 0, Math.PI*2);
-    ctx.strokeStyle = `rgba(${gColor},${alpha})`;
-    ctx.lineWidth = ring < 2 ? 1 : 0.6;
-    ctx.stroke();
-  }
-
-  // Corner decorations
-  drawCorner(ctx, 80, 80, T.accent, 1);
-  drawCorner(ctx, S-80, 80, T.accent, 2);
-  drawCorner(ctx, 80, S-80, T.accent, 3);
-  drawCorner(ctx, S-80, S-80, T.accent, 4);
-
-  // Top symbol
-  ctx.save();
-  ctx.font = '80px serif';
-  ctx.textAlign = 'center';
-  ctx.fillStyle = T.accent;
-  ctx.shadowColor = T.accent;
-  ctx.shadowBlur = 24;
-  ctx.fillText(T.symbol, cx, 155);
-  ctx.restore();
-
-  // Category label
-  ctx.save();
-  ctx.textAlign = 'center';
-  ctx.font = '500 38px Cinzel, serif';
-  ctx.fillStyle = T.accent2;
-  ctx.letterSpacing = '5px';
-  ctx.fillText(getTypeLabel(), cx, 220);
-  ctx.restore();
-
-  // Divider top
-  drawGoldLine(ctx, cx-220, 248, cx+220, 248, T.accent);
-
-  // Date
-  const date = document.getElementById('dateInput').value;
-  const d = new Date(date);
-  const locales = { hi:'hi-IN', en:'en-IN', bn:'bn-IN' };
-  const dateStr = d.toLocaleDateString(locales[currentLang]||'hi-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
-  ctx.save();
-  ctx.textAlign = 'center';
-  ctx.font = '26px Poppins, Noto Sans Devanagari, sans-serif';
-  ctx.fillStyle = 'rgba(200,195,240,0.75)';
-  ctx.fillText(dateStr, cx, 295);
-  ctx.restore();
-
-  // Content
-  const lines = wrapText(ctx, content, S - 180, '30px');
-  let yStart = 360;
-  ctx.save();
-  ctx.textAlign = 'center';
-  ctx.shadowColor = 'rgba(180,160,255,0.25)';
-  ctx.shadowBlur = 6;
-  lines.forEach((line, i) => {
-    if (yStart + i * 50 > 920) return;
-    const isHighlight = line.match(/^[🔮🌙🏠🕉️📚🌟✨⚡🎯💎🧭⏰🌿🎨🔢♈-♓💍🎂💄🏨📸🍽️🎵🪔🎉🔥🎊💡⭐🎁💒📸❤️💫🎶🔊]/u) || i === 0;
-    ctx.fillStyle = isHighlight ? T.accent2 : '#e8e0ff';
-    ctx.font = '30px Poppins, Noto Sans Devanagari, sans-serif';
-    ctx.fillText(line, cx, yStart + i * 50);
-  });
-  ctx.restore();
-
-  // Divider bottom
-  drawGoldLine(ctx, cx-220, S-185, cx+220, S-185, T.accent);
-
-  // Branding
-  ctx.save();
-  ctx.textAlign = 'center';
-  ctx.font = '500 46px Cinzel, serif';
-  ctx.fillStyle = T.accent;
-  ctx.shadowColor = T.accent;
-  ctx.shadowBlur = 14;
-  ctx.fillText('utsaav.in', cx, S-115);
-  ctx.restore();
-
-  ctx.save();
-  ctx.textAlign = 'center';
-  ctx.font = '26px Poppins, sans-serif';
-  ctx.fillStyle = 'rgba(190,185,230,0.6)';
-  ctx.fillText(T.tagline, cx, S-68);
-  ctx.restore();
-}
-
-function hexToRgb(hex) {
-  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
-  return `${r},${g},${b}`;
-}
-
-function drawGoldLine(ctx, x1, y1, x2, y2, color) {
-  const c = hexToRgb(color);
-  const grad = ctx.createLinearGradient(x1,y1,x2,y2);
-  grad.addColorStop(0,`rgba(${c},0)`);
-  grad.addColorStop(0.5,`rgba(${c},0.55)`);
-  grad.addColorStop(1,`rgba(${c},0)`);
-  ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2);
-  ctx.strokeStyle = grad; ctx.lineWidth = 1.5; ctx.stroke();
-}
-
-function drawCorner(ctx, x, y, color, corner) {
-  ctx.save();
-  ctx.translate(x, y);
-  const angles = [0, Math.PI/2, Math.PI*1.5, Math.PI];
-  ctx.rotate(angles[corner-1]);
-  const c = hexToRgb(color);
-  ctx.strokeStyle = `rgba(${c},0.22)`;
-  ctx.lineWidth = 1.5;
-  ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(55,0); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(0,55); ctx.stroke();
-  ctx.beginPath(); ctx.arc(0,0,32,0,Math.PI/2); ctx.stroke();
-  ctx.restore();
-}
-
-function wrapText(ctx, text, maxW, fontSize) {
-  ctx.font = `${fontSize} Poppins, Noto Sans Devanagari, sans-serif`;
-  return text.split('\n').flatMap(line => {
-    if (!line.trim()) return [''];
-    const words = line.split(' ');
-    const result = [];
-    let cur = '';
-    words.forEach(word => {
-      const test = cur ? cur + ' ' + word : word;
-      if (ctx.measureText(test).width > maxW && cur) { result.push(cur); cur = word; }
-      else { cur = test; }
-    });
-    if (cur) result.push(cur);
-    return result;
-  }).slice(0, 18);
-}
-
-function getTypeLabel() {
-  const cat = currentCat();
-  const type = cat.types.find(t => t.id === currentType);
-  if (!type) return cat.label.toUpperCase();
-  const labels = {
-    hi: { rashifal:'दैनिक राशिफल', nakshatra:'आज का नक्षत्र', vastu:'वास्तु टिप', mantra:'आज का मंत्र', gyaan:'ज्योतिष ज्ञान', lucky:'शुभ तत्व' },
-    en: {}
-  };
-  return (currentLang === 'hi' && labels.hi[currentType]) ? labels.hi[currentType] : (type.label + ' — ' + cat.label).toUpperCase();
-}
-
-// ═══════════════════════════════════════════════
-// GENERATE
-// ═══════════════════════════════════════════════
 async function generate() {
-  const btn = document.getElementById('generateBtn');
-  const overlay = document.getElementById('loadingOverlay');
-  const loadText = document.getElementById('loadingText');
-  const canvas = document.getElementById('postCanvas');
+  const btn = document.getElementById('genBtn');
+  const lbl = document.getElementById('genLabel');
+  const status = document.getElementById('status');
+  const detail = document.getElementById('customDetail').value;
+  const lang = document.getElementById('langSelect').value;
+  const emojiStyle = document.getElementById('emojiStyle').value;
 
   btn.disabled = true;
-  document.getElementById('genBtnIcon').textContent = '⏳';
-  document.getElementById('genBtnText').textContent = 'Generating...';
-  document.getElementById('postPlaceholder').style.display = 'none';
-  canvas.style.display = 'block';
-  overlay.classList.add('visible');
+  lbl.textContent = 'Generating...';
+  status.className = 'status-bar';
+  status.textContent = '';
 
-  const cat = currentCat();
-  const msgs = [
-    `${cat.icon} Content likh raha hoon...`,
-    '✨ AI magic ho raha hai...',
-    '📝 Post tayyar ho raha hai...',
-    '🎨 Image draw ho raha hai...'
-  ];
-  let idx = 0;
-  const interval = setInterval(() => { loadText.textContent = msgs[idx++ % msgs.length]; }, 1800);
+  setStep(1, 'Step 1/3 — Writing caption with AI...');
+  showLoadingCard();
+  document.getElementById('actionsRow').style.display = 'none';
+  document.getElementById('captionCard').classList.remove('show');
 
   try {
-    const { system, user } = buildPrompt();
-    const content = await callGroq(system, user);
-    lastContent = content;
-    drawPost(content);
+    caption = await getCaption(cat, tone, detail, lang, emojiStyle);
+    document.getElementById('fullCaption').textContent = caption;
+    document.getElementById('captionCard').classList.add('show');
 
-    const captionEl = document.getElementById('captionText');
-    captionEl.textContent = content;
-    captionEl.classList.remove('placeholder-text');
+    setStep(2, 'Step 2/3 — Generating AI image...');
+    imgUrl = buildImageUrl(cat, detail, imgStyle);
+    showIgCard(caption, imgUrl);
 
-    const hashEl = document.getElementById('hashtagsText');
-    hashEl.textContent = buildHashtags();
-    hashEl.classList.remove('placeholder-text');
-
-    showToast('Post generate ho gaya! 🎉');
-  } catch (err) {
-    showToast(err.message || 'Kuch galat hua, dobara try karo!', true);
-    document.getElementById('postPlaceholder').style.display = 'flex';
-    canvas.style.display = 'none';
-  } finally {
-    clearInterval(interval);
-    overlay.classList.remove('visible');
-    btn.disabled = false;
-    document.getElementById('genBtnIcon').textContent = '✨';
-    document.getElementById('genBtnText').textContent = 'Post Generate Karo';
+    setStep(3, 'Step 3/3 — Post ready!');
+    document.getElementById('stepsRow').style.display = 'none';
+    document.getElementById('stepText').textContent = '';
+    document.getElementById('actionsRow').style.display = 'flex';
+    status.className = 'status-bar ok';
+    status.textContent = '✓ Caption ready · Image loading (may take ~15s from Pollinations AI)';
+  } catch(e) {
+    status.className = 'status-bar err';
+    status.textContent = '✗ ' + (e.message || 'Generation failed. Try again.');
+    document.getElementById('igWrap').innerHTML = `<div class="placeholder"><div class="ph-icon">❌</div><div class="ph-title" style="color:#E8472A">Failed</div><div class="ph-sub">${e.message||'Unknown error'}</div></div>`;
+    document.getElementById('stepsRow').style.display = 'none';
   }
+
+  btn.disabled = false;
+  lbl.textContent = 'Generate Post';
 }
 
-function regenerate() {
-  if (document.getElementById('postCanvas').style.display === 'none') return;
-  generate();
-}
+async function getCaption(cat, tone, detail, lang, emojiPref) {
+  const apiKey = getKey();
+  if (!apiKey) { showKeyModal(); throw new Error('API key not set'); }
 
-// ═══════════════════════════════════════════════
-// DOWNLOAD & COPY
-// ═══════════════════════════════════════════════
-function downloadPost() {
-  const canvas = document.getElementById('postCanvas');
-  if (canvas.style.display === 'none') { showToast('Pehle post generate karo!', true); return; }
-  const date = document.getElementById('dateInput').value.replace(/-/g,'');
-  const link = document.createElement('a');
-  link.download = `utsaav-${currentCatId}-${currentType}-${date}.png`;
-  link.href = canvas.toDataURL('image/png', 1.0);
-  link.click();
-  showToast('Image download ho rahi hai! 📥');
-}
+  const emojiMap = { 'Balanced (3-5 emojis)': '3-5 emojis total', 'Heavy (lots of emojis)': 'use emojis generously', 'Minimal (1-2 emojis)': 'maximum 2 emojis' };
+  const emojiInstr = emojiMap[emojiPref] || '3-5 emojis';
 
-function copyText(which) {
-  const id = which === 'caption' ? 'captionText' : 'hashtagsText';
-  const el = document.getElementById(id);
-  if (el.classList.contains('placeholder-text')) { showToast('Pehle post generate karo!', true); return; }
-  navigator.clipboard.writeText(el.textContent)
-    .then(() => showToast(which === 'caption' ? 'Caption copy ho gaya! ✓' : 'Hashtags copy ho gaye! ✓'))
-    .catch(() => {
-      const ta = document.createElement('textarea');
-      ta.value = el.textContent; document.body.appendChild(ta);
-      ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
-      showToast('Copy ho gaya! ✓');
+  const isGroq = apiKey.startsWith('gsk_');
+  const url = isGroq
+    ? 'https://api.groq.com/openai/v1/chat/completions'
+    : 'https://api.anthropic.com/v1/messages';
+
+  const prompt = `You are the social media manager for Utsaav — a West Bengal-based wedding & event services marketplace (utsaav.in). You create viral Instagram captions for the brand.
+
+Write an Instagram caption for: **${cat}**
+Tone: ${tone}
+Language: ${lang}
+Emoji usage: ${emojiInstr}
+${detail ? `Extra detail: ${detail}` : ''}
+
+Rules:
+- 3-6 lines of compelling caption text
+- Naturally mention utsaav.in or "Link in bio" as CTA
+- End with 18-22 hashtags (mix: popular Indian wedding hashtags + West Bengal specific + niche category tags)
+- NO generic intros like "Are you looking for..." — start with impact
+- Make it feel real and human, not AI-written
+
+Return ONLY the caption + hashtags. Nothing else.`;
+
+  let res;
+  if (isGroq) {
+    res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
     });
+  } else {
+    res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+  }
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    if (res.status === 401) {
+      localStorage.removeItem('utsaav_api_key');
+      updateKeyUI(false);
+      showKeyModal();
+      throw new Error('Invalid API key');
+    }
+    throw new Error(err.error?.message || 'API Error ' + res.status);
+  }
+
+  const data = await res.json();
+  if (isGroq) return data.choices[0].message.content;
+  return data.content[0].text;
 }
 
-function showToast(msg, isError = false) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast show' + (isError ? ' error' : '');
-  setTimeout(() => { t.className = 'toast'; }, 3200);
+const catImageMap = {
+  'Bridal Lehenga & Looks': 'Indian bride in ornate red lehenga, traditional bridal jewelry maang tikka nath, wedding ceremony',
+  'Wedding Photography': 'Indian wedding couple romantic portrait, professional photography, golden hour lighting',
+  'Wedding Venue & Decoration': 'luxury Indian wedding mandap decoration, marigold flowers, fairy lights, floral arch',
+  'Bridal Makeup Artist': 'Indian bridal makeup close up, flawless skin, gold eyeshadow, traditional bridal look',
+  'Wedding Catering & Food Stalls': 'Indian wedding feast spread, traditional Bengali cuisine, colorful dishes',
+  'Mehndi & Haldi Ceremony': 'Indian bridal mehndi intricate henna on hands, haldi ceremony turmeric',
+  'Wedding Band & DJ': 'Indian wedding baraat procession, dhol players, festive lights, groom on horse',
+  'Destination Wedding': 'scenic Indian destination wedding outdoor ceremony, mountains or beach',
+  'Wedding Invitation & Cards': 'elegant Indian wedding invitation card, gold embossing, floral design',
+  'Wedding Cake & Sweets': 'Indian wedding cake multi tier, traditional sweets mithai, festive desserts'
+};
+
+function buildImageUrl(cat, detail, style) {
+  const base = catImageMap[cat] || 'Indian wedding celebration';
+  const parts = [base];
+  if (detail) parts.push(detail);
+  parts.push(style);
+  parts.push('ultra realistic, 8k, Instagram photo, professional wedding photography');
+  return `https://image.pollinations.ai/prompt/${encodeURIComponent(parts.join(', '))}?width=1080&height=1080&nologo=true&enhance=true&seed=${Date.now()}`;
+}
+
+function showLoadingCard() {
+  document.getElementById('igWrap').innerHTML = `
+    <div class="ig-wrap">
+      <div class="ig-header">
+        <div class="ig-avatar">U</div>
+        <div class="ig-name-row">
+          <div class="ig-username">utsaav_in</div>
+          <div class="ig-subloc">West Bengal, India</div>
+        </div>
+        <div class="ig-dots">···</div>
+      </div>
+      <div class="ig-img-box">
+        <div class="img-overlay" id="imgOverlay">
+          <div class="loader-ring"></div>
+          <div class="loader-text" id="loaderMsg">Generating image...</div>
+        </div>
+        <img id="postImg" src="" alt="" style="opacity:0;transition:opacity 0.5s;" />
+      </div>
+      <div class="ig-style-bar">
+        <div class="style-dot active"></div>
+        <div class="style-dot"></div>
+        <div class="style-dot"></div>
+      </div>
+      <div class="ig-actions-row">
+        <span class="ig-icon">🤍</span>
+        <span class="ig-icon">💬</span>
+        <span class="ig-icon">📤</span>
+        <span class="ig-icon ig-bookmark">🔖</span>
+      </div>
+      <div class="ig-likes">1,247 likes</div>
+      <div class="ig-caption-box"><span class="uname">utsaav_in</span><span style="color:#444">Writing caption...</span></div>
+      <div class="ig-time">just now</div>
+    </div>`;
+}
+
+function showIgCard(cap, url) {
+  const hashPart = cap.match(/(#\S+\s?)+$/s)?.[0] || '';
+  const mainText = cap.slice(0, cap.length - hashPart.length).trim();
+
+  document.getElementById('igWrap').innerHTML = `
+    <div class="ig-wrap">
+      <div class="ig-header">
+        <div class="ig-avatar">U</div>
+        <div class="ig-name-row">
+          <div class="ig-username">utsaav_in</div>
+          <div class="ig-subloc">West Bengal, India</div>
+        </div>
+        <div class="ig-dots">···</div>
+      </div>
+      <div class="ig-img-box">
+        <div class="img-overlay" id="imgOverlay">
+          <div class="loader-ring"></div>
+          <div class="loader-text">AI image loading (~15s)...</div>
+        </div>
+        <img id="postImg" src="${url}" alt="Post"
+          onload="this.style.opacity=1; document.getElementById('imgOverlay').classList.add('hidden');"
+          onerror="document.getElementById('imgOverlay').innerHTML='<div style=color:#555;font-size:12px;padding:20px;text-align:center>Image generation can take up to 30s.<br>Try clicking Open Image button below.</div>'" />
+      </div>
+      <div class="ig-style-bar">
+        <div class="style-dot active"></div>
+        <div class="style-dot"></div>
+        <div class="style-dot"></div>
+      </div>
+      <div class="ig-actions-row">
+        <span class="ig-icon">🤍</span>
+        <span class="ig-icon">💬</span>
+        <span class="ig-icon">📤</span>
+        <span class="ig-icon ig-bookmark">🔖</span>
+      </div>
+      <div class="ig-likes">1,247 likes</div>
+      <div class="ig-caption-box">
+        <span class="uname">utsaav_in</span>${escHtml(mainText)}
+        ${hashPart ? `<br><br><span class="hashtags">${escHtml(hashPart.trim())}</span>` : ''}
+      </div>
+      <div class="ig-time">just now</div>
+    </div>`;
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function copyCaption() {
+  if (!caption) return;
+  navigator.clipboard.writeText(caption).then(() => {
+    const s = document.getElementById('status');
+    s.className = 'status-bar ok';
+    s.textContent = '✓ Caption copied to clipboard!';
+    setTimeout(() => { s.textContent = ''; }, 2500);
+  });
+}
+
+function openImage() {
+  if (!imgUrl) return;
+  window.open(imgUrl, '_blank');
 }
 </script>
 </body>
