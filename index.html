@@ -7,81 +7,89 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0a0a;color:#f0f0f0;min-height:100vh}
-.topbar{background:#161616;border-bottom:1px solid #2a2a2a;padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.topbar{background:#161616;border-bottom:1px solid #2a2a2a;padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
 .brand{display:flex;align-items:center;gap:10px}
-.logo-box{width:36px;height:36px;background:linear-gradient(135deg,#E8472A,#F5A623);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;color:#fff}
-.brand-name{font-weight:700;font-size:18px;letter-spacing:1px}
-.brand-sub{font-size:11px;color:#666}
-.key-btn{display:flex;align-items:center;gap:6px;font-size:11px;color:#aaa;cursor:pointer;padding:5px 12px;border:1px solid #2a2a2a;border-radius:20px;background:transparent}
-.key-dot{width:7px;height:7px;border-radius:50%;background:#555}
-.key-dot.on{background:#4caf50}
+.logo-box{width:34px;height:34px;background:linear-gradient(135deg,#E8472A,#F5A623);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:#fff}
+.brand-name{font-weight:700;font-size:17px;letter-spacing:1px}
+.brand-sub{font-size:10px;color:#555}
+.key-btn{font-size:11px;color:#aaa;cursor:pointer;padding:5px 12px;border:1px solid #2a2a2a;border-radius:20px;background:transparent;display:flex;align-items:center;gap:6px}
+.kdot{width:7px;height:7px;border-radius:50%;background:#555}
+.kdot.on{background:#4caf50}
 
-.layout{display:grid;grid-template-columns:300px 1fr;min-height:calc(100vh - 63px)}
-@media(max-width:700px){.layout{grid-template-columns:1fr}}
+.layout{display:grid;grid-template-columns:280px 1fr;min-height:calc(100vh - 55px)}
+@media(max-width:680px){.layout{grid-template-columns:1fr}}
 
-.sidebar{background:#161616;border-right:1px solid #2a2a2a;padding:16px;overflow-y:auto}
-.slabel{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:#666;margin:14px 0 7px}
+.sidebar{background:#161616;border-right:1px solid #2a2a2a;padding:14px;overflow-y:auto}
+.slabel{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:#555;margin:12px 0 6px}
 .slabel:first-child{margin-top:0}
 .cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px}
-.cat-btn{background:#1f1f1f;border:1px solid #2a2a2a;border-radius:8px;color:#aaa;padding:8px 5px;font-size:11px;cursor:pointer;text-align:center;transition:all .15s;line-height:1.4}
-.cat-btn.active{background:#E8472A18;border-color:#E8472A;color:#ff6a50;font-weight:600}
+.cbtn{background:#1f1f1f;border:1px solid #2a2a2a;border-radius:7px;color:#888;padding:7px 4px;font-size:11px;cursor:pointer;text-align:center;line-height:1.4;transition:all .12s}
+.cbtn.active{background:#E8472A18;border-color:#E8472A;color:#ff6a50;font-weight:600}
 .chips{display:flex;flex-wrap:wrap;gap:4px}
-.chip{padding:5px 11px;border-radius:20px;font-size:11px;border:1px solid #2a2a2a;background:#1f1f1f;color:#aaa;cursor:pointer;transition:all .15s}
+.chip{padding:4px 10px;border-radius:20px;font-size:11px;border:1px solid #2a2a2a;background:#1f1f1f;color:#888;cursor:pointer;transition:all .12s}
 .chip.active{background:#F5A62318;border-color:#F5A623;color:#F5A623}
-.field{margin-bottom:10px}
-.field label{display:block;font-size:10px;color:#666;margin-bottom:3px}
-input,select{width:100%;background:#1f1f1f;border:1px solid #2a2a2a;border-radius:7px;color:#f0f0f0;padding:8px 10px;font-size:12px;font-family:inherit;outline:none}
+.field{margin-bottom:9px}
+.field label{display:block;font-size:10px;color:#555;margin-bottom:3px}
+input,select{width:100%;background:#1f1f1f;border:1px solid #2a2a2a;border-radius:7px;color:#f0f0f0;padding:7px 10px;font-size:12px;font-family:inherit;outline:none}
 input:focus,select:focus{border-color:#E8472A}
-select option{background:#1f1f1f}
-.gen-btn{width:100%;margin-top:8px;padding:12px;background:linear-gradient(135deg,#E8472A,#F5A623);border:none;border-radius:9px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity .2s}
-.gen-btn:hover{opacity:.88}
+.gen-btn{width:100%;margin-top:6px;padding:11px;background:linear-gradient(135deg,#E8472A,#F5A623);border:none;border-radius:9px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
 .gen-btn:disabled{opacity:.4;cursor:not-allowed}
 
-.main{padding:24px;display:flex;flex-direction:column;gap:16px;overflow-y:auto}
+.main{padding:20px;overflow-y:auto;display:flex;flex-direction:column;gap:14px;max-height:calc(100vh - 55px)}
 
-/* OUTPUT CARDS */
-.card{background:#161616;border:1px solid #2a2a2a;border-radius:12px;padding:18px}
-.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.card-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#666}
-.copy-btn{padding:5px 14px;border-radius:20px;font-size:11px;border:1px solid #2a2a2a;background:#1f1f1f;color:#aaa;cursor:pointer;transition:all .15s;font-family:inherit}
+/* STEPS */
+.steps{background:#161616;border:1px solid #2a2a2a;border-radius:12px;padding:16px}
+.steps h3{font-size:12px;color:#F5A623;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+.step{display:flex;gap:10px;margin-bottom:10px;font-size:12px;color:#888;line-height:1.5;align-items:flex-start}
+.snum{min-width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#E8472A,#F5A623);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;margin-top:1px}
+.step a{color:#4A9EFF;text-decoration:none}
+.step b{color:#fff}
+
+/* CARDS */
+.card{background:#161616;border:1px solid #2a2a2a;border-radius:12px;padding:16px}
+.card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.card-title{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#555}
+.copy-btn{padding:4px 12px;border-radius:20px;font-size:11px;border:1px solid #2a2a2a;background:#1f1f1f;color:#888;cursor:pointer;font-family:inherit}
 .copy-btn:hover{border-color:#E8472A;color:#E8472A}
-.copy-btn.copied{border-color:#4caf50;color:#4caf50}
-.output-text{font-size:13px;color:#ccc;line-height:1.7;white-space:pre-wrap;word-break:break-word;max-height:200px;overflow-y:auto}
-.output-text .htags{color:#4A9EFF}
+.copy-btn.ok{border-color:#4caf50;color:#4caf50}
+.cap-out{font-size:12px;color:#ccc;line-height:1.7;white-space:pre-wrap;word-break:break-word;max-height:180px;overflow-y:auto}
+.htags{color:#4A9EFF}
 
-/* IMAGE PROMPT CARD */
-.prompt-card{background:#161616;border:2px solid #F5A62340;border-radius:12px;padding:18px}
-.prompt-card .card-header{margin-bottom:8px}
-.prompt-label{font-size:11px;color:#888;margin-bottom:10px;line-height:1.6}
-.prompt-text{font-size:13px;color:#F5A623;line-height:1.7;font-family:monospace;background:#0d0d0d;padding:12px;border-radius:8px;word-break:break-word}
+.prompt-card{background:#161616;border:2px solid #F5A62350;border-radius:12px;padding:16px}
+.prompt-note{font-size:11px;color:#666;margin-bottom:8px;line-height:1.6}
+.prompt-note a{color:#F5A623}
+.prompt-box{font-size:12px;color:#F5A623;font-family:monospace;background:#0d0d0d;padding:12px;border-radius:8px;word-break:break-word;line-height:1.6}
 
-/* STEPS GUIDE */
-.steps-card{background:#1a1a0a;border:1px solid #333;border-radius:12px;padding:16px}
-.steps-title{font-size:11px;color:#F5A623;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
-.step-item{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;font-size:12px;color:#888;line-height:1.5}
-.step-num{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#E8472A,#F5A623);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0;margin-top:1px}
-.step-item a{color:#4A9EFF;text-decoration:none}
+/* UPLOAD ZONE */
+.upload-card{background:#161616;border:2px dashed #2a2a2a;border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:border-color .2s}
+.upload-card:hover,.upload-card.drag{border-color:#E8472A}
+.upload-icon{font-size:32px;opacity:.3;margin-bottom:8px}
+.upload-title{font-size:13px;color:#888;margin-bottom:4px}
+.upload-sub{font-size:11px;color:#444}
+input[type=file]{display:none}
 
-.status{font-size:12px;color:#666;text-align:center;min-height:16px}
+/* PREVIEW */
+.preview-wrap{position:relative;max-width:400px;margin:0 auto}
+canvas{width:100%;height:auto;display:block;border-radius:8px}
+.dl-btn{width:100%;margin-top:10px;padding:11px;background:linear-gradient(135deg,#E8472A,#F5A623);border:none;border-radius:9px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+
+.status{font-size:11px;text-align:center;min-height:14px;color:#555}
 .status.ok{color:#4caf50}
 .status.err{color:#E8472A}
 
-.placeholder-card{background:#161616;border:1px solid #2a2a2a;border-radius:12px;padding:40px;text-align:center;color:#444}
-.ph-icon{font-size:40px;opacity:.2;margin-bottom:12px}
-
 /* MODAL */
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;z-index:999}
-.modal{background:#161616;border:1px solid #2a2a2a;border-radius:14px;padding:24px;width:90%;max-width:380px}
-.modal-logo{font-size:20px;font-weight:800;margin-bottom:3px}
-.modal-logo span{background:linear-gradient(135deg,#E8472A,#F5A623);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.modal-sub{font-size:11px;color:#555;margin-bottom:16px}
-.modal-label{font-size:11px;color:#888;margin-bottom:4px}
-.modal-input{width:100%;background:#1f1f1f;border:1px solid #333;border-radius:7px;color:#f0f0f0;padding:10px 12px;font-size:12px;font-family:monospace;outline:none;margin-bottom:5px}
-.modal-input:focus{border-color:#E8472A}
+.modal{background:#161616;border:1px solid #2a2a2a;border-radius:14px;padding:24px;width:90%;max-width:360px}
+.modal-title{font-size:18px;font-weight:800;margin-bottom:3px}
+.modal-title span{background:linear-gradient(135deg,#E8472A,#F5A623);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.modal-sub{font-size:11px;color:#555;margin-bottom:14px}
+.modal-label{font-size:11px;color:#777;margin-bottom:4px}
+.modal-inp{width:100%;background:#1f1f1f;border:1px solid #333;border-radius:7px;color:#f0f0f0;padding:9px 12px;font-size:12px;font-family:monospace;outline:none;margin-bottom:5px}
+.modal-inp:focus{border-color:#E8472A}
 .modal-hint{font-size:11px;color:#444;margin-bottom:14px;line-height:1.5}
 .modal-hint a{color:#4A9EFF;text-decoration:none}
-.modal-btn{width:100%;padding:11px;background:linear-gradient(135deg,#E8472A,#F5A623);border:none;border-radius:9px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
-.modal-err{font-size:11px;color:#E8472A;margin-top:6px;min-height:14px}
+.modal-save{width:100%;padding:10px;background:linear-gradient(135deg,#E8472A,#F5A623);border:none;border-radius:9px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.modal-err{font-size:11px;color:#E8472A;margin-top:5px;min-height:13px}
 </style>
 </head>
 <body>
@@ -89,38 +97,36 @@ select option{background:#1f1f1f}
 <div class="topbar">
   <div class="brand">
     <div class="logo-box">U</div>
-    <div>
-      <div class="brand-name">UTSAAV</div>
-      <div class="brand-sub">Post Generator</div>
-    </div>
+    <div><div class="brand-name">UTSAAV</div><div class="brand-sub">Instagram Post Generator</div></div>
   </div>
   <button class="key-btn" onclick="openModal()">
-    <div class="key-dot" id="keyDot"></div>
-    <span id="keyLabel">Set Groq Key</span>
+    <span class="kdot" id="kdot"></span>
+    <span id="klabel">Set Groq Key</span>
   </button>
 </div>
 
 <div class="layout">
+  <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="slabel">Category</div>
     <div class="cat-grid">
-      <div class="cat-btn active" data-cat="Bridal Lehenga & Looks" onclick="pick(this,'cat')">👰 Bridal Looks</div>
-      <div class="cat-btn" data-cat="Wedding Photography" onclick="pick(this,'cat')">📸 Photography</div>
-      <div class="cat-btn" data-cat="Wedding Venue & Decoration" onclick="pick(this,'cat')">🏛️ Venue & Decor</div>
-      <div class="cat-btn" data-cat="Bridal Makeup Artist" onclick="pick(this,'cat')">💄 Makeup</div>
-      <div class="cat-btn" data-cat="Wedding Catering & Food" onclick="pick(this,'cat')">🍽️ Catering</div>
-      <div class="cat-btn" data-cat="Mehndi & Haldi Ceremony" onclick="pick(this,'cat')">🌿 Mehndi/Haldi</div>
-      <div class="cat-btn" data-cat="Wedding Band & DJ" onclick="pick(this,'cat')">🎵 Band & DJ</div>
-      <div class="cat-btn" data-cat="Destination Wedding" onclick="pick(this,'cat')">✈️ Destination</div>
-      <div class="cat-btn" data-cat="Wedding Invitation Cards" onclick="pick(this,'cat')">💌 Invitations</div>
-      <div class="cat-btn" data-cat="Wedding Cake & Sweets" onclick="pick(this,'cat')">🎂 Cake</div>
+      <div class="cbtn active" data-cat="Bridal Lehenga & Looks" onclick="pick(this,'cat')">👰 Bridal Looks</div>
+      <div class="cbtn" data-cat="Wedding Photography" onclick="pick(this,'cat')">📸 Photography</div>
+      <div class="cbtn" data-cat="Wedding Venue & Decoration" onclick="pick(this,'cat')">🏛️ Venue & Decor</div>
+      <div class="cbtn" data-cat="Bridal Makeup Artist" onclick="pick(this,'cat')">💄 Makeup</div>
+      <div class="cbtn" data-cat="Wedding Catering & Food" onclick="pick(this,'cat')">🍽️ Catering</div>
+      <div class="cbtn" data-cat="Mehndi & Haldi Ceremony" onclick="pick(this,'cat')">🌿 Mehndi/Haldi</div>
+      <div class="cbtn" data-cat="Wedding Band & DJ" onclick="pick(this,'cat')">🎵 Band & DJ</div>
+      <div class="cbtn" data-cat="Destination Wedding" onclick="pick(this,'cat')">✈️ Destination</div>
+      <div class="cbtn" data-cat="Wedding Invitation Cards" onclick="pick(this,'cat')">💌 Invitations</div>
+      <div class="cbtn" data-cat="Wedding Cake & Sweets" onclick="pick(this,'cat')">🎂 Cake</div>
     </div>
 
-    <div class="slabel">Caption Tone</div>
+    <div class="slabel">Tone</div>
     <div class="chips">
       <div class="chip active" onclick="pick(this,'tone')">Romantic ❤️</div>
       <div class="chip" onclick="pick(this,'tone')">Elegant ✨</div>
-      <div class="chip" onclick="pick(this,'tone')">Fun & Vibrant 🎉</div>
+      <div class="chip" onclick="pick(this,'tone')">Fun 🎉</div>
       <div class="chip" onclick="pick(this,'tone')">Luxurious 👑</div>
       <div class="chip" onclick="pick(this,'tone')">Emotional 🥹</div>
       <div class="chip" onclick="pick(this,'tone')">Witty 🔥</div>
@@ -128,8 +134,8 @@ select option{background:#1f1f1f}
 
     <div class="slabel">Details</div>
     <div class="field">
-      <label>Custom detail (optional)</label>
-      <input type="text" id="detail" placeholder="Red lehenga, Kolkata venue, winter..."/>
+      <label>Custom detail</label>
+      <input type="text" id="detail" placeholder="Red lehenga, Kolkata venue..."/>
     </div>
     <div class="field">
       <label>Language</label>
@@ -140,176 +146,288 @@ select option{background:#1f1f1f}
       </select>
     </div>
 
-    <button class="gen-btn" id="genBtn" onclick="generate()">✨ Generate</button>
-    <div class="status" id="statusEl"></div>
+    <button class="gen-btn" id="genBtn" onclick="generate()">✨ Step 1: Generate Caption</button>
+    <div class="status" id="st1"></div>
   </div>
 
+  <!-- MAIN -->
   <div class="main">
-    <!-- HOW TO USE -->
-    <div class="steps-card" id="stepsGuide">
-      <div class="steps-title">⚡ How it works</div>
-      <div class="step-item"><div class="step-num">1</div><div>Category + tone select karo → <b style="color:#fff">Generate</b> dabao → Caption milega</div></div>
-      <div class="step-item"><div class="step-num">2</div><div>Neeche <b style="color:#F5A623">Image Prompt</b> milega — copy karo</div></div>
-      <div class="step-item"><div class="step-num">3</div><div><a href="https://gemini.google.com" target="_blank">gemini.google.com</a> mein jaao → prompt paste karo → image generate karo → download karo</div></div>
-      <div class="step-item"><div class="step-num">4</div><div>Woh image yahan Claude ko bhejo — logo + caption overlay add ho jayega</div></div>
+
+    <!-- HOW IT WORKS -->
+    <div class="steps" id="guideBox">
+      <h3>⚡ 3 Steps mein Instagram post ready</h3>
+      <div class="step"><div class="snum">1</div><div><b>Generate</b> dabao → Caption + Gemini Image Prompt milega</div></div>
+      <div class="step"><div class="snum">2</div><div><a href="https://gemini.google.com" target="_blank">gemini.google.com</a> kholo → prompt paste karo → image download karo</div></div>
+      <div class="step"><div class="snum">3</div><div>Neeche image <b>upload</b> karo → Logo + caption bake hokar <b>final post download</b> ho jayegi</div></div>
     </div>
 
-    <div id="outputArea"></div>
+    <!-- CAPTION OUTPUT -->
+    <div class="card" id="capCard" style="display:none">
+      <div class="card-top">
+        <div class="card-title">📝 Caption</div>
+        <button class="copy-btn" id="cc" onclick="cp('cc', window._caption)">Copy</button>
+      </div>
+      <div class="cap-out" id="capOut"></div>
+    </div>
+
+    <!-- IMAGE PROMPT -->
+    <div class="prompt-card" id="promptCard" style="display:none">
+      <div class="card-top">
+        <div class="card-title">🎨 Gemini Image Prompt</div>
+        <button class="copy-btn" id="pc" onclick="cp('pc', window._prompt)">Copy Prompt</button>
+      </div>
+      <div class="prompt-note">
+        Copy karo → <a href="https://gemini.google.com" target="_blank">gemini.google.com</a> → paste karo → image generate karo → download karo → neeche upload karo
+      </div>
+      <div class="prompt-box" id="promptOut"></div>
+    </div>
+
+    <!-- STEP 3: UPLOAD -->
+    <div id="uploadSection" style="display:none">
+      <div class="upload-card" id="dropZone" onclick="document.getElementById('fileIn').click()" ondragover="ev(event)" ondrop="drop(event)">
+        <div class="upload-icon">📤</div>
+        <div class="upload-title">Step 3: Gemini image yahan upload karo</div>
+        <div class="upload-sub">Click karo ya drag & drop karo</div>
+        <input type="file" id="fileIn" accept="image/*" onchange="loadImg(this.files[0])"/>
+      </div>
+    </div>
+
+    <!-- CANVAS PREVIEW + DOWNLOAD -->
+    <div id="previewSection" style="display:none">
+      <div class="card-top" style="margin-bottom:8px">
+        <div class="card-title">✅ Final Post Preview</div>
+        <button class="copy-btn" onclick="document.getElementById('uploadSection').style.display='block';document.getElementById('previewSection').style.display='none'">Change Image</button>
+      </div>
+      <div class="preview-wrap">
+        <canvas id="cv"></canvas>
+      </div>
+      <button class="dl-btn" onclick="download()">⬇️ Download Final Post (1080x1080)</button>
+    </div>
+
+    <div class="status" id="st2"></div>
   </div>
 </div>
 
 <!-- MODAL -->
 <div class="modal-bg" id="modalBg">
   <div class="modal">
-    <div class="modal-logo"><span>UTSAAV</span></div>
-    <div class="modal-sub">Sirf Groq key chahiye — free hai</div>
-    <div class="modal-label">Groq API Key</div>
-    <input class="modal-input" type="password" id="keyInput" placeholder="gsk_..." autocomplete="off"/>
-    <div class="modal-hint">
-      <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a> → Create API Key → copy <b style="color:#aaa">gsk_...</b>
-    </div>
-    <button class="modal-btn" onclick="saveKey()">Save →</button>
-    <div class="modal-err" id="modalErr"></div>
+    <div class="modal-title"><span>UTSAAV</span></div>
+    <div class="modal-sub">Groq API key chahiye — free hai</div>
+    <div class="modal-label">Groq Key</div>
+    <input class="modal-inp" type="password" id="ki" placeholder="gsk_..." autocomplete="off"/>
+    <div class="modal-hint"><a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a> → Create API Key → copy gsk_...</div>
+    <button class="modal-save" onclick="saveKey()">Save →</button>
+    <div class="modal-err" id="merr"></div>
   </div>
 </div>
 
 <script>
-let cat = 'Bridal Lehenga & Looks';
-let tone = 'Romantic';
+let cat='Bridal Lehenga & Looks', tone='Romantic';
+window._caption=''; window._prompt=''; window._imgData=null;
 
-const imagePrompts = {
-  'Bridal Lehenga & Looks': 'A stunning Indian bride in an ornate red and gold bridal lehenga, intricate zari embroidery, wearing maang tikka, nath, and layered gold jewelry, standing in a beautifully decorated mandap with marigold flowers and fairy lights, soft warm lighting, photorealistic, professional wedding photography, 4K',
-  'Wedding Photography': 'Indian bride and groom in traditional wedding attire walking together, bride in red lehenga groom in cream sherwani, golden hour sunlight, flower petals falling, bokeh background, romantic, professional wedding photography, cinematic, photorealistic',
-  'Wedding Venue & Decoration': 'Luxury Indian wedding venue, grand floral mandap with white and pink roses and marigold garlands, draped fabric ceiling, fairy lights, elegant wooden furniture, warm candlelight ambiance, photorealistic, professional photography',
-  'Bridal Makeup Artist': 'Close up portrait of an Indian bride with flawless bridal makeup, smoky eyes with gold eyeshadow, perfectly contoured skin, bold red lips, traditional gold maang tikka visible, soft studio lighting, photorealistic, beauty photography',
-  'Wedding Catering & Food': 'Elaborate Indian wedding feast spread, colorful traditional dishes including biryani, paneer, sweets, arranged on banana leaves and silver thalis, floral decorations, festive setup, photorealistic, food photography',
-  'Mehndi & Haldi Ceremony': 'Indian bride hands with intricate dark brown mehndi henna design, fine detailed patterns of peacocks and flowers, gold bangles, soft natural lighting, close up photography, photorealistic',
-  'Wedding Band & DJ': 'Festive Indian wedding baraat procession, groom on decorated white horse, dhol players in colorful kurtas, guests dancing joyfully, marigold decorations, night time with bright lights, photorealistic, wide angle photography',
-  'Destination Wedding': 'Romantic outdoor destination wedding in India, couple standing at a scenic hillside or beach venue, bride in white and gold lehenga, flower arch ceremony setup, golden sunset sky, photorealistic, cinematic photography',
-  'Wedding Invitation Cards': 'Luxury Indian wedding invitation card flat lay, deep red and gold color scheme, floral motifs, gold foil embossing, elegant typography, surrounded by rose petals and small gold accents, photorealistic, product photography',
-  'Wedding Cake & Sweets': 'Stunning Indian wedding cake 4 tier white and gold, intricate floral fondant decorations, surrounded by traditional Indian sweets mithai in silver bowls, festive dessert table, warm lighting, photorealistic, food photography'
-};
-
-function getKey(){ return localStorage.getItem('utpost_groq')||''; }
-function openModal(){
-  const k=getKey(); if(k) document.getElementById('keyInput').value=k;
-  document.getElementById('modalBg').style.display='flex';
-  document.getElementById('modalErr').textContent='';
-}
+// KEY
+function getKey(){ return localStorage.getItem('utg')||''; }
+function openModal(){ document.getElementById('ki').value=getKey(); document.getElementById('modalBg').style.display='flex'; document.getElementById('merr').textContent=''; }
 function saveKey(){
-  const v=document.getElementById('keyInput').value.trim();
-  if(!v.startsWith('gsk_')){ document.getElementById('modalErr').textContent='gsk_ se start hona chahiye'; return; }
-  localStorage.setItem('utpost_groq',v);
+  const v=document.getElementById('ki').value.trim();
+  if(!v.startsWith('gsk_')){ document.getElementById('merr').textContent='gsk_ se start hona chahiye'; return; }
+  localStorage.setItem('utg',v);
   document.getElementById('modalBg').style.display='none';
-  document.getElementById('keyDot').className='key-dot on';
-  document.getElementById('keyLabel').textContent='🔑 Groq Key Set';
+  document.getElementById('kdot').className='kdot on';
+  document.getElementById('klabel').textContent='🔑 Key Set';
 }
-
 window.addEventListener('load',()=>{
   const k=getKey();
   if(!k) document.getElementById('modalBg').style.display='flex';
-  else { document.getElementById('keyDot').className='key-dot on'; document.getElementById('keyLabel').textContent='🔑 Groq Key Set'; document.getElementById('modalBg').style.display='none'; }
+  else { document.getElementById('kdot').className='kdot on'; document.getElementById('klabel').textContent='🔑 Key Set'; document.getElementById('modalBg').style.display='none'; }
 });
 
-function pick(el, type){
-  const cls = type==='cat' ? '.cat-btn' : '.chip';
-  document.querySelectorAll(cls).forEach(b=>b.classList.remove('active'));
+function pick(el,type){
+  document.querySelectorAll(type==='cat'?'.cbtn':'.chip').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
-  if(type==='cat') cat=el.dataset.cat;
-  else tone=el.textContent.replace(/[^\w\s&]/g,'').trim();
+  if(type==='cat') cat=el.dataset.cat; else tone=el.textContent.replace(/[^\w\s&]/g,'').trim();
 }
 
+// GENERATE
 async function generate(){
-  const key=getKey();
-  if(!key){ openModal(); return; }
+  const key=getKey(); if(!key){ openModal(); return; }
+  const btn=document.getElementById('genBtn'), st=document.getElementById('st1');
   const detail=document.getElementById('detail').value;
   const lang=document.getElementById('lang').value;
-  const btn=document.getElementById('genBtn');
-  const status=document.getElementById('statusEl');
-
-  btn.disabled=true; btn.textContent='Generating...';
-  status.className='status'; status.textContent='Caption likh raha hai...';
-
+  btn.disabled=true; btn.textContent='Writing...'; st.className='status'; st.textContent='';
   try {
-    const caption = await getCaption(key, cat, tone, detail, lang);
-    const prompt = buildImagePrompt(cat, detail);
-    showOutput(caption, prompt);
-    document.getElementById('stepsGuide').style.display='none';
-    status.className='status ok'; status.textContent='✓ Done! Ab image prompt copy karo → Gemini mein jaao';
-  } catch(e){
-    status.className='status err'; status.textContent='✗ '+e.message;
-  }
-  btn.disabled=false; btn.textContent='✨ Generate';
+    window._caption = await groq(key,cat,tone,detail,lang);
+    window._prompt  = buildPrompt(cat,detail);
+    showCaption(window._caption);
+    showPrompt(window._prompt);
+    document.getElementById('guideBox').style.display='none';
+    document.getElementById('uploadSection').style.display='block';
+    st.className='status ok'; st.textContent='✓ Caption ready! Ab Gemini se image banao → neeche upload karo';
+  } catch(e){ st.className='status err'; st.textContent='✗ '+e.message; }
+  btn.disabled=false; btn.textContent='✨ Step 1: Generate Caption';
 }
 
-async function getCaption(key, cat, tone, detail, lang){
-  const res = await fetch('https://api.groq.com/openai/v1/chat/completions',{
+async function groq(key,cat,tone,detail,lang){
+  const res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
     method:'POST',
     headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
-    body:JSON.stringify({
-      model:'llama-3.3-70b-versatile',
-      max_tokens:900,
-      messages:[{role:'user',content:
-        `You are Instagram manager for Utsaav — West Bengal wedding & event marketplace at utsaav.in.
-Write a viral Instagram caption for: ${cat}
-Tone: ${tone} | Language: ${lang}${detail?'\nDetail: '+detail:''}
-Rules: Start with impact line. 3-5 lines. Mention utsaav.in as CTA. End with 18-22 relevant hashtags.
-Return ONLY caption + hashtags. Nothing else.`
-      }]
-    })
+    body:JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:900,messages:[{role:'user',content:
+      `Instagram manager for Utsaav — West Bengal wedding marketplace utsaav.in.
+Write viral caption for: ${cat} | Tone: ${tone} | Language: ${lang}${detail?'\nDetail: '+detail:''}
+Rules: Start with impact. 3-5 lines. CTA utsaav.in. End 18-22 hashtags. Return ONLY caption+hashtags.`}]})
   });
-  if(!res.ok){
-    const e=await res.json().catch(()=>({}));
-    if(res.status===401){ localStorage.removeItem('utpost_groq'); openModal(); throw new Error('Invalid key — reset karo'); }
-    throw new Error(e.error?.message||'Groq error '+res.status);
-  }
+  if(!res.ok){ const e=await res.json().catch(()=>({})); if(res.status===401){localStorage.removeItem('utg');openModal();throw new Error('Key invalid');} throw new Error(e.error?.message||'Error '+res.status); }
   return (await res.json()).choices[0].message.content;
 }
 
-function buildImagePrompt(cat, detail){
-  let base = imagePrompts[cat] || 'Beautiful Indian wedding celebration, professional photography, photorealistic, 4K';
-  if(detail) base = base.replace(', photorealistic', `, ${detail}, photorealistic`);
-  return base;
+// PROMPTS — 5 variations each
+const prompts={
+  'Bridal Lehenga & Looks':['Stunning Indian bride in red gold bridal lehenga intricate zari embroidery, maang tikka nath gold jewelry, decorated mandap marigold fairy lights, soft warm lighting, photorealistic professional wedding photography 4K','Indian bride in deep maroon lehenga heavy gold embroidery, traditional jewelry, flower wall backdrop, golden hour light, cinematic photorealistic 4K','Indian bride twirling pink gold lehenga, dramatic lighting, floral arch, jewelry sparkling, motion blur skirt, photorealistic fashion photography','Elegant Indian bride pastel mint lehenga silver embroidery, sitting vintage chair, roses around, soft dreamy light, photorealistic editorial photography','Indian bride royal blue lehenga gold gota patti, marigold garlands, candid joyful expression, photorealistic wedding photography 4K'],
+  'Wedding Photography':['Indian bride groom golden hour walk, red lehenga cream sherwani, flower petals falling, bokeh background, cinematic photorealistic','Bride groom under floral mandap exchanging garlands, family around, candid emotional moment, warm soft lighting, photorealistic','Romantic close up Indian couple foreheads touching, traditional attire, fairy lights bokeh, photorealistic intimate portrait','Aerial view Indian outdoor wedding ceremony, circular mandap, colorful sarees, lush garden, photorealistic drone photography','Indian bride laughing with bridesmaids coordinated lehengas, confetti air, candid joy, golden hour, photorealistic'],
+  'Wedding Venue & Decoration':['Grand Indian wedding mandap white pink roses marigold garlands, draped fabric ceiling, fairy lights, candlelight, photorealistic luxury event photography','Indian wedding reception hall floral chandeliers, rose centerpiece tables, warm amber lighting, red carpet, photorealistic interior','Outdoor Indian wedding night venue, marigold curtain entrance, diyas pathway, fairy lights trees, romantic atmosphere photorealistic','Indian wedding stage massive floral wall backdrop, pink white gold flowers, throne chairs, dramatic lighting, photorealistic','Intimate Indian wedding venue jasmine flower strings, terracotta pots, warm afternoon sunlight, earthy decor photorealistic'],
+  'Bridal Makeup Artist':['Close up Indian bride flawless bridal makeup, smoky gold eyes, bold red lips, maang tikka, soft studio lighting, photorealistic beauty photography','Indian bridal makeup in progress, artist applying eyeshadow, bride in mirror, vanity flowers lights, behind scenes photorealistic','Indian bride dewy skin rose gold eyeshadow nude lips, minimalist modern bridal look, white background, clean editorial photography','Traditional Bengali bride bright red sindoor kajal eyes traditional jewelry, authentic cultural look, photorealistic portrait','Indian bride bold smoky eye dramatic contour, deep red lips, bridal lehenga partial visible, dark moody background photorealistic'],
+  'Wedding Catering & Food':['Elaborate Indian wedding feast biryani paneer sweets on banana leaves silver thalis, floral decoration, photorealistic food photography','Indian wedding live chaat stall, pani puri bhel colorful snacks, happy guests eating, festive evening, photorealistic candid','Luxury Indian wedding dessert table, gulab jamun rasmalai macarons tiered stands, gold white fairy lights, photorealistic','Indian wedding buffet night, warmly lit food stations, chefs white uniform, guests traditional attire, photorealistic wide angle','Traditional Indian wedding thali perfect arrangement rice dal sabzi sweet, gold thali silver bowls, photorealistic food styling'],
+  'Mehndi & Haldi Ceremony':['Indian bride hands intricate mehndi henna design peacock flower patterns, gold bangles, natural lighting, close up photorealistic','Vibrant haldi ceremony, bride family laughing, turmeric paste applied, marigold flowers everywhere, candid joy photorealistic','Indian mehndi night, bride on flower decorated swing, women applying mehndi, diyas lit, cultural photography photorealistic','Detailed mehndi design bride feet anklets toe rings, flower petals, macro photography photorealistic','Haldi function outdoor, women in yellow outfits, throwing flower petals, morning sunlight, candid photorealistic'],
+  'Wedding Band & DJ':['Indian wedding baraat procession groom white horse, dhol players colorful kurtas, guests dancing, marigold, night lights photorealistic','Indian wedding DJ setup LED lights, crowded dance floor traditional attire guests dancing, night celebration, photorealistic','Shehnai player at wedding entrance, flowers around, guests arriving, golden morning light, cultural music photorealistic','Indian wedding band brass instruments colorful turbans, outdoor wedding, guests clapping, photorealistic wide angle','Groom dancing groomsmen baraat, dhol beating, fireworks background, vibrant lighting, pure celebration candid photorealistic'],
+  'Destination Wedding':['Romantic destination wedding Rajasthan palace, bride white gold lehenga, flower arch golden sunset, cinematic photorealistic','Beach destination wedding India, couple barefoot sand, floral mandap ocean waves, sunset orange pink, photorealistic','Hill station wedding couple misty mountain venue, pine trees, bride pastel lehenga, serene landscape photorealistic','Kerala backwaters wedding couple decorated houseboat, water reflections, tropical flowers, golden hour photorealistic','Udaipur lake palace wedding, white gold decor, couple on boat, city palace background, sunset luxury photorealistic'],
+  'Wedding Invitation Cards':['Luxury Indian wedding invitation flat lay, deep red gold, floral motifs gold foil embossing, rose petals, photorealistic product photography','Modern Indian invitation suite white rose gold minimalist, wax seal dried flowers marble surface, photorealistic flat lay','Traditional Indian wedding card ganesha motif, saffron gold, intricate border, wooden surface, photorealistic','Boxed Indian wedding invitation hamper, velvet box dry fruits sweets, gold ribbons, luxury unboxing photorealistic','Watercolor floral Indian wedding invitation pastel colors, hand lettering, surrounded fresh flowers photorealistic'],
+  'Wedding Cake & Sweets':['Indian wedding cake 4 tier white gold floral fondant decorations, mithai silver bowls, warm lighting, photorealistic','Fusion wedding dessert table 3 tier cake with gulab jamun rasmalai jalebi, gold white fairy lights, photorealistic','Elegant wedding cake Indian paisley motifs red gold, fresh roses on top, marble table, photorealistic food photography','Indian wedding sweet shop display, colorful barfi ladoo halwa rows, gold silver foil, festive setup photorealistic','Couple cutting wedding cake traditional attire, flowers, guests cheering, candid celebration moment photorealistic']
+};
+
+function buildPrompt(cat,detail){
+  const list=prompts[cat]||['Beautiful Indian wedding celebration, professional photography, photorealistic, cinematic, 4K'];
+  let p=list[Math.floor(Math.random()*list.length)];
+  if(detail) p+=', '+detail;
+  return p+', ultra high quality, Instagram worthy, cinematic lighting';
 }
 
-function showOutput(caption, prompt){
-  const lines=caption.split('\n').filter(l=>l.trim());
-  const hLines=lines.filter(l=>l.trim().startsWith('#'));
-  const tLines=lines.filter(l=>!l.trim().startsWith('#'));
-  const esc=e=>e.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-
-  document.getElementById('outputArea').innerHTML=`
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">📝 Instagram Caption</div>
-        <button class="copy-btn" id="capCopyBtn" onclick="copyText('capCopyBtn', document.getElementById('captionRaw').textContent)">Copy</button>
-      </div>
-      <div class="output-text">
-        ${esc(tLines.join('\n'))}
-        ${hLines.length?`\n\n<span class="htags">${esc(hLines.join('\n'))}</span>`:''}
-      </div>
-      <span id="captionRaw" style="display:none">${esc(caption)}</span>
-    </div>
-
-    <div class="prompt-card">
-      <div class="card-header">
-        <div class="card-title">🎨 Gemini Image Prompt</div>
-        <button class="copy-btn" id="promCopyBtn" onclick="copyText('promCopyBtn', \`${prompt.replace(/`/g,"'")}\`)">Copy Prompt</button>
-      </div>
-      <div class="prompt-label">
-        Yeh prompt copy karo → <a href="https://gemini.google.com" target="_blank" style="color:#F5A623">gemini.google.com</a> mein paste karo → image generate karo → download karo → yahan Claude ko bhejo
-      </div>
-      <div class="prompt-text">${esc(prompt)}</div>
-    </div>
-  `;
+function showCaption(cap){
+  const lines=cap.split('\n').filter(l=>l.trim());
+  const htags=lines.filter(l=>l.startsWith('#')).join(' ');
+  const main=lines.filter(l=>!l.startsWith('#')).join('\n');
+  const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  document.getElementById('capOut').innerHTML=esc(main)+(htags?'\n\n<span class="htags">'+esc(htags)+'</span>':'');
+  document.getElementById('capCard').style.display='block';
+}
+function showPrompt(p){
+  document.getElementById('promptOut').textContent=p;
+  document.getElementById('promptCard').style.display='block';
 }
 
-function copyText(btnId, text){
+// COPY
+function cp(btnId,text){
   navigator.clipboard.writeText(text).then(()=>{
-    const btn=document.getElementById(btnId);
-    btn.textContent='✓ Copied!'; btn.className='copy-btn copied';
-    setTimeout(()=>{ btn.textContent=btnId==='capCopyBtn'?'Copy':'Copy Prompt'; btn.className='copy-btn'; },2000);
+    const b=document.getElementById(btnId);
+    const orig=b.textContent; b.textContent='✓ Copied!'; b.className='copy-btn ok';
+    setTimeout(()=>{ b.textContent=orig; b.className='copy-btn'; },2000);
   });
+}
+
+// DRAG DROP
+function ev(e){ e.preventDefault(); document.getElementById('dropZone').classList.add('drag'); }
+function drop(e){
+  e.preventDefault(); document.getElementById('dropZone').classList.remove('drag');
+  const f=e.dataTransfer.files[0]; if(f) loadImg(f);
+}
+
+// LOAD IMAGE + DRAW CANVAS
+function loadImg(file){
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=new Image();
+    img.onload=()=>{ window._imgData=img; drawCanvas(img); };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function drawCanvas(img){
+  const cv=document.getElementById('cv');
+  cv.width=1080; cv.height=1080;
+  const ctx=cv.getContext('2d');
+
+  // 1. Draw uploaded image
+  const scale=Math.max(1080/img.width, 1080/img.height);
+  const sw=img.width*scale, sh=img.height*scale;
+  const ox=(1080-sw)/2, oy=(1080-sh)/2;
+  ctx.drawImage(img, ox, oy, sw, sh);
+
+  // 2. Top gradient overlay for logo
+  const topGrad=ctx.createLinearGradient(0,0,0,200);
+  topGrad.addColorStop(0,'rgba(0,0,0,0.75)');
+  topGrad.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=topGrad; ctx.fillRect(0,0,1080,200);
+
+  // 3. Bottom gradient overlay for caption
+  const btmGrad=ctx.createLinearGradient(0,600,0,1080);
+  btmGrad.addColorStop(0,'rgba(0,0,0,0)');
+  btmGrad.addColorStop(0.4,'rgba(0,0,0,0.65)');
+  btmGrad.addColorStop(1,'rgba(0,0,0,0.9)');
+  ctx.fillStyle=btmGrad; ctx.fillRect(0,600,1080,480);
+
+  // 4. Logo box
+  const lg=ctx.createLinearGradient(40,30,110,100);
+  lg.addColorStop(0,'#E8472A'); lg.addColorStop(1,'#F5A623');
+  ctx.fillStyle=lg;
+  roundRect(ctx,40,30,72,72,12); ctx.fill();
+  ctx.fillStyle='#fff'; ctx.font='bold 40px serif';
+  ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('U',76,68);
+
+  // 5. Brand name
+  ctx.shadowColor='rgba(0,0,0,0.8)'; ctx.shadowBlur=8;
+  ctx.fillStyle='#fff'; ctx.font='bold 30px sans-serif';
+  ctx.textAlign='left'; ctx.textBaseline='top'; ctx.fillText('UTSAAV',126,38);
+  ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.font='16px sans-serif';
+  ctx.fillText('utsaav.in',126,74); ctx.shadowBlur=0;
+
+  // 6. Caption lines on image
+  const cap=window._caption||'';
+  const capLines=cap.split('\n').filter(l=>l.trim()&&!l.startsWith('#'));
+  const l1=capLines[0]||'Your dream wedding starts here';
+  const l2=capLines[1]||'Discover vendors at utsaav.in';
+  const l3=capLines[2]||'';
+
+  ctx.shadowColor='rgba(0,0,0,1)'; ctx.shadowBlur=12;
+  ctx.fillStyle='#fff'; ctx.font='bold 36px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='top';
+  wrapText(ctx,l1,540,760,960,44);
+  ctx.font='28px sans-serif'; ctx.fillStyle='rgba(255,255,255,0.88)';
+  wrapText(ctx,l2,540,820,960,36);
+  if(l3){ ctx.font='24px sans-serif'; ctx.fillStyle='rgba(255,255,255,0.7)'; wrapText(ctx,l3,540,872,960,30); }
+  ctx.shadowBlur=0;
+
+  // 7. utsaav.in watermark
+  ctx.fillStyle='rgba(255,255,255,0.35)'; ctx.font='18px sans-serif';
+  ctx.textAlign='right'; ctx.textBaseline='bottom'; ctx.fillText('utsaav.in',1048,1050);
+
+  document.getElementById('previewSection').style.display='block';
+  document.getElementById('uploadSection').style.display='none';
+  document.getElementById('st2').className='status ok';
+  document.getElementById('st2').textContent='✓ Preview ready! Download karo.';
+}
+
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath(); ctx.moveTo(x+r,y);
+  ctx.lineTo(x+w-r,y); ctx.arcTo(x+w,y,x+w,y+r,r);
+  ctx.lineTo(x+w,y+h-r); ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+  ctx.lineTo(x+r,y+h); ctx.arcTo(x,y+h,x,y+h-r,r);
+  ctx.lineTo(x,y+r); ctx.arcTo(x,y,x+r,y,r); ctx.closePath();
+}
+function wrapText(ctx,text,cx,y,maxW,lh){
+  if(!text) return;
+  const words=text.split(' '); let line='';
+  for(const w of words){
+    const t=line+w+' ';
+    if(ctx.measureText(t).width>maxW&&line){ ctx.fillText(line.trim(),cx,y); line=w+' '; y+=lh; }
+    else line=t;
+  }
+  if(line) ctx.fillText(line.trim(),cx,y);
+}
+
+function download(){
+  const cv=document.getElementById('cv');
+  const a=document.createElement('a'); a.download='utsaav-post.jpg';
+  a.href=cv.toDataURL('image/jpeg',0.95); a.click();
 }
 </script>
 </body>
