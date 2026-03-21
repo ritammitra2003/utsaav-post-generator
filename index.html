@@ -533,7 +533,7 @@ function showPost(cap,url){
   const firstLine = escaped(tLines[0]||'');
   const secondLine = escaped(tLines[1]||'');
 
-  const imgHtml = `<img src="${url}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onload="document.getElementById('iLoader').classList.add('gone')" />`;
+  const imgHtml = `<img id="postImg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s" />`;
 
   document.getElementById('igWrap').innerHTML=`
   <div class="ig-wrap">
@@ -576,6 +576,14 @@ function showPost(cap,url){
     </div>
     <div class="ig-time">just now</div>
   </div>`;
+
+  // Set image directly after DOM render (avoids base64 truncation in template)
+  const postImg = document.getElementById('postImg');
+  const loader = document.getElementById('iLoader');
+  if(postImg){
+    postImg.onload = () => { postImg.style.opacity = '1'; if(loader) loader.classList.add('gone'); };
+    postImg.src = url;
+  }
 }
 
 function showError(msg){
