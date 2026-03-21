@@ -96,8 +96,48 @@ canvas{width:100%;height:auto;display:block;border-radius:8px}
 
 <div class="topbar">
   <div class="brand">
-    <div class="logo-box">U</div>
-    <div><div class="brand-name">UTSAAV</div><div class="brand-sub">Instagram Post Generator</div></div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 60" height="48">
+      <defs>
+        <linearGradient id="uG" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#FFE090"/>
+          <stop offset="50%" stop-color="#D4880A"/>
+          <stop offset="100%" stop-color="#8B4A05"/>
+        </linearGradient>
+        <linearGradient id="tG" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#FFE090"/>
+          <stop offset="50%" stop-color="#F0C040"/>
+          <stop offset="100%" stop-color="#FFE090"/>
+        </linearGradient>
+        <linearGradient id="flG" x1="0%" y1="100%" x2="0%" y2="0%">
+          <stop offset="0%" stop-color="#AA2200"/>
+          <stop offset="40%" stop-color="#FF5500"/>
+          <stop offset="80%" stop-color="#FFB800"/>
+          <stop offset="100%" stop-color="#FFFBCC"/>
+        </linearGradient>
+        <filter id="fg"><feGaussianBlur stdDeviation="1" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <!-- Octagon icon -->
+      <polygon points="30,2 46,2 54,10 54,50 46,58 14,58 6,50 6,10 14,2" fill="none" stroke="url(#uG)" stroke-width="1.2" opacity="0.8" filter="url(#fg)"/>
+      <!-- Corner dots -->
+      <circle cx="30" cy="2"  r="1.5" fill="#F0C040"/>
+      <circle cx="30" cy="58" r="1.5" fill="#F0C040"/>
+      <circle cx="6"  cy="30" r="1.5" fill="#D4880A"/>
+      <circle cx="54" cy="30" r="1.5" fill="#D4880A"/>
+      <!-- U shape -->
+      <path d="M 14 10 L 14 36 Q 14 52 30 52 Q 46 52 46 36 L 46 10 L 40 10 L 40 36 Q 40 46 30 46 Q 20 46 20 36 L 20 10 Z" fill="url(#uG)" filter="url(#fg)"/>
+      <ellipse cx="17" cy="10" rx="3" ry="3" fill="url(#uG)" filter="url(#fg)"/>
+      <ellipse cx="43" cy="10" rx="3" ry="3" fill="url(#uG)" filter="url(#fg)"/>
+      <!-- Diya -->
+      <ellipse cx="30" cy="45" rx="6" ry="2.5" fill="#D4880A"/>
+      <line x1="30" y1="42" x2="30" y2="40" stroke="#F0C040" stroke-width="1.2" stroke-linecap="round"/>
+      <!-- Flame -->
+      <path d="M 30 40 C 27 36,26 30,27 24 C 28 19,29 14,30 10 C 31 14,32 19,33 24 C 34 30,33 36,30 40 Z" fill="url(#flG)" filter="url(#fg)"/>
+      <path d="M 30 38 C 28.5 34,28 28,29 23 C 29.5 18,30 13,30 10 C 30.5 13,31 18,31.5 23 C 32.5 28,32 34,30 38 Z" fill="#FFFBCC" opacity="0.6"/>
+      <!-- UTSAAV text -->
+      <text x="66" y="36" font-family="Palatino Linotype,Book Antiqua,Georgia,serif" font-size="28" font-weight="700" letter-spacing="4" fill="url(#tG)">UTSAAV</text>
+      <!-- Subtitle -->
+      <text x="68" y="52" font-family="Georgia,serif" font-size="10" letter-spacing="1.5" fill="rgba(255,220,120,0.6)">Instagram Post Generator</text>
+    </svg>
   </div>
   <button class="key-btn" onclick="openModal()">
     <span class="kdot" id="kdot"></span>
