@@ -362,14 +362,14 @@ async function generate(){
 async function geminiImage(key, cat, detail){
   const base = imgPrompts[cat] || 'Indian wedding celebration';
   const prompt = detail ? `${base}, ${detail}` : base;
-  const fullPrompt = prompt + ', photorealistic, professional wedding photography, beautiful, vibrant colors, Instagram worthy, cinematic';
+  const fullPrompt = prompt + ', photorealistic, professional Indian wedding photography, beautiful, vibrant colors, cinematic lighting, high quality';
 
-  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=${key}`, {
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${key}`, {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
     body: JSON.stringify({
       contents: [{parts: [{text: fullPrompt}]}],
-      generationConfig: {responseModalities: ['IMAGE']}
+      generationConfig: {responseModalities: ['IMAGE', 'TEXT']}
     })
   });
 
@@ -382,7 +382,7 @@ async function geminiImage(key, cat, detail){
   if(part?.inlineData?.data){
     return 'data:' + part.inlineData.mimeType + ';base64,' + part.inlineData.data;
   }
-  throw new Error('No image returned');
+  throw new Error('No image returned from Gemini');
 }
 
 async function groqCaption(key,cat,tone,detail,lang,emoji){
