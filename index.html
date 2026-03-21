@@ -220,15 +220,21 @@ select option{background:#1f1f1f}
 <div class="modal-bg" id="modalBg">
   <div class="modal">
     <div class="modal-logo"><span>UTSAAV</span></div>
-    <div class="modal-sub">Instagram Post Generator · AI Powered</div>
-    <div class="modal-label">Groq API Key (Free)</div>
+    <div class="modal-sub">2 free keys chahiye — dono 2 min mein milte hain</div>
+
+    <div class="modal-label" style="margin-top:4px">1️⃣ Groq Key — Captions ke liye (Free)</div>
     <input class="modal-input" type="password" id="keyInput" placeholder="gsk_..." autocomplete="off"/>
     <div class="modal-hint">
-      Free key: <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a><br>
-      Login → "Create API Key" → copy <b style="color:#aaa">gsk_...</b> key<br>
-      <span style="color:#333">Sirf browser mein save hoga. Kahi share nahi hoga.</span>
+      <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a> → Create API Key → copy <b style="color:#aaa">gsk_...</b>
     </div>
-    <button class="modal-btn" onclick="saveKey()">Save & Start →</button>
+
+    <div class="modal-label">2️⃣ Gemini Key — Images ke liye (Free)</div>
+    <input class="modal-input" type="password" id="geminiInput" placeholder="AIzaSy..." autocomplete="off"/>
+    <div class="modal-hint">
+      <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a> → Create API Key → copy <b style="color:#aaa">AIzaSy...</b>
+    </div>
+
+    <button class="modal-btn" onclick="saveKey()">Save & Generate →</button>
     <div class="modal-err" id="modalErr"></div>
   </div>
 </div>
@@ -253,31 +259,39 @@ const imgPrompts = {
 };
 
 // Key management
-function getKey(){ return localStorage.getItem('utpost_key')||''; }
+function getGroqKey(){ return localStorage.getItem('utpost_key')||''; }
+function getGeminiKey(){ return localStorage.getItem('utpost_gemini_key')||''; }
 function openModal(){
-  const k=getKey(); if(k) document.getElementById('keyInput').value=k;
+  const g=getGroqKey(); if(g) document.getElementById('keyInput').value=g;
+  const gm=getGeminiKey(); if(gm) document.getElementById('geminiInput').value=gm;
   document.getElementById('modalBg').style.display='flex';
   document.getElementById('modalErr').textContent='';
 }
 function saveKey(){
-  const v=document.getElementById('keyInput').value.trim();
-  if(!v.startsWith('gsk_')){
+  const groq=document.getElementById('keyInput').value.trim();
+  const gemini=document.getElementById('geminiInput').value.trim();
+  if(!groq.startsWith('gsk_')){
     document.getElementById('modalErr').textContent='Groq key chahiye — gsk_ se start hona chahiye';
     return;
   }
-  localStorage.setItem('utpost_key',v);
+  if(!gemini.startsWith('AIza')){
+    document.getElementById('modalErr').textContent='Gemini key chahiye — AIzaSy... se start hona chahiye';
+    return;
+  }
+  localStorage.setItem('utpost_key', groq);
+  localStorage.setItem('utpost_gemini_key', gemini);
   document.getElementById('modalBg').style.display='none';
   updateKeyUI(true);
 }
 function updateKeyUI(on){
   document.getElementById('keyDot').className='key-dot'+(on?' on':'');
-  document.getElementById('keyLabel').textContent=on?'🔑 Groq Key Set':'Set Groq API Key';
+  document.getElementById('keyLabel').textContent=on?'🔑 Keys Set':'Set API Keys';
 }
 
 window.addEventListener('load',()=>{
-  const k=getKey();
-  document.getElementById('modalBg').style.display=k?'none':'flex';
-  updateKeyUI(!!k);
+  const k=getGroqKey(), gk=getGeminiKey();
+  document.getElementById('modalBg').style.display=(k&&gk)?'none':'flex';
+  updateKeyUI(!!(k&&gk));
   document.getElementById('keyInput').addEventListener('keydown',e=>{ if(e.key==='Enter') saveKey(); });
 });
 
@@ -298,9 +312,6 @@ function setStep(pct,msg){
 function clearStep(){ document.getElementById('stepBar').style.display='none'; document.getElementById('stepMsg').textContent=''; }
 
 async function generate(){
-  const key=getKey();
-  if(!key){ openModal(); return; }
-
   const btn=document.getElementById('genBtn');
   const lbl=document.getElementById('genLbl');
   const status=document.getElementById('statusEl');
@@ -315,15 +326,20 @@ async function generate(){
   setStep(30,'Writing caption with Groq AI...');
   showLoader();
 
+  const groqKey = getGroqKey();
+  const geminiKey = getGeminiKey();
+  if(!groqKey||!geminiKey){ openModal(); btn.disabled=false; lbl.textContent='Generate Post'; return; }
+
   try {
-    caption = await groqCaption(key,cat,tone,detail,lang,emoji);
+    caption = await groqCaption(groqKey,cat,tone,detail,lang,emoji);
     window._lastCaption = caption;
     document.getElementById('capText').textContent=caption;
     document.getElementById('capCard').classList.add('show');
 
-    setStep(80,'Loading image...');
-    imgUrl = getUnsplashUrl(cat);
-    showPost(caption,imgUrl);
+    setStep(60,'Generating AI image with Gemini...');
+    showLoader();
+    imgUrl = await geminiImage(geminiKey, cat, detail);
+    showPost(caption, imgUrl);
 
     setStep(100,'Done!');
     setTimeout(clearStep,600);
@@ -334,9 +350,39 @@ async function generate(){
     clearStep();
     status.className='status err';
     status.textContent='✗ '+(e.message||'Failed. Try again.');
-    showError(e.message||'Error');
+    // fallback to canvas
+    imgUrl = getUnsplashUrl(cat);
+    showPost(caption||'', imgUrl);
+    document.getElementById('actRow').style.display='flex';
   }
   btn.disabled=false; lbl.textContent='Generate Post';
+}
+
+
+async function geminiImage(key, cat, detail){
+  const base = imgPrompts[cat] || 'Indian wedding celebration';
+  const prompt = detail ? `${base}, ${detail}` : base;
+  const fullPrompt = prompt + ', photorealistic, professional wedding photography, beautiful, vibrant colors, Instagram worthy, cinematic';
+
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=${key}`, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({
+      contents: [{parts: [{text: fullPrompt}]}],
+      generationConfig: {responseModalities: ['IMAGE']}
+    })
+  });
+
+  if(!res.ok){
+    const e = await res.json().catch(()=>({}));
+    throw new Error(e.error?.message || 'Gemini image error '+res.status);
+  }
+  const data = await res.json();
+  const part = data.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
+  if(part?.inlineData?.data){
+    return 'data:' + part.inlineData.mimeType + ';base64,' + part.inlineData.data;
+  }
+  throw new Error('No image returned');
 }
 
 async function groqCaption(key,cat,tone,detail,lang,emoji){
