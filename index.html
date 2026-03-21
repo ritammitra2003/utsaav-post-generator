@@ -12,7 +12,6 @@
   --bdr:#2a2a2a;--txt:#f0f0f0;--mut:#666;--soft:#aaa;
 }
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
-
 .topbar{background:var(--surf);border-bottom:1px solid var(--bdr);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
 .brand{display:flex;align-items:center;gap:10px}
 .brand-logo{width:34px;height:34px;background:linear-gradient(135deg,var(--acc),var(--acc2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:#fff}
@@ -22,102 +21,84 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .key-btn:hover{border-color:#444}
 .key-dot{width:7px;height:7px;border-radius:50%;background:#555;transition:background .3s}
 .key-dot.on{background:#4caf50}
-
-.layout{display:grid;grid-template-columns:340px 1fr;min-height:calc(100vh - 63px)}
-@media(max-width:780px){.layout{grid-template-columns:1fr}}
-
-.sidebar{background:var(--surf);border-right:1px solid var(--bdr);padding:18px;overflow-y:auto;max-height:calc(100vh - 63px)}
-.slabel{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--mut);margin:16px 0 8px}
+.layout{display:grid;grid-template-columns:300px 1fr;min-height:calc(100vh - 63px)}
+@media(max-width:700px){.layout{grid-template-columns:1fr}}
+.sidebar{background:var(--surf);border-right:1px solid var(--bdr);padding:14px;overflow-y:auto;max-height:calc(100vh - 63px)}
+.slabel{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--mut);margin:12px 0 6px}
 .slabel:first-child{margin-top:0}
-
-.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
-.cat-btn{background:var(--surf2);border:1px solid var(--bdr);border-radius:9px;color:var(--soft);padding:8px 5px;font-size:12px;cursor:pointer;transition:all .15s;text-align:center;line-height:1.4}
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.cat-btn{background:var(--surf2);border:1px solid var(--bdr);border-radius:8px;color:var(--soft);padding:7px 4px;font-size:11px;cursor:pointer;transition:all .15s;text-align:center;line-height:1.4}
 .cat-btn:hover{border-color:#444;color:var(--txt)}
 .cat-btn.active{background:#E8472A18;border-color:var(--acc);color:#ff6a50;font-weight:600}
-
-.chips{display:flex;flex-wrap:wrap;gap:5px}
-.chip{padding:5px 11px;border-radius:20px;font-size:12px;border:1px solid var(--bdr);background:var(--surf2);color:var(--soft);cursor:pointer;transition:all .15s}
+.chips{display:flex;flex-wrap:wrap;gap:4px}
+.chip{padding:4px 10px;border-radius:20px;font-size:11px;border:1px solid var(--bdr);background:var(--surf2);color:var(--soft);cursor:pointer;transition:all .15s}
 .chip:hover{border-color:#555;color:var(--txt)}
 .chip.active{background:#F5A62318;border-color:var(--acc2);color:var(--acc2)}
-
-.field{margin-bottom:11px}
-.field label{display:block;font-size:11px;color:var(--mut);margin-bottom:4px}
-input[type=text],select{width:100%;background:var(--surf2);border:1px solid var(--bdr);border-radius:8px;color:var(--txt);padding:9px 11px;font-size:13px;font-family:inherit;outline:none;transition:border-color .15s}
+.field{margin-bottom:9px}
+.field label{display:block;font-size:10px;color:var(--mut);margin-bottom:3px}
+input[type=text],select{width:100%;background:var(--surf2);border:1px solid var(--bdr);border-radius:7px;color:var(--txt);padding:7px 10px;font-size:12px;font-family:inherit;outline:none;transition:border-color .15s}
 input[type=text]:focus,select:focus{border-color:var(--acc)}
 select option{background:#1f1f1f}
-
-.gen-btn{width:100%;margin-top:6px;padding:13px;background:linear-gradient(135deg,var(--acc),var(--acc2));border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .2s,transform .1s;font-family:inherit}
+.gen-btn{width:100%;margin-top:6px;padding:11px;background:linear-gradient(135deg,var(--acc),var(--acc2));border:none;border-radius:9px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .2s,transform .1s;font-family:inherit}
 .gen-btn:hover{opacity:.88}
 .gen-btn:active{transform:scale(.98)}
 .gen-btn:disabled{opacity:.4;cursor:not-allowed}
-
-.main{padding:24px;display:flex;flex-direction:column;align-items:center;gap:16px}
-
-.step-bar{width:100%;max-width:420px;height:3px;background:var(--bdr);border-radius:2px;overflow:hidden;display:none}
+.main{padding:20px;display:flex;flex-direction:column;align-items:center;gap:14px;overflow-y:auto;max-height:calc(100vh - 63px)}
+.step-bar{width:100%;max-width:380px;height:3px;background:var(--bdr);border-radius:2px;overflow:hidden;display:none}
 .step-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--acc),var(--acc2));transition:width .4s ease;border-radius:2px}
-.step-msg{font-size:11px;color:var(--mut);text-align:center;width:100%;max-width:420px;margin-top:-4px;min-height:16px}
-
-.ig-wrap{width:100%;max-width:420px;background:#000;border:1px solid #2a2a2a;border-radius:16px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.5)}
-.ig-header{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid #1a1a1a}
-.ig-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#E8472A,#F5A623);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:#fff;flex-shrink:0}
-.ig-username{font-weight:700;font-size:13px;color:#fff}
+.step-msg{font-size:11px;color:var(--mut);text-align:center;width:100%;max-width:380px;margin-top:-6px;min-height:14px}
+.ig-wrap{width:100%;max-width:380px;background:#000;border:1px solid #2a2a2a;border-radius:14px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.5)}
+.ig-header{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid #1a1a1a}
+.ig-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#E8472A,#F5A623);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:#fff;flex-shrink:0}
+.ig-username{font-weight:700;font-size:12px;color:#fff}
 .ig-loc{font-size:10px;color:#888;margin-top:1px}
-.ig-dots{margin-left:auto;color:#888;font-size:18px}
-
+.ig-dots{margin-left:auto;color:#888;font-size:16px}
 .ig-img-box{position:relative;width:100%;padding-top:100%;background:#111;overflow:hidden}
 .ig-img-box img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s}
 .img-loader{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#0d0d0d;z-index:2;transition:opacity .4s}
 .img-loader.gone{opacity:0;pointer-events:none}
-.ring{width:38px;height:38px;border:3px solid #222;border-top:3px solid var(--acc);border-right:3px solid var(--acc2);border-radius:50%;animation:spin .85s linear infinite}
+.ring{width:34px;height:34px;border:3px solid #222;border-top:3px solid var(--acc);border-right:3px solid var(--acc2);border-radius:50%;animation:spin .85s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.ring-text{font-size:12px;color:#555}
-
-.ig-dots-bar{display:flex;justify-content:center;gap:4px;padding:6px 0;background:#000}
-.idot{width:6px;height:6px;border-radius:50%;background:#333}
-.idot.on{background:#3b9ae1;width:18px;border-radius:3px}
-
-.ig-actions{display:flex;align-items:center;padding:10px 14px 6px;gap:14px}
-.ig-ico{font-size:22px;cursor:pointer}
+.ring-text{font-size:11px;color:#555}
+.ig-dots-bar{display:flex;justify-content:center;gap:4px;padding:5px 0;background:#000}
+.idot{width:5px;height:5px;border-radius:50%;background:#333}
+.idot.on{background:#3b9ae1;width:16px;border-radius:3px}
+.ig-actions{display:flex;align-items:center;padding:8px 12px 5px;gap:12px}
+.ig-ico{font-size:20px;cursor:pointer}
 .ig-bm{margin-left:auto}
-.ig-likes{padding:0 14px 4px;font-size:13px;font-weight:700;color:#fff}
-.ig-caption{padding:0 14px 14px;font-size:13px;color:#ccc;line-height:1.55}
-.ig-caption .uname{color:#fff;font-weight:700;margin-right:5px}
+.ig-likes{padding:0 12px 4px;font-size:12px;font-weight:700;color:#fff}
+.ig-caption{padding:0 12px 12px;font-size:12px;color:#ccc;line-height:1.55}
+.ig-caption .uname{color:#fff;font-weight:700;margin-right:4px}
 .ig-caption .htags{color:#4A9EFF}
-.ig-time{padding:0 14px 14px;font-size:10px;color:#555}
-
-.placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:360px;gap:14px;text-align:center;padding:30px}
-.ph-icon{font-size:52px;opacity:.12}
-.ph-t{font-size:14px;color:#555}
-.ph-s{font-size:12px;color:#333}
-
-.cap-card{width:100%;max-width:420px;background:var(--surf);border:1px solid var(--bdr);border-radius:12px;padding:14px 16px;display:none}
+.ig-time{padding:0 12px 12px;font-size:10px;color:#555}
+.placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px;gap:12px;text-align:center;padding:24px}
+.ph-icon{font-size:44px;opacity:.12}
+.ph-t{font-size:13px;color:#555}
+.ph-s{font-size:11px;color:#333}
+.cap-card{width:100%;max-width:380px;background:var(--surf);border:1px solid var(--bdr);border-radius:10px;padding:12px 14px;display:none}
 .cap-card.show{display:block}
-.cap-label{font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
-.cap-text{font-size:13px;color:var(--soft);line-height:1.6;white-space:pre-wrap;word-break:break-word}
-
-.act-row{display:flex;gap:8px;width:100%;max-width:420px;display:none}
-.act-btn{flex:1;padding:10px 6px;border-radius:10px;border:1px solid var(--bdr);background:var(--surf);color:var(--soft);font-size:12px;cursor:pointer;text-align:center;transition:all .15s;font-family:inherit}
+.cap-label{font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.cap-text{font-size:12px;color:var(--soft);line-height:1.6;white-space:pre-wrap;word-break:break-word;max-height:120px;overflow-y:auto}
+.act-row{display:flex;gap:6px;width:100%;max-width:380px}
+.act-btn{flex:1;padding:9px 4px;border-radius:9px;border:1px solid var(--bdr);background:var(--surf);color:var(--soft);font-size:11px;cursor:pointer;text-align:center;transition:all .15s;font-family:inherit}
 .act-btn:hover{border-color:#444;color:var(--txt)}
 .act-btn.pri{background:linear-gradient(135deg,var(--acc),var(--acc2));border:none;color:#fff;font-weight:700}
 .act-btn.pri:hover{opacity:.85}
-
-.status{font-size:12px;color:var(--mut);min-height:16px;text-align:center}
+.status{font-size:11px;color:var(--mut);min-height:14px;text-align:center}
 .status.ok{color:#4caf50}
 .status.err{color:var(--acc)}
-
-/* MODAL */
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;z-index:999}
-.modal{background:#161616;border:1px solid #2a2a2a;border-radius:16px;padding:28px;width:90%;max-width:400px}
-.modal-logo{font-size:22px;font-weight:800;letter-spacing:1px;margin-bottom:3px}
+.modal{background:#161616;border:1px solid #2a2a2a;border-radius:14px;padding:24px;width:90%;max-width:380px}
+.modal-logo{font-size:20px;font-weight:800;letter-spacing:1px;margin-bottom:3px}
 .modal-logo span{background:linear-gradient(135deg,#E8472A,#F5A623);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.modal-sub{font-size:12px;color:#555;margin-bottom:20px}
-.modal-label{font-size:11px;color:#888;margin-bottom:5px}
-.modal-input{width:100%;background:#1f1f1f;border:1px solid #333;border-radius:8px;color:#f0f0f0;padding:11px 13px;font-size:13px;font-family:monospace;outline:none;margin-bottom:6px;transition:border-color .15s}
+.modal-sub{font-size:11px;color:#555;margin-bottom:16px}
+.modal-label{font-size:11px;color:#888;margin-bottom:4px}
+.modal-input{width:100%;background:#1f1f1f;border:1px solid #333;border-radius:7px;color:#f0f0f0;padding:10px 12px;font-size:12px;font-family:monospace;outline:none;margin-bottom:5px;transition:border-color .15s}
 .modal-input:focus{border-color:#E8472A}
-.modal-hint{font-size:11px;color:#444;margin-bottom:16px;line-height:1.6}
+.modal-hint{font-size:11px;color:#444;margin-bottom:14px;line-height:1.6}
 .modal-hint a{color:#4A9EFF;text-decoration:none}
-.modal-btn{width:100%;padding:12px;background:linear-gradient(135deg,#E8472A,#F5A623);border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
-.modal-err{font-size:12px;color:#E8472A;margin-top:8px;min-height:16px}
+.modal-btn{width:100%;padding:11px;background:linear-gradient(135deg,#E8472A,#F5A623);border:none;border-radius:9px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.modal-err{font-size:11px;color:#E8472A;margin-top:6px;min-height:14px}
 </style>
 </head>
 <body>
@@ -132,7 +113,7 @@ select option{background:#1f1f1f}
   </div>
   <button class="key-btn" onclick="openModal()">
     <div class="key-dot" id="keyDot"></div>
-    <span id="keyLabel">Set API Key</span>
+    <span id="keyLabel">Set API Keys</span>
   </button>
 </div>
 
@@ -159,13 +140,13 @@ select option{background:#1f1f1f}
       <div class="chip" onclick="pickTone(this)">Fun & Vibrant 🎉</div>
       <div class="chip" onclick="pickTone(this)">Luxurious 👑</div>
       <div class="chip" onclick="pickTone(this)">Emotional 🥹</div>
-      <div class="chip" onclick="pickTone(this)">Witty & Bold 🔥</div>
+      <div class="chip" onclick="pickTone(this)">Witty 🔥</div>
     </div>
 
     <div class="slabel">Details</div>
     <div class="field">
       <label>Custom detail (optional)</label>
-      <input type="text" id="customDetail" placeholder="Red lehenga, Kolkata venue, winter..."/>
+      <input type="text" id="customDetail" placeholder="Red lehenga, Kolkata venue..."/>
     </div>
     <div class="field">
       <label>Language</label>
@@ -193,7 +174,7 @@ select option{background:#1f1f1f}
     <div class="step-bar" id="stepBar"><div class="step-fill" id="stepFill"></div></div>
     <div class="step-msg" id="stepMsg"></div>
 
-    <div id="igWrap" style="width:100%;max-width:420px">
+    <div id="igWrap" style="width:100%;max-width:380px">
       <div class="placeholder">
         <div class="ph-icon">📱</div>
         <div class="ph-t">Post preview will appear here</div>
@@ -206,9 +187,9 @@ select option{background:#1f1f1f}
       <div class="cap-text" id="capText"></div>
     </div>
 
-    <div class="act-row" id="actRow">
-      <button class="act-btn" onclick="copyCaption()">📋 Copy Caption</button>
-      <button class="act-btn pri" onclick="downloadPost()">⬇️ Download Image</button>
+    <div class="act-row" id="actRow" style="display:none">
+      <button class="act-btn" onclick="copyCaption()">📋 Copy</button>
+      <button class="act-btn pri" onclick="downloadPost()">⬇️ Download</button>
       <button class="act-btn" onclick="generate()">🔄 Regenerate</button>
     </div>
 
@@ -222,13 +203,13 @@ select option{background:#1f1f1f}
     <div class="modal-logo"><span>UTSAAV</span></div>
     <div class="modal-sub">2 free keys chahiye — dono 2 min mein milte hain</div>
 
-    <div class="modal-label" style="margin-top:4px">1️⃣ Groq Key — Captions ke liye (Free)</div>
+    <div class="modal-label">1️⃣ Groq Key — Captions (Free)</div>
     <input class="modal-input" type="password" id="keyInput" placeholder="gsk_..." autocomplete="off"/>
     <div class="modal-hint">
       <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a> → Create API Key → copy <b style="color:#aaa">gsk_...</b>
     </div>
 
-    <div class="modal-label">2️⃣ Gemini Key — Images ke liye (Free)</div>
+    <div class="modal-label">2️⃣ Gemini Key — AI Images (Free)</div>
     <input class="modal-input" type="password" id="geminiInput" placeholder="AIzaSy..." autocomplete="off"/>
     <div class="modal-hint">
       <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a> → Create API Key → copy <b style="color:#aaa">AIzaSy...</b>
@@ -246,21 +227,21 @@ let caption = '';
 let imgUrl = '';
 
 const imgPrompts = {
-  'Bridal Lehenga & Looks':'beautiful Indian bride red lehenga traditional bridal jewelry maang tikka wedding ceremony',
-  'Wedding Photography':'Indian wedding couple romantic portrait professional photography golden hour',
-  'Wedding Venue & Decoration':'luxury Indian wedding mandap floral decoration marigold fairy lights',
-  'Bridal Makeup Artist':'Indian bridal makeup flawless skin gold eye shadow traditional bridal look close up',
-  'Wedding Catering & Food':'Indian wedding feast spread traditional Bengali cuisine colorful dishes',
-  'Mehndi & Haldi Ceremony':'Indian bridal mehndi intricate henna on hands haldi ceremony turmeric',
-  'Wedding Band & DJ':'Indian wedding baraat procession dhol players festive lights groom on horse',
-  'Destination Wedding':'scenic Indian destination wedding outdoor ceremony mountain landscape',
-  'Wedding Invitation Cards':'elegant Indian wedding invitation card gold embossing floral design',
-  'Wedding Cake & Sweets':'Indian wedding multi tier cake traditional sweets mithai festive desserts'
+  'Bridal Lehenga & Looks':'beautiful Indian bride wearing red bridal lehenga with gold embroidery, traditional jewelry maang tikka nath, wedding mandap, professional photography',
+  'Wedding Photography':'Indian bride and groom romantic portrait, traditional wedding attire, golden hour lighting, flower decorations, professional photography',
+  'Wedding Venue & Decoration':'luxury Indian wedding venue, floral mandap with marigold and roses, fairy lights, elegant decoration, wedding ceremony setup',
+  'Bridal Makeup Artist':'close up of Indian bride beautiful bridal makeup, flawless skin, gold eyeshadow, traditional look, professional studio lighting',
+  'Wedding Catering & Food':'Indian wedding feast, colorful traditional food spread, biryani sweets decorative platters, catering setup',
+  'Mehndi & Haldi Ceremony':'Indian bride hands with intricate mehndi henna design, haldi ceremony with turmeric flowers, close up photography',
+  'Wedding Band & DJ':'Indian wedding baraat procession, dhol players, groom on horse, festive lights, colorful celebration',
+  'Destination Wedding':'scenic destination wedding in India, outdoor ceremony, beautiful landscape, bride and groom, golden sunset',
+  'Wedding Invitation Cards':'elegant Indian wedding invitation card, gold embossing, floral design, traditional motifs, luxury stationery',
+  'Wedding Cake & Sweets':'Indian wedding multi tier cake, traditional sweets mithai, colorful dessert table, festive presentation'
 };
 
-// Key management
 function getGroqKey(){ return localStorage.getItem('utpost_key')||''; }
 function getGeminiKey(){ return localStorage.getItem('utpost_gemini_key')||''; }
+
 function openModal(){
   const g=getGroqKey(); if(g) document.getElementById('keyInput').value=g;
   const gm=getGeminiKey(); if(gm) document.getElementById('geminiInput').value=gm;
@@ -270,16 +251,10 @@ function openModal(){
 function saveKey(){
   const groq=document.getElementById('keyInput').value.trim();
   const gemini=document.getElementById('geminiInput').value.trim();
-  if(!groq.startsWith('gsk_')){
-    document.getElementById('modalErr').textContent='Groq key chahiye — gsk_ se start hona chahiye';
-    return;
-  }
-  if(!gemini.startsWith('AIza')){
-    document.getElementById('modalErr').textContent='Gemini key chahiye — AIzaSy... se start hona chahiye';
-    return;
-  }
-  localStorage.setItem('utpost_key', groq);
-  localStorage.setItem('utpost_gemini_key', gemini);
+  if(!groq.startsWith('gsk_')){ document.getElementById('modalErr').textContent='Groq key gsk_ se start honi chahiye'; return; }
+  if(!gemini.startsWith('AIza')){ document.getElementById('modalErr').textContent='Gemini key AIzaSy... se start honi chahiye'; return; }
+  localStorage.setItem('utpost_key',groq);
+  localStorage.setItem('utpost_gemini_key',gemini);
   document.getElementById('modalBg').style.display='none';
   updateKeyUI(true);
 }
@@ -287,33 +262,22 @@ function updateKeyUI(on){
   document.getElementById('keyDot').className='key-dot'+(on?' on':'');
   document.getElementById('keyLabel').textContent=on?'🔑 Keys Set':'Set API Keys';
 }
-
 window.addEventListener('load',()=>{
-  const k=getGroqKey(), gk=getGeminiKey();
+  const k=getGroqKey(),gk=getGeminiKey();
   document.getElementById('modalBg').style.display=(k&&gk)?'none':'flex';
   updateKeyUI(!!(k&&gk));
-  document.getElementById('keyInput').addEventListener('keydown',e=>{ if(e.key==='Enter') saveKey(); });
 });
 
-function pickCat(el){
-  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active'); cat=el.dataset.cat;
-}
-function pickTone(el){
-  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active'); tone=el.textContent.replace(/[^\w\s&]/g,'').trim();
-}
-
-function setStep(pct,msg){
-  document.getElementById('stepBar').style.display='block';
-  document.getElementById('stepFill').style.width=pct+'%';
-  document.getElementById('stepMsg').textContent=msg;
-}
+function pickCat(el){ document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); cat=el.dataset.cat; }
+function pickTone(el){ document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active')); el.classList.add('active'); tone=el.textContent.replace(/[^\w\s&]/g,'').trim(); }
+function setStep(pct,msg){ document.getElementById('stepBar').style.display='block'; document.getElementById('stepFill').style.width=pct+'%'; document.getElementById('stepMsg').textContent=msg; }
 function clearStep(){ document.getElementById('stepBar').style.display='none'; document.getElementById('stepMsg').textContent=''; }
 
 async function generate(){
-  const btn=document.getElementById('genBtn');
-  const lbl=document.getElementById('genLbl');
+  const groqKey=getGroqKey(), geminiKey=getGeminiKey();
+  if(!groqKey||!geminiKey){ openModal(); return; }
+
+  const btn=document.getElementById('genBtn'), lbl=document.getElementById('genLbl');
   const status=document.getElementById('statusEl');
   const detail=document.getElementById('customDetail').value;
   const lang=document.getElementById('langSel').value;
@@ -323,300 +287,158 @@ async function generate(){
   status.className='status'; status.textContent='';
   document.getElementById('actRow').style.display='none';
   document.getElementById('capCard').classList.remove('show');
-  setStep(30,'Writing caption with Groq AI...');
-  showLoader();
-
-  const groqKey = getGroqKey();
-  const geminiKey = getGeminiKey();
-  if(!groqKey||!geminiKey){ openModal(); btn.disabled=false; lbl.textContent='Generate Post'; return; }
+  setStep(20,'Writing caption...'); showLoader();
 
   try {
     caption = await groqCaption(groqKey,cat,tone,detail,lang,emoji);
-    window._lastCaption = caption;
+    window._lastCaption=caption;
     document.getElementById('capText').textContent=caption;
     document.getElementById('capCard').classList.add('show');
 
-    setStep(60,'Generating AI image with Gemini...');
-    showLoader();
-    imgUrl = await geminiImage(geminiKey, cat, detail);
-    showPost(caption, imgUrl);
-
-    setStep(100,'Done!');
-    setTimeout(clearStep,600);
+    setStep(60,'Generating AI image with Gemini Imagen...');
+    try {
+      imgUrl = await geminiImage(geminiKey,cat,detail);
+    } catch(imgErr){
+      console.warn('Gemini image failed, using canvas:', imgErr.message);
+      imgUrl = generateCanvasImage(cat);
+    }
+    showPost(caption,imgUrl);
+    setStep(100,'Done!'); setTimeout(clearStep,600);
     document.getElementById('actRow').style.display='flex';
-    status.className='status ok';
-    status.textContent='✓ Post ready!';
+    status.className='status ok'; status.textContent='✓ Post ready!';
   } catch(e){
     clearStep();
     status.className='status err';
-    status.textContent='✗ '+(e.message||'Failed. Try again.');
-    // fallback to canvas
-    imgUrl = getUnsplashUrl(cat);
-    showPost(caption||'', imgUrl);
+    status.textContent='✗ '+(e.message||'Failed');
+    imgUrl=generateCanvasImage(cat); showPost(caption||'',imgUrl);
     document.getElementById('actRow').style.display='flex';
   }
   btn.disabled=false; lbl.textContent='Generate Post';
 }
 
+async function geminiImage(key,cat,detail){
+  const base=imgPrompts[cat]||'Indian wedding celebration';
+  const prompt=(detail?`${base}, ${detail}`:base)+', photorealistic, professional photography, vibrant colors, cinematic';
 
-async function geminiImage(key, cat, detail){
-  const base = imgPrompts[cat] || 'Indian wedding celebration';
-  const prompt = detail ? `${base}, ${detail}` : base;
-  const fullPrompt = prompt + ', photorealistic, professional Indian wedding photography, beautiful, vibrant colors, cinematic lighting, high quality';
+  // Try imagen-3.0-generate-002 first (most reliable)
+  const models=['imagen-3.0-generate-002','gemini-2.0-flash-exp'];
 
-  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${key}`, {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({
-      contents: [{parts: [{text: fullPrompt}]}],
-      generationConfig: {responseModalities: ['IMAGE', 'TEXT']}
-    })
-  });
-
-  if(!res.ok){
-    const e = await res.json().catch(()=>({}));
-    throw new Error(e.error?.message || 'Gemini image error '+res.status);
+  for(const model of models){
+    try{
+      let body, url;
+      if(model.startsWith('imagen')){
+        url=`https://generativelanguage.googleapis.com/v1beta/models/${model}:predict?key=${key}`;
+        body={instances:[{prompt}],parameters:{sampleCount:1}};
+      } else {
+        url=`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
+        body={contents:[{parts:[{text:'Generate a photorealistic image: '+prompt}]}],generationConfig:{responseModalities:['IMAGE','TEXT']}};
+      }
+      const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+      if(!res.ok) continue;
+      const data=await res.json();
+      // Imagen response
+      const b64=data.predictions?.[0]?.bytesBase64Encoded;
+      if(b64) return 'data:image/png;base64,'+b64;
+      // Gemini response
+      const part=data.candidates?.[0]?.content?.parts?.find(p=>p.inlineData);
+      if(part?.inlineData?.data) return 'data:'+part.inlineData.mimeType+';base64,'+part.inlineData.data;
+    } catch(e){ continue; }
   }
-  const data = await res.json();
-  const part = data.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
-  if(part?.inlineData?.data){
-    return 'data:' + part.inlineData.mimeType + ';base64,' + part.inlineData.data;
-  }
-  throw new Error('No image returned from Gemini');
+  throw new Error('Gemini image generation failed — canvas fallback use ho raha hai');
 }
 
 async function groqCaption(key,cat,tone,detail,lang,emoji){
-  const emap={'Balanced (3-5 emojis)':'3-5 emojis','Heavy (lots of emojis)':'use emojis heavily','Minimal (1-2 emojis)':'max 2 emojis'};
-  const prompt=buildPrompt(cat,tone,detail,lang,emap[emoji]||'3-5 emojis');
+  const emap={'Balanced (3-5 emojis)':'3-5 emojis','Heavy (lots of emojis)':'many emojis','Minimal (1-2 emojis)':'max 2 emojis'};
   const res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
     method:'POST',
     headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
-    body:JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:900,messages:[{role:'user',content:prompt}]})
+    body:JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:900,messages:[{role:'user',content:
+      `You are Instagram manager for Utsaav — West Bengal wedding marketplace at utsaav.in.
+Write viral Instagram caption for: ${cat}
+Tone: ${tone} | Language: ${lang} | Emoji: ${emap[emoji]||'3-5 emojis'}
+${detail?'Detail: '+detail:''}
+Rules: Start with impact. 3-5 lines. Include utsaav.in CTA. End with 18-22 hashtags (Indian wedding + West Bengal + niche).
+Return ONLY caption + hashtags.`}]})
   });
   if(!res.ok){
     const e=await res.json().catch(()=>({}));
-    if(res.status===401){ localStorage.removeItem('utpost_key'); updateKeyUI(false); openModal(); throw new Error('Invalid Groq key — reset karke dobara daalo'); }
+    if(res.status===401){ localStorage.removeItem('utpost_key'); updateKeyUI(false); openModal(); throw new Error('Groq key invalid — reset karo'); }
     throw new Error(e.error?.message||'Groq Error '+res.status);
   }
-  const d=await res.json();
-  return d.choices[0].message.content;
+  return (await res.json()).choices[0].message.content;
 }
 
-function buildPrompt(cat,tone,detail,lang,emoji){
-  return `You are the Instagram social media manager for Utsaav — a West Bengal-based wedding & event services marketplace at utsaav.in.
-
-Write a viral Instagram caption for: ${cat}
-Tone: ${tone}
-Language: ${lang}
-Emoji: ${emoji}
-${detail?`Detail: ${detail}`:''}
-
-Rules:
-- Start with impact — no generic openers
-- 3-5 lines of caption
-- Include utsaav.in or "link in bio" as CTA
-- End with 18-22 hashtags (popular Indian wedding + West Bengal + niche tags)
-- Sound real and human, not AI
-
-Return ONLY caption + hashtags. Nothing else.`;
-}
-
-function getUnsplashUrl(cat){ return generateCanvasImage(cat); }
-
-const catThemes = {
-  'Bridal Lehenga & Looks':   { bg1:'#1a0005',bg2:'#5a0018',ac1:'#FFD700',ac2:'#FF9EBC',title:'Bridal Looks',sub:'Crafted for your perfect day' },
-  'Wedding Photography':       { bg1:'#090915',bg2:'#151535',ac1:'#C9A96E',ac2:'#E8D5A3',title:'Photography',sub:'Moments that last forever' },
-  'Wedding Venue & Decoration':{ bg1:'#071205',bg2:'#0f2e0a',ac1:'#FFD700',ac2:'#90EE90',title:'Venue & Decor',sub:'Transform your dream space' },
-  'Bridal Makeup Artist':      { bg1:'#120520',bg2:'#2e0f45',ac1:'#FFB6C1',ac2:'#DA70D6',title:'Bridal Makeup',sub:'Enhance your natural beauty' },
-  'Wedding Catering & Food':   { bg1:'#150800',bg2:'#3a1800',ac1:'#FFD700',ac2:'#FFA040',title:'Wedding Catering',sub:'Flavours to remember' },
-  'Mehndi & Haldi Ceremony':   { bg1:'#140e00',bg2:'#362400',ac1:'#FFD700',ac2:'#F0C040',title:'Mehndi & Haldi',sub:'Celebrate every ritual' },
-  'Wedding Band & DJ':         { bg1:'#04001a',bg2:'#0d0030',ac1:'#9B59B6',ac2:'#DA70D6',title:'Band & DJ',sub:'Music that moves your soul' },
-  'Destination Wedding':       { bg1:'#001520',bg2:'#003050',ac1:'#87CEEB',ac2:'#00CED1',title:'Destination Wedding',sub:'Say yes in paradise' },
-  'Wedding Invitation Cards':  { bg1:'#140e00',bg2:'#352200',ac1:'#DAA520',ac2:'#FFD700',title:'Invitations',sub:'First impression of your big day' },
-  'Wedding Cake & Sweets':     { bg1:'#15001a',bg2:'#35003a',ac1:'#FFB6C1',ac2:'#FF69B4',title:'Cake & Sweets',sub:'Sweet beginnings' }
+// Canvas fallback
+const catThemes={
+  'Bridal Lehenga & Looks':{bg1:'#1a0005',bg2:'#5a0018',ac1:'#FFD700',ac2:'#FF9EBC',title:'Bridal Looks',sub:'Crafted for your perfect day'},
+  'Wedding Photography':{bg1:'#090915',bg2:'#151535',ac1:'#C9A96E',ac2:'#E8D5A3',title:'Photography',sub:'Moments that last forever'},
+  'Wedding Venue & Decoration':{bg1:'#071205',bg2:'#0f2e0a',ac1:'#FFD700',ac2:'#90EE90',title:'Venue & Decor',sub:'Transform your dream space'},
+  'Bridal Makeup Artist':{bg1:'#120520',bg2:'#2e0f45',ac1:'#FFB6C1',ac2:'#DA70D6',title:'Bridal Makeup',sub:'Enhance your natural beauty'},
+  'Wedding Catering & Food':{bg1:'#150800',bg2:'#3a1800',ac1:'#FFD700',ac2:'#FFA040',title:'Wedding Catering',sub:'Flavours to remember'},
+  'Mehndi & Haldi Ceremony':{bg1:'#140e00',bg2:'#362400',ac1:'#FFD700',ac2:'#F0C040',title:'Mehndi & Haldi',sub:'Celebrate every ritual'},
+  'Wedding Band & DJ':{bg1:'#04001a',bg2:'#0d0030',ac1:'#9B59B6',ac2:'#DA70D6',title:'Band & DJ',sub:'Music that moves your soul'},
+  'Destination Wedding':{bg1:'#001520',bg2:'#003050',ac1:'#87CEEB',ac2:'#00CED1',title:'Destination Wedding',sub:'Say yes in paradise'},
+  'Wedding Invitation Cards':{bg1:'#140e00',bg2:'#352200',ac1:'#DAA520',ac2:'#FFD700',title:'Invitations',sub:'First impression matters'},
+  'Wedding Cake & Sweets':{bg1:'#15001a',bg2:'#35003a',ac1:'#FFB6C1',ac2:'#FF69B4',title:'Cake & Sweets',sub:'Sweet beginnings'}
 };
 
 function generateCanvasImage(cat){
-  const canvas = document.createElement('canvas');
-  canvas.width = 1080; canvas.height = 1080;
-  const ctx = canvas.getContext('2d');
-  const t = catThemes[cat] || catThemes['Wedding Photography'];
-  const seed = Date.now();
-  const rng = (s) => { let x=Math.sin(s+seed*0.001)*10000; return x-Math.floor(x); };
-
-  // BG gradient
-  const bg = ctx.createLinearGradient(0,0,1080,1080);
-  bg.addColorStop(0,t.bg1); bg.addColorStop(0.55,t.bg2); bg.addColorStop(1,t.bg1);
-  ctx.fillStyle=bg; ctx.fillRect(0,0,1080,1080);
-
-  // Diagonal subtle lines
-  ctx.save();
-  ctx.globalAlpha=0.04; ctx.strokeStyle=t.ac1; ctx.lineWidth=1;
-  for(let i=-20;i<40;i++){ ctx.beginPath(); ctx.moveTo(i*60,0); ctx.lineTo(i*60+1080,1080); ctx.stroke(); }
+  const canvas=document.createElement('canvas'); canvas.width=1080; canvas.height=1080;
+  const ctx=canvas.getContext('2d');
+  const t=catThemes[cat]||catThemes['Wedding Photography'];
+  const seed=Date.now();
+  const rng=s=>{let x=Math.sin(s+seed*0.001)*10000;return x-Math.floor(x);};
+  const bg=ctx.createLinearGradient(0,0,1080,1080);
+  bg.addColorStop(0,t.bg1);bg.addColorStop(0.55,t.bg2);bg.addColorStop(1,t.bg1);
+  ctx.fillStyle=bg;ctx.fillRect(0,0,1080,1080);
+  ctx.save();ctx.globalAlpha=0.04;ctx.strokeStyle=t.ac1;ctx.lineWidth=1;
+  for(let i=-20;i<40;i++){ctx.beginPath();ctx.moveTo(i*60,0);ctx.lineTo(i*60+1080,1080);ctx.stroke();}
   ctx.restore();
-
-  // Random scattered circles
-  ctx.save(); ctx.globalAlpha=0.07; ctx.strokeStyle=t.ac2; ctx.lineWidth=1;
-  for(let i=0;i<12;i++){
-    const x=rng(i*7)*1080, y=rng(i*11)*1080, r=40+rng(i*5)*140;
-    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.stroke();
-  }
+  ctx.save();ctx.globalAlpha=0.07;ctx.strokeStyle=t.ac2;ctx.lineWidth=1;
+  for(let i=0;i<12;i++){const x=rng(i*7)*1080,y=rng(i*11)*1080,r=40+rng(i*5)*140;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.stroke();}
   ctx.restore();
-
-  // Outer border
-  ctx.save(); ctx.globalAlpha=0.35; ctx.strokeStyle=t.ac1; ctx.lineWidth=2;
-  ctx.strokeRect(32,32,1016,1016);
-  ctx.globalAlpha=0.12; ctx.strokeRect(46,46,988,988);
-  ctx.restore();
-
-  // Corner L-shapes
-  function corner(x,y,sx,sy){
-    ctx.save(); ctx.strokeStyle=t.ac1; ctx.lineWidth=3; ctx.globalAlpha=0.7;
-    ctx.beginPath(); ctx.moveTo(x,y+sy*70); ctx.lineTo(x,y); ctx.lineTo(x+sx*70,y); ctx.stroke();
-    ctx.restore();
-  }
-  corner(46,46,1,1); corner(1034,46,-1,1); corner(46,1034,1,-1); corner(1034,1034,-1,-1);
-
-  // ── LOGO AREA TOP ──
-  // Logo box
-  const lg=ctx.createLinearGradient(52,52,122,122);
-  lg.addColorStop(0,'#E8472A'); lg.addColorStop(1,'#F5A623');
-  ctx.fillStyle=lg; rRect(ctx,52,52,72,72,13); ctx.fill();
-  ctx.fillStyle='#fff'; ctx.font='bold 42px serif';
-  ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('U',88,90);
-
-  // Brand text
-  ctx.fillStyle='#fff'; ctx.font='bold 32px serif';
-  ctx.textAlign='left'; ctx.textBaseline='top';
-  ctx.shadowColor='rgba(0,0,0,0.9)'; ctx.shadowBlur=8;
-  ctx.fillText('UTSAAV',136,58);
-  ctx.fillStyle=t.ac1; ctx.font='17px sans-serif';
-  ctx.fillText('utsaav.in',136,96);
-  ctx.shadowBlur=0;
-
-  // Divider after logo
+  ctx.save();ctx.globalAlpha=0.35;ctx.strokeStyle=t.ac1;ctx.lineWidth=2;ctx.strokeRect(32,32,1016,1016);ctx.globalAlpha=0.12;ctx.strokeRect(46,46,988,988);ctx.restore();
+  function corner(x,y,sx,sy){ctx.save();ctx.strokeStyle=t.ac1;ctx.lineWidth=3;ctx.globalAlpha=0.7;ctx.beginPath();ctx.moveTo(x,y+sy*70);ctx.lineTo(x,y);ctx.lineTo(x+sx*70,y);ctx.stroke();ctx.restore();}
+  corner(46,46,1,1);corner(1034,46,-1,1);corner(46,1034,1,-1);corner(1034,1034,-1,-1);
+  const lg=ctx.createLinearGradient(52,52,122,122);lg.addColorStop(0,'#E8472A');lg.addColorStop(1,'#F5A623');
+  ctx.fillStyle=lg;rRect(ctx,52,52,72,72,13);ctx.fill();
+  ctx.fillStyle='#fff';ctx.font='bold 42px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('U',88,90);
+  ctx.fillStyle='#fff';ctx.font='bold 32px serif';ctx.textAlign='left';ctx.textBaseline='top';ctx.shadowColor='rgba(0,0,0,0.9)';ctx.shadowBlur=8;ctx.fillText('UTSAAV',136,58);
+  ctx.fillStyle=t.ac1;ctx.font='17px sans-serif';ctx.fillText('utsaav.in',136,96);ctx.shadowBlur=0;
   hLine(ctx,52,138,1028,t.ac1,0.3);
-
-  // ── CENTER DESIGN ──
-  // Radial glow
-  const glow=ctx.createRadialGradient(540,460,0,540,460,320);
-  glow.addColorStop(0,'rgba(255,255,255,0.1)');
-  glow.addColorStop(0.6,'rgba(255,255,255,0.03)');
-  glow.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=glow; ctx.fillRect(0,0,1080,1080);
-
-  // Inner glass card
-  ctx.save(); ctx.globalAlpha=0.08;
-  const cg=ctx.createLinearGradient(200,200,880,700);
-  cg.addColorStop(0,'rgba(255,255,255,0.9)'); cg.addColorStop(1,'rgba(255,255,255,0.2)');
-  ctx.fillStyle=cg; rRect(ctx,200,200,680,460,18); ctx.fill();
-  ctx.strokeStyle='rgba(255,255,255,0.2)'; ctx.lineWidth=1; ctx.globalAlpha=0.4;
-  rRect(ctx,200,200,680,460,18); ctx.stroke();
-  ctx.restore();
-
-  // Ornament - top of card
+  const glow=ctx.createRadialGradient(540,460,0,540,460,320);glow.addColorStop(0,'rgba(255,255,255,0.1)');glow.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=glow;ctx.fillRect(0,0,1080,1080);
+  ctx.save();ctx.globalAlpha=0.08;const cg=ctx.createLinearGradient(200,200,880,700);cg.addColorStop(0,'rgba(255,255,255,0.9)');cg.addColorStop(1,'rgba(255,255,255,0.2)');ctx.fillStyle=cg;rRect(ctx,200,200,680,460,18);ctx.fill();ctx.restore();
   hLine(ctx,260,240,820,t.ac1,0.6);
-
-  // Diamond ornament center-top
-  ctx.save(); ctx.strokeStyle=t.ac1; ctx.lineWidth=2; ctx.globalAlpha=0.7;
-  ctx.beginPath(); ctx.moveTo(540,260); ctx.lineTo(560,280); ctx.lineTo(540,300); ctx.lineTo(520,280); ctx.closePath(); ctx.stroke();
-  ctx.restore();
-
-  // MAIN TITLE
-  ctx.save();
-  ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.font='bold 72px serif';
-  ctx.shadowColor='rgba(0,0,0,0.95)'; ctx.shadowBlur=20;
-  // Gold gradient text
-  const tg=ctx.createLinearGradient(200,380,880,380);
-  tg.addColorStop(0,t.ac2); tg.addColorStop(0.5,t.ac1); tg.addColorStop(1,t.ac2);
-  ctx.fillStyle=tg;
-  ctx.fillText(t.title,540,390);
-  ctx.restore();
-
-  // Subtitle
-  ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillStyle='rgba(255,255,255,0.6)'; ctx.font='italic 26px serif';
-  ctx.shadowColor='rgba(0,0,0,0.8)'; ctx.shadowBlur=6;
-  ctx.fillText(t.sub,540,455);
-  ctx.shadowBlur=0;
-
-  // Bottom of card
+  ctx.save();ctx.strokeStyle=t.ac1;ctx.lineWidth=2;ctx.globalAlpha=0.7;ctx.beginPath();ctx.moveTo(540,260);ctx.lineTo(560,280);ctx.lineTo(540,300);ctx.lineTo(520,280);ctx.closePath();ctx.stroke();ctx.restore();
+  const tg=ctx.createLinearGradient(200,380,880,380);tg.addColorStop(0,t.ac2);tg.addColorStop(0.5,t.ac1);tg.addColorStop(1,t.ac2);
+  ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='bold 72px serif';ctx.shadowColor='rgba(0,0,0,0.95)';ctx.shadowBlur=20;ctx.fillStyle=tg;ctx.fillText(t.title,540,390);ctx.shadowBlur=0;
+  ctx.fillStyle='rgba(255,255,255,0.6)';ctx.font='italic 26px serif';ctx.shadowColor='rgba(0,0,0,0.8)';ctx.shadowBlur=6;ctx.fillText(t.sub,540,455);ctx.shadowBlur=0;
   hLine(ctx,260,600,820,t.ac1,0.6);
-
-  // CTA
-  ctx.fillStyle=t.ac2; ctx.font='20px sans-serif'; ctx.textAlign='center';
-  ctx.fillText('Find top vendors at',540,640);
-  ctx.fillStyle='#fff'; ctx.font='bold 26px sans-serif';
-  ctx.fillText('utsaav.in',540,672);
-
-  // ── CAPTION TEXT BOTTOM ──
-  const capLines = (window._lastCaption||caption||'').split('\n').filter(l=>l.trim()&&!l.trim().startsWith('#'));
+  ctx.fillStyle=t.ac2;ctx.font='20px sans-serif';ctx.textAlign='center';ctx.fillText('Find top vendors at',540,640);
+  ctx.fillStyle='#fff';ctx.font='bold 26px sans-serif';ctx.fillText('utsaav.in',540,672);
+  const capLines=(window._lastCaption||caption||'').split('\n').filter(l=>l.trim()&&!l.trim().startsWith('#'));
   const l1=capLines[0]||'Your dream wedding starts here';
   const l2=capLines[1]||'Discover top vendors across West Bengal';
-
-  const btm=ctx.createLinearGradient(0,720,0,1080);
-  btm.addColorStop(0,'rgba(0,0,0,0)'); btm.addColorStop(0.4,'rgba(0,0,0,0.6)'); btm.addColorStop(1,'rgba(0,0,0,0.85)');
-  ctx.fillStyle=btm; ctx.fillRect(0,720,1080,360);
-
-  ctx.textAlign='center'; ctx.textBaseline='top';
-  ctx.fillStyle='#fff'; ctx.font='bold 30px sans-serif';
-  ctx.shadowColor='rgba(0,0,0,0.95)'; ctx.shadowBlur=10;
-  wrapC(ctx,l1,540,760,960,38);
-  ctx.fillStyle='rgba(255,255,255,0.8)'; ctx.font='24px sans-serif';
-  wrapC(ctx,l2,540,820,960,32);
-  ctx.shadowBlur=0;
-
-  // Watermark
-  ctx.fillStyle='rgba(255,255,255,0.3)'; ctx.font='18px sans-serif';
-  ctx.textAlign='right'; ctx.textBaseline='bottom';
-  ctx.fillText('utsaav.in',1048,1048);
-
-  // Dot row
-  for(let i=0;i<5;i++){
-    ctx.beginPath(); ctx.arc(540+(i-2)*28,700,i===2?7:4,0,Math.PI*2);
-    ctx.fillStyle=i===2?t.ac1:'rgba(255,255,255,0.25)'; ctx.fill();
-  }
-
+  const btm=ctx.createLinearGradient(0,720,0,1080);btm.addColorStop(0,'rgba(0,0,0,0)');btm.addColorStop(0.4,'rgba(0,0,0,0.6)');btm.addColorStop(1,'rgba(0,0,0,0.85)');
+  ctx.fillStyle=btm;ctx.fillRect(0,720,1080,360);
+  ctx.textAlign='center';ctx.textBaseline='top';ctx.fillStyle='#fff';ctx.font='bold 30px sans-serif';ctx.shadowColor='rgba(0,0,0,0.95)';ctx.shadowBlur=10;
+  wrapC(ctx,l1,540,760,960,38);ctx.fillStyle='rgba(255,255,255,0.8)';ctx.font='24px sans-serif';wrapC(ctx,l2,540,820,960,32);ctx.shadowBlur=0;
+  ctx.fillStyle='rgba(255,255,255,0.3)';ctx.font='18px sans-serif';ctx.textAlign='right';ctx.textBaseline='bottom';ctx.fillText('utsaav.in',1048,1048);
+  for(let i=0;i<5;i++){ctx.beginPath();ctx.arc(540+(i-2)*28,700,i===2?7:4,0,Math.PI*2);ctx.fillStyle=i===2?t.ac1:'rgba(255,255,255,0.25)';ctx.fill();}
   return canvas.toDataURL('image/jpeg',0.93);
 }
 
-function rRect(ctx,x,y,w,h,r){
-  ctx.beginPath(); ctx.moveTo(x+r,y);
-  ctx.lineTo(x+w-r,y); ctx.arcTo(x+w,y,x+w,y+r,r);
-  ctx.lineTo(x+w,y+h-r); ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
-  ctx.lineTo(x+r,y+h); ctx.arcTo(x,y+h,x,y+h-r,r);
-  ctx.lineTo(x,y+r); ctx.arcTo(x,y,x+r,y,r); ctx.closePath();
-}
-function hLine(ctx,x1,y,x2,color,alpha){
-  const g=ctx.createLinearGradient(x1,y,x2,y);
-  g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(0.2,color); g.addColorStop(0.8,color); g.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.save(); ctx.strokeStyle=g; ctx.lineWidth=1.5; ctx.globalAlpha=alpha;
-  ctx.beginPath(); ctx.moveTo(x1,y); ctx.lineTo(x2,y); ctx.stroke(); ctx.restore();
-}
-function wrapC(ctx,text,cx,y,maxW,lh){
-  if(!text)return; const words=text.split(' '); let line='';
-  for(const w of words){
-    const t=line+w+' ';
-    if(ctx.measureText(t).width>maxW&&line){ctx.fillText(line.trim(),cx,y);line=w+' ';y+=lh;}else line=t;
-  }
-  if(line)ctx.fillText(line.trim(),cx,y);
-}
+function rRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();}
+function hLine(ctx,x1,y,x2,color,alpha){const g=ctx.createLinearGradient(x1,y,x2,y);g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(0.2,color);g.addColorStop(0.8,color);g.addColorStop(1,'rgba(0,0,0,0)');ctx.save();ctx.strokeStyle=g;ctx.lineWidth=1.5;ctx.globalAlpha=alpha;ctx.beginPath();ctx.moveTo(x1,y);ctx.lineTo(x2,y);ctx.stroke();ctx.restore();}
+function wrapC(ctx,text,cx,y,maxW,lh){if(!text)return;const words=text.split(' ');let line='';for(const w of words){const t=line+w+' ';if(ctx.measureText(t).width>maxW&&line){ctx.fillText(line.trim(),cx,y);line=w+' ';y+=lh;}else line=t;}if(line)ctx.fillText(line.trim(),cx,y);}
 
 function showLoader(){
   document.getElementById('igWrap').innerHTML=`
   <div class="ig-wrap">
-    <div class="ig-header">
-      <div class="ig-avatar">U</div>
-      <div><div class="ig-username">utsaav_in</div><div class="ig-loc">West Bengal, India</div></div>
-      <div class="ig-dots">···</div>
-    </div>
-    <div class="ig-img-box">
-      <div class="img-loader"><div class="ring"></div><div class="ring-text">Generating...</div></div>
-      <img src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0"/>
-    </div>
+    <div class="ig-header"><div class="ig-avatar">U</div><div><div class="ig-username">utsaav_in</div><div class="ig-loc">West Bengal, India</div></div><div class="ig-dots">···</div></div>
+    <div class="ig-img-box"><div class="img-loader"><div class="ring"></div><div class="ring-text">Generating...</div></div><img src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0"/></div>
     <div class="ig-likes">—</div>
-    <div class="ig-caption"><span class="uname">utsaav_in</span><span style="color:#333">Writing caption...</span></div>
+    <div class="ig-caption"><span class="uname">utsaav_in</span><span style="color:#333">Writing...</span></div>
   </div>`;
 }
 
@@ -626,78 +448,37 @@ function showPost(cap,url){
   const tLines=lines.filter(l=>!l.trim().startsWith('#'));
   const main=tLines.join('\n').trim();
   const htags=hLines.join(' ').trim();
-  const escaped=e=>e.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  const firstLine = escaped(tLines[0]||'');
-  const secondLine = escaped(tLines[1]||'');
-
-  const imgHtml = `<img id="postImg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s" />`;
-
+  const esc=e=>e.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   document.getElementById('igWrap').innerHTML=`
   <div class="ig-wrap">
-    <div class="ig-header">
-      <div class="ig-avatar">U</div>
-      <div><div class="ig-username">utsaav_in</div><div class="ig-loc">West Bengal, India</div></div>
-      <div class="ig-dots">···</div>
-    </div>
+    <div class="ig-header"><div class="ig-avatar">U</div><div><div class="ig-username">utsaav_in</div><div class="ig-loc">West Bengal, India</div></div><div class="ig-dots">···</div></div>
     <div class="ig-img-box">
-      <div class="img-loader" id="iLoader"><div class="ring"></div><div class="ring-text">Generating...</div></div>
-      ${imgHtml}
+      <div class="img-loader" id="iLoader"><div class="ring"></div><div class="ring-text">Loading...</div></div>
+      <img id="postImg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s"/>
     </div>
     <div class="ig-dots-bar"><div class="idot on"></div><div class="idot"></div><div class="idot"></div></div>
-    <div class="ig-actions">
-      <span class="ig-ico">🤍</span><span class="ig-ico">💬</span><span class="ig-ico">📤</span>
-      <span class="ig-ico ig-bm">🔖</span>
-    </div>
+    <div class="ig-actions"><span class="ig-ico">🤍</span><span class="ig-ico">💬</span><span class="ig-ico">📤</span><span class="ig-ico ig-bm">🔖</span></div>
     <div class="ig-likes">1,247 likes</div>
-    <div class="ig-caption">
-      <span class="uname">utsaav_in</span>${escaped(main)}
-      ${htags?`<br><br><span class="htags">${escaped(htags)}</span>`:''}
-    </div>
+    <div class="ig-caption"><span class="uname">utsaav_in</span>${esc(main)}${htags?`<br><br><span class="htags">${esc(htags)}</span>`:''}</div>
     <div class="ig-time">just now</div>
   </div>`;
-
-  // Set image directly after DOM render (avoids base64 truncation in template)
-  const postImg = document.getElementById('postImg');
-  const loader = document.getElementById('iLoader');
-  if(postImg){
-    postImg.onload = () => { postImg.style.opacity = '1'; if(loader) loader.classList.add('gone'); };
-    postImg.src = url;
-  }
-}
-
-function showError(msg){
-  document.getElementById('igWrap').innerHTML=`
-  <div class="placeholder">
-    <div class="ph-icon" style="opacity:.3">⚠️</div>
-    <div class="ph-t" style="color:var(--acc)">${msg}</div>
-    <div class="ph-s">Check your API key and try again</div>
-  </div>`;
+  const img=document.getElementById('postImg');
+  const ldr=document.getElementById('iLoader');
+  if(img){img.onload=()=>{img.style.opacity='1';if(ldr)ldr.classList.add('gone');};img.src=url;}
 }
 
 function copyCaption(){
-  if(!caption) return;
+  if(!caption)return;
   navigator.clipboard.writeText(caption).then(()=>{
-    const s=document.getElementById('statusEl');
-    s.className='status ok'; s.textContent='✓ Caption copied!';
-    setTimeout(()=>s.textContent='',2500);
+    const s=document.getElementById('statusEl');s.className='status ok';s.textContent='✓ Copied!';setTimeout(()=>s.textContent='',2000);
   });
 }
-
 async function downloadPost(){
-  if(!imgUrl){ alert('Pehle post generate karo!'); return; }
-  const status=document.getElementById('statusEl');
-  status.className='status'; status.textContent='⏳ Download ho rahi hai...';
-  try {
-    const link=document.createElement('a');
-    link.download='utsaav-post.jpg';
-    link.href=imgUrl;
-    link.click();
-    status.className='status ok'; status.textContent='✓ Downloaded!';
-  } catch(e){
-    status.className='status err'; status.textContent='✗ Failed: '+e.message;
-  }
+  if(!imgUrl)return;
+  const s=document.getElementById('statusEl');s.textContent='⏳ Downloading...';
+  const link=document.createElement('a');link.download='utsaav-post.jpg';link.href=imgUrl;link.click();
+  s.className='status ok';s.textContent='✓ Downloaded!';
 }
-
 </script>
 </body>
 </html>
