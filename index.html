@@ -374,19 +374,137 @@ Rules:
 Return ONLY caption + hashtags. Nothing else.`;
 }
 
-const unsplashPhotos = {
-  'Bridal Lehenga & Looks':   'https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=720&h=720&fit=crop',
-  'Wedding Photography':       'https://images.unsplash.com/photo-1519741497674-611481863552?w=720&h=720&fit=crop',
-  'Wedding Venue & Decoration':'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=720&h=720&fit=crop',
-  'Bridal Makeup Artist':      'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=720&h=720&fit=crop',
-  'Wedding Catering & Food':   'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=720&h=720&fit=crop',
-  'Mehndi & Haldi Ceremony':   'https://images.unsplash.com/photo-1595407753234-0882f1e77954?w=720&h=720&fit=crop',
-  'Wedding Band & DJ':         'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=720&h=720&fit=crop',
-  'Destination Wedding':       'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=720&h=720&fit=crop',
-  'Wedding Invitation Cards':  'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=720&h=720&fit=crop',
-  'Wedding Cake & Sweets':     'https://images.unsplash.com/photo-1535254973040-607b474cb50d?w=720&h=720&fit=crop'
+function getUnsplashUrl(cat){ return generateCanvasImage(cat); }
+
+const catThemes = {
+  'Bridal Lehenga & Looks':   { colors:['#8B0000','#C41E3A','#FFD700','#FF69B4'], emoji:'👰', label:'Bridal Looks', pattern:'diamonds' },
+  'Wedding Photography':       { colors:['#1a1a2e','#16213e','#C9A96E','#E8C97E'], emoji:'📸', label:'Photography', pattern:'circles' },
+  'Wedding Venue & Decoration':{ colors:['#2d5016','#4a7c26','#FFD700','#FFA500'], emoji:'🏛️', label:'Venue & Decor', pattern:'flowers' },
+  'Bridal Makeup Artist':      { colors:['#6B2D5E','#9B4D8E','#FFB6C1','#FF69B4'], emoji:'💄', label:'Makeup', pattern:'dots' },
+  'Wedding Catering & Food':   { colors:['#7B3F00','#C05A1F','#FFD700','#FFA500'], emoji:'🍽️', label:'Catering', pattern:'circles' },
+  'Mehndi & Haldi Ceremony':   { colors:['#5C3D11','#8B6914','#FFD700','#FFEC8B'], emoji:'🌿', label:'Mehndi & Haldi', pattern:'diamonds' },
+  'Wedding Band & DJ':         { colors:['#0a0a1a','#1a0a2e','#8A2BE2','#DA70D6'], emoji:'🎵', label:'Band & DJ', pattern:'waves' },
+  'Destination Wedding':       { colors:['#003366','#0066CC','#87CEEB','#00CED1'], emoji:'✈️', label:'Destination', pattern:'circles' },
+  'Wedding Invitation Cards':  { colors:['#2C1810','#5C3317','#DAA520','#FFD700'], emoji:'💌', label:'Invitations', pattern:'diamonds' },
+  'Wedding Cake & Sweets':     { colors:['#FF1493','#FF69B4','#FFB6C1','#FFC0CB'], emoji:'🎂', label:'Cake & Sweets', pattern:'dots' }
 };
-function getUnsplashUrl(cat){ return unsplashPhotos[cat]||unsplashPhotos['Wedding Photography']; }
+
+function generateCanvasImage(cat){
+  const canvas = document.createElement('canvas');
+  canvas.width = 720; canvas.height = 720;
+  const ctx = canvas.getContext('2d');
+  const theme = catThemes[cat] || catThemes['Wedding Photography'];
+  const [c1,c2,c3,c4] = theme.colors;
+  const seed = Date.now(); // always different
+
+  // Background gradient
+  const bg = ctx.createLinearGradient(0, 0, 720, 720);
+  bg.addColorStop(0, c1);
+  bg.addColorStop(0.5, c2);
+  bg.addColorStop(1, c1);
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, 720, 720);
+
+  // Decorative pattern
+  ctx.globalAlpha = 0.12;
+  const pat = theme.pattern;
+  const rng = (s) => { let x=Math.sin(s)*10000; return x-Math.floor(x); };
+
+  if(pat === 'diamonds'){
+    ctx.strokeStyle = c3;
+    ctx.lineWidth = 1.5;
+    for(let i=0;i<18;i++){
+      const x = rng(seed+i*7)*720, y = rng(seed+i*13)*720;
+      const s = 20+rng(seed+i)*60;
+      ctx.beginPath();
+      ctx.moveTo(x,y-s); ctx.lineTo(x+s,y); ctx.lineTo(x,y+s); ctx.lineTo(x-s,y);
+      ctx.closePath(); ctx.stroke();
+    }
+  } else if(pat === 'circles'){
+    ctx.strokeStyle = c3;
+    ctx.lineWidth = 1.5;
+    for(let i=0;i<20;i++){
+      const x = rng(seed+i*11)*720, y = rng(seed+i*17)*720;
+      const r = 15+rng(seed+i)*80;
+      ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.stroke();
+    }
+  } else if(pat === 'flowers'){
+    ctx.fillStyle = c3;
+    for(let i=0;i<12;i++){
+      const x = rng(seed+i*9)*720, y = rng(seed+i*15)*720;
+      const r = 8+rng(seed+i)*20;
+      for(let p=0;p<6;p++){
+        const angle = (p/6)*Math.PI*2;
+        ctx.beginPath();
+        ctx.arc(x+Math.cos(angle)*r, y+Math.sin(angle)*r, r*0.6, 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+  } else if(pat === 'dots'){
+    ctx.fillStyle = c4;
+    for(let i=0;i<40;i++){
+      const x = rng(seed+i*5)*720, y = rng(seed+i*8)*720;
+      const r = 3+rng(seed+i)*12;
+      ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+    }
+  } else if(pat === 'waves'){
+    ctx.strokeStyle = c3;
+    ctx.lineWidth = 2;
+    for(let j=0;j<12;j++){
+      ctx.beginPath();
+      for(let x=0;x<=720;x+=5){
+        const y = j*70 + 30 + Math.sin((x+seed*0.01+j*30)*0.02)*30;
+        x===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+      }
+      ctx.stroke();
+    }
+  }
+
+  ctx.globalAlpha = 1;
+
+  // Center gradient glow
+  const glow = ctx.createRadialGradient(360,320,0,360,320,280);
+  glow.addColorStop(0,'rgba(255,255,255,0.18)');
+  glow.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle = glow;
+  ctx.fillRect(0,0,720,720);
+
+  // Big center emoji
+  ctx.font = '120px serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.globalAlpha = 0.9;
+  ctx.fillText(theme.emoji, 360, 280);
+  ctx.globalAlpha = 1;
+
+  // Category label
+  ctx.font = 'bold 32px Arial';
+  ctx.fillStyle = c3;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.shadowColor = 'rgba(0,0,0,0.8)';
+  ctx.shadowBlur = 10;
+  ctx.fillText(theme.label, 360, 390);
+  ctx.shadowBlur = 0;
+
+  // Decorative line under label
+  const lineGrad = ctx.createLinearGradient(200,420,520,420);
+  lineGrad.addColorStop(0,'transparent');
+  lineGrad.addColorStop(0.5,c3);
+  lineGrad.addColorStop(1,'transparent');
+  ctx.strokeStyle = lineGrad;
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(200,420); ctx.lineTo(520,420); ctx.stroke();
+
+  // Bottom dark overlay for text
+  const btm = ctx.createLinearGradient(0,480,0,720);
+  btm.addColorStop(0,'rgba(0,0,0,0)');
+  btm.addColorStop(1,'rgba(0,0,0,0.75)');
+  ctx.fillStyle = btm;
+  ctx.fillRect(0,480,720,240);
+
+  return canvas.toDataURL('image/png');
+}
 
 function showLoader(){
   document.getElementById('igWrap').innerHTML=`
@@ -415,12 +533,7 @@ function showPost(cap,url){
   const firstLine = escaped(tLines[0]||'');
   const secondLine = escaped(tLines[1]||'');
 
-  const isB64 = url.startsWith('data:');
-  const imgHtml = isB64
-    ? `<img src="${url}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onload="document.getElementById('iLoader').classList.add('gone')" />`
-    : `<img src="${url}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s"
-        onload="this.style.opacity=1;document.getElementById('iLoader').classList.add('gone')"
-        onerror="document.getElementById('iLoader').innerHTML='<div style=color:#666;font-size:11px;padding:16px;text-align:center>Image failed.</div>'" />`;
+  const imgHtml = `<img src="${url}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onload="document.getElementById('iLoader').classList.add('gone')" />`;
 
   document.getElementById('igWrap').innerHTML=`
   <div class="ig-wrap">
@@ -430,7 +543,7 @@ function showPost(cap,url){
       <div class="ig-dots">···</div>
     </div>
     <div class="ig-img-box">
-      <div class="img-loader" id="iLoader"><div class="ring"></div><div class="ring-text">Loading...</div></div>
+      <div class="img-loader" id="iLoader"><div class="ring"></div><div class="ring-text">Generating...</div></div>
       ${imgHtml}
 
       <!-- LOGO overlay top-left -->
@@ -486,96 +599,61 @@ function copyCaption(){
 async function downloadPost(){
   if(!imgUrl){ alert('Pehle post generate karo!'); return; }
   const status=document.getElementById('statusEl');
-  status.className='status'; status.textContent='⏳ Image ban rahi hai...';
+  status.className='status'; status.textContent='⏳ Download ho rahi hai...';
 
   try {
     const canvas = document.createElement('canvas');
     canvas.width = 1080; canvas.height = 1080;
     const ctx = canvas.getContext('2d');
 
-    // Load background image via proxy to avoid CORS
+    // Load base64 image
     const img = new Image();
-    img.crossOrigin = 'anonymous';
-    await new Promise((resolve, reject) => {
-      img.onload = resolve;
-      img.onerror = reject;
-      img.src = imgUrl + (imgUrl.includes('?') ? '&' : '?') + 'fm=jpg';
-    });
+    await new Promise((resolve) => { img.onload = resolve; img.src = imgUrl; });
 
-    // Draw background
+    // Draw background image scaled to 1080
     ctx.drawImage(img, 0, 0, 1080, 1080);
 
-    // Dark gradient overlay at bottom
+    // Bottom gradient overlay
     const grad = ctx.createLinearGradient(0, 500, 0, 1080);
     grad.addColorStop(0, 'rgba(0,0,0,0)');
-    grad.addColorStop(0.4, 'rgba(0,0,0,0.6)');
+    grad.addColorStop(0.5, 'rgba(0,0,0,0.65)');
     grad.addColorStop(1, 'rgba(0,0,0,0.88)');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 1080, 1080);
 
-    // UTSAAV logo — top left
-    const logoX = 40, logoY = 40;
-    // Logo background circle
-    const lgGrad = ctx.createLinearGradient(logoX, logoY, logoX+70, logoY+70);
+    // Logo box top-left
+    const lgGrad = ctx.createLinearGradient(40,40,110,110);
     lgGrad.addColorStop(0,'#E8472A'); lgGrad.addColorStop(1,'#F5A623');
     ctx.fillStyle = lgGrad;
-    roundRect(ctx, logoX, logoY, 70, 70, 14);
-    ctx.fill();
-    // Logo U text
-    ctx.fillStyle = '#fff';
-    ctx.font = 'bold 38px Arial';
-    ctx.textAlign = 'center';
-    ctx.fillText('U', logoX+35, logoY+50);
-    // UTSAAV text next to logo
-    ctx.fillStyle = '#fff';
-    ctx.font = 'bold 28px Arial';
-    ctx.textAlign = 'left';
-    ctx.fillText('UTSAAV', logoX+82, logoY+44);
-    ctx.fillStyle = 'rgba(255,255,255,0.55)';
-    ctx.font = '16px Arial';
-    ctx.fillText('utsaav.in', logoX+82, logoY+65);
+    roundRect(ctx, 40, 40, 72, 72, 14); ctx.fill();
+    ctx.fillStyle='#fff'; ctx.font='bold 40px Arial';
+    ctx.textAlign='center'; ctx.fillText('U',76,91);
+    ctx.font='bold 30px Arial'; ctx.textAlign='left';
+    ctx.fillStyle='#fff'; ctx.fillText('UTSAAV',124,74);
+    ctx.font='16px Arial'; ctx.fillStyle='rgba(255,255,255,0.7)';
+    ctx.fillText('utsaav.in',124,97);
 
-    // Category tag — top right
-    const lines=caption.split('\n').filter(l=>l.trim());
-    const hLines=lines.filter(l=>l.trim().startsWith('#'));
-    const tLines=lines.filter(l=>!l.trim().startsWith('#'));
-    const mainText = tLines.join(' ').trim();
+    // Caption lines
+    const tLines = caption.split('\n').filter(l=>l.trim()&&!l.trim().startsWith('#'));
+    ctx.fillStyle='#fff'; ctx.font='bold 38px Arial'; ctx.textAlign='left';
+    ctx.shadowColor='rgba(0,0,0,0.9)'; ctx.shadowBlur=8;
+    wrapText(ctx, tLines[0]||'', 50, 800, 980, 48);
+    ctx.font='28px Arial'; ctx.fillStyle='rgba(255,255,255,0.85)';
+    wrapText(ctx, tLines[1]||'', 50, 860, 980, 36);
+    ctx.shadowBlur=0;
 
-    // Short quote — first 2 lines on image
-    const firstLine = tLines[0]||'';
-    const secondLine = tLines[1]||'';
+    // Watermark
+    ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.font='20px Arial';
+    ctx.textAlign='right'; ctx.fillText('utsaav.in',1040,1055);
 
-    ctx.fillStyle='rgba(232,71,42,0.9)';
-    roundRect(ctx, 40, 880, 1000, 5, 3);
-    ctx.fill();
-
-    // Main caption lines on image
-    ctx.fillStyle = '#fff';
-    ctx.font = 'bold 36px Arial';
-    ctx.textAlign = 'left';
-    wrapText(ctx, firstLine, 40, 760, 1000, 44);
-
-    ctx.fillStyle = 'rgba(255,255,255,0.8)';
-    ctx.font = '28px Arial';
-    wrapText(ctx, secondLine, 40, 820, 1000, 36);
-
-    // Website watermark bottom right
-    ctx.fillStyle = 'rgba(255,255,255,0.6)';
-    ctx.font = '22px Arial';
-    ctx.textAlign = 'right';
-    ctx.fillText('utsaav.in', 1040, 1050);
-
-    // Download
-    const link = document.createElement('a');
-    link.download = 'utsaav-post.png';
-    link.href = canvas.toDataURL('image/png');
+    const link=document.createElement('a');
+    link.download='utsaav-post.png';
+    link.href=canvas.toDataURL('image/png');
     link.click();
-    status.className='status ok'; status.textContent='✓ Image download ho gayi!';
-  } catch(e) {
+    status.className='status ok'; status.textContent='✓ Downloaded!';
+  } catch(e){
     console.error(e);
-    // Fallback: just open image
-    window.open(imgUrl,'_blank');
-    status.className='status ok'; status.textContent='✓ Image new tab mein khuli!';
+    status.className='status err'; status.textContent='✗ Download failed: '+e.message;
   }
 }
 
