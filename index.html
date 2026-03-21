@@ -317,6 +317,7 @@ async function generate(){
 
   try {
     caption = await groqCaption(key,cat,tone,detail,lang,emoji);
+    window._lastCaption = caption;
     document.getElementById('capText').textContent=caption;
     document.getElementById('capCard').classList.add('show');
 
@@ -377,133 +378,183 @@ Return ONLY caption + hashtags. Nothing else.`;
 function getUnsplashUrl(cat){ return generateCanvasImage(cat); }
 
 const catThemes = {
-  'Bridal Lehenga & Looks':   { colors:['#8B0000','#C41E3A','#FFD700','#FF69B4'], emoji:'👰', label:'Bridal Looks', pattern:'diamonds' },
-  'Wedding Photography':       { colors:['#1a1a2e','#16213e','#C9A96E','#E8C97E'], emoji:'📸', label:'Photography', pattern:'circles' },
-  'Wedding Venue & Decoration':{ colors:['#2d5016','#4a7c26','#FFD700','#FFA500'], emoji:'🏛️', label:'Venue & Decor', pattern:'flowers' },
-  'Bridal Makeup Artist':      { colors:['#6B2D5E','#9B4D8E','#FFB6C1','#FF69B4'], emoji:'💄', label:'Makeup', pattern:'dots' },
-  'Wedding Catering & Food':   { colors:['#7B3F00','#C05A1F','#FFD700','#FFA500'], emoji:'🍽️', label:'Catering', pattern:'circles' },
-  'Mehndi & Haldi Ceremony':   { colors:['#5C3D11','#8B6914','#FFD700','#FFEC8B'], emoji:'🌿', label:'Mehndi & Haldi', pattern:'diamonds' },
-  'Wedding Band & DJ':         { colors:['#0a0a1a','#1a0a2e','#8A2BE2','#DA70D6'], emoji:'🎵', label:'Band & DJ', pattern:'waves' },
-  'Destination Wedding':       { colors:['#003366','#0066CC','#87CEEB','#00CED1'], emoji:'✈️', label:'Destination', pattern:'circles' },
-  'Wedding Invitation Cards':  { colors:['#2C1810','#5C3317','#DAA520','#FFD700'], emoji:'💌', label:'Invitations', pattern:'diamonds' },
-  'Wedding Cake & Sweets':     { colors:['#FF1493','#FF69B4','#FFB6C1','#FFC0CB'], emoji:'🎂', label:'Cake & Sweets', pattern:'dots' }
+  'Bridal Lehenga & Looks':   { bg1:'#1a0005',bg2:'#5a0018',ac1:'#FFD700',ac2:'#FF9EBC',title:'Bridal Looks',sub:'Crafted for your perfect day' },
+  'Wedding Photography':       { bg1:'#090915',bg2:'#151535',ac1:'#C9A96E',ac2:'#E8D5A3',title:'Photography',sub:'Moments that last forever' },
+  'Wedding Venue & Decoration':{ bg1:'#071205',bg2:'#0f2e0a',ac1:'#FFD700',ac2:'#90EE90',title:'Venue & Decor',sub:'Transform your dream space' },
+  'Bridal Makeup Artist':      { bg1:'#120520',bg2:'#2e0f45',ac1:'#FFB6C1',ac2:'#DA70D6',title:'Bridal Makeup',sub:'Enhance your natural beauty' },
+  'Wedding Catering & Food':   { bg1:'#150800',bg2:'#3a1800',ac1:'#FFD700',ac2:'#FFA040',title:'Wedding Catering',sub:'Flavours to remember' },
+  'Mehndi & Haldi Ceremony':   { bg1:'#140e00',bg2:'#362400',ac1:'#FFD700',ac2:'#F0C040',title:'Mehndi & Haldi',sub:'Celebrate every ritual' },
+  'Wedding Band & DJ':         { bg1:'#04001a',bg2:'#0d0030',ac1:'#9B59B6',ac2:'#DA70D6',title:'Band & DJ',sub:'Music that moves your soul' },
+  'Destination Wedding':       { bg1:'#001520',bg2:'#003050',ac1:'#87CEEB',ac2:'#00CED1',title:'Destination Wedding',sub:'Say yes in paradise' },
+  'Wedding Invitation Cards':  { bg1:'#140e00',bg2:'#352200',ac1:'#DAA520',ac2:'#FFD700',title:'Invitations',sub:'First impression of your big day' },
+  'Wedding Cake & Sweets':     { bg1:'#15001a',bg2:'#35003a',ac1:'#FFB6C1',ac2:'#FF69B4',title:'Cake & Sweets',sub:'Sweet beginnings' }
 };
 
 function generateCanvasImage(cat){
   const canvas = document.createElement('canvas');
-  canvas.width = 720; canvas.height = 720;
+  canvas.width = 1080; canvas.height = 1080;
   const ctx = canvas.getContext('2d');
-  const theme = catThemes[cat] || catThemes['Wedding Photography'];
-  const [c1,c2,c3,c4] = theme.colors;
-  const seed = Date.now(); // always different
+  const t = catThemes[cat] || catThemes['Wedding Photography'];
+  const seed = Date.now();
+  const rng = (s) => { let x=Math.sin(s+seed*0.001)*10000; return x-Math.floor(x); };
 
-  // Background gradient
-  const bg = ctx.createLinearGradient(0, 0, 720, 720);
-  bg.addColorStop(0, c1);
-  bg.addColorStop(0.5, c2);
-  bg.addColorStop(1, c1);
-  ctx.fillStyle = bg;
-  ctx.fillRect(0, 0, 720, 720);
+  // BG gradient
+  const bg = ctx.createLinearGradient(0,0,1080,1080);
+  bg.addColorStop(0,t.bg1); bg.addColorStop(0.55,t.bg2); bg.addColorStop(1,t.bg1);
+  ctx.fillStyle=bg; ctx.fillRect(0,0,1080,1080);
 
-  // Decorative pattern
-  ctx.globalAlpha = 0.12;
-  const pat = theme.pattern;
-  const rng = (s) => { let x=Math.sin(s)*10000; return x-Math.floor(x); };
+  // Diagonal subtle lines
+  ctx.save();
+  ctx.globalAlpha=0.04; ctx.strokeStyle=t.ac1; ctx.lineWidth=1;
+  for(let i=-20;i<40;i++){ ctx.beginPath(); ctx.moveTo(i*60,0); ctx.lineTo(i*60+1080,1080); ctx.stroke(); }
+  ctx.restore();
 
-  if(pat === 'diamonds'){
-    ctx.strokeStyle = c3;
-    ctx.lineWidth = 1.5;
-    for(let i=0;i<18;i++){
-      const x = rng(seed+i*7)*720, y = rng(seed+i*13)*720;
-      const s = 20+rng(seed+i)*60;
-      ctx.beginPath();
-      ctx.moveTo(x,y-s); ctx.lineTo(x+s,y); ctx.lineTo(x,y+s); ctx.lineTo(x-s,y);
-      ctx.closePath(); ctx.stroke();
-    }
-  } else if(pat === 'circles'){
-    ctx.strokeStyle = c3;
-    ctx.lineWidth = 1.5;
-    for(let i=0;i<20;i++){
-      const x = rng(seed+i*11)*720, y = rng(seed+i*17)*720;
-      const r = 15+rng(seed+i)*80;
-      ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.stroke();
-    }
-  } else if(pat === 'flowers'){
-    ctx.fillStyle = c3;
-    for(let i=0;i<12;i++){
-      const x = rng(seed+i*9)*720, y = rng(seed+i*15)*720;
-      const r = 8+rng(seed+i)*20;
-      for(let p=0;p<6;p++){
-        const angle = (p/6)*Math.PI*2;
-        ctx.beginPath();
-        ctx.arc(x+Math.cos(angle)*r, y+Math.sin(angle)*r, r*0.6, 0, Math.PI*2);
-        ctx.fill();
-      }
-    }
-  } else if(pat === 'dots'){
-    ctx.fillStyle = c4;
-    for(let i=0;i<40;i++){
-      const x = rng(seed+i*5)*720, y = rng(seed+i*8)*720;
-      const r = 3+rng(seed+i)*12;
-      ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
-    }
-  } else if(pat === 'waves'){
-    ctx.strokeStyle = c3;
-    ctx.lineWidth = 2;
-    for(let j=0;j<12;j++){
-      ctx.beginPath();
-      for(let x=0;x<=720;x+=5){
-        const y = j*70 + 30 + Math.sin((x+seed*0.01+j*30)*0.02)*30;
-        x===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
-      }
-      ctx.stroke();
-    }
+  // Random scattered circles
+  ctx.save(); ctx.globalAlpha=0.07; ctx.strokeStyle=t.ac2; ctx.lineWidth=1;
+  for(let i=0;i<12;i++){
+    const x=rng(i*7)*1080, y=rng(i*11)*1080, r=40+rng(i*5)*140;
+    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.stroke();
+  }
+  ctx.restore();
+
+  // Outer border
+  ctx.save(); ctx.globalAlpha=0.35; ctx.strokeStyle=t.ac1; ctx.lineWidth=2;
+  ctx.strokeRect(32,32,1016,1016);
+  ctx.globalAlpha=0.12; ctx.strokeRect(46,46,988,988);
+  ctx.restore();
+
+  // Corner L-shapes
+  function corner(x,y,sx,sy){
+    ctx.save(); ctx.strokeStyle=t.ac1; ctx.lineWidth=3; ctx.globalAlpha=0.7;
+    ctx.beginPath(); ctx.moveTo(x,y+sy*70); ctx.lineTo(x,y); ctx.lineTo(x+sx*70,y); ctx.stroke();
+    ctx.restore();
+  }
+  corner(46,46,1,1); corner(1034,46,-1,1); corner(46,1034,1,-1); corner(1034,1034,-1,-1);
+
+  // ── LOGO AREA TOP ──
+  // Logo box
+  const lg=ctx.createLinearGradient(52,52,122,122);
+  lg.addColorStop(0,'#E8472A'); lg.addColorStop(1,'#F5A623');
+  ctx.fillStyle=lg; rRect(ctx,52,52,72,72,13); ctx.fill();
+  ctx.fillStyle='#fff'; ctx.font='bold 42px serif';
+  ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('U',88,90);
+
+  // Brand text
+  ctx.fillStyle='#fff'; ctx.font='bold 32px serif';
+  ctx.textAlign='left'; ctx.textBaseline='top';
+  ctx.shadowColor='rgba(0,0,0,0.9)'; ctx.shadowBlur=8;
+  ctx.fillText('UTSAAV',136,58);
+  ctx.fillStyle=t.ac1; ctx.font='17px sans-serif';
+  ctx.fillText('utsaav.in',136,96);
+  ctx.shadowBlur=0;
+
+  // Divider after logo
+  hLine(ctx,52,138,1028,t.ac1,0.3);
+
+  // ── CENTER DESIGN ──
+  // Radial glow
+  const glow=ctx.createRadialGradient(540,460,0,540,460,320);
+  glow.addColorStop(0,'rgba(255,255,255,0.1)');
+  glow.addColorStop(0.6,'rgba(255,255,255,0.03)');
+  glow.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=glow; ctx.fillRect(0,0,1080,1080);
+
+  // Inner glass card
+  ctx.save(); ctx.globalAlpha=0.08;
+  const cg=ctx.createLinearGradient(200,200,880,700);
+  cg.addColorStop(0,'rgba(255,255,255,0.9)'); cg.addColorStop(1,'rgba(255,255,255,0.2)');
+  ctx.fillStyle=cg; rRect(ctx,200,200,680,460,18); ctx.fill();
+  ctx.strokeStyle='rgba(255,255,255,0.2)'; ctx.lineWidth=1; ctx.globalAlpha=0.4;
+  rRect(ctx,200,200,680,460,18); ctx.stroke();
+  ctx.restore();
+
+  // Ornament - top of card
+  hLine(ctx,260,240,820,t.ac1,0.6);
+
+  // Diamond ornament center-top
+  ctx.save(); ctx.strokeStyle=t.ac1; ctx.lineWidth=2; ctx.globalAlpha=0.7;
+  ctx.beginPath(); ctx.moveTo(540,260); ctx.lineTo(560,280); ctx.lineTo(540,300); ctx.lineTo(520,280); ctx.closePath(); ctx.stroke();
+  ctx.restore();
+
+  // MAIN TITLE
+  ctx.save();
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.font='bold 72px serif';
+  ctx.shadowColor='rgba(0,0,0,0.95)'; ctx.shadowBlur=20;
+  // Gold gradient text
+  const tg=ctx.createLinearGradient(200,380,880,380);
+  tg.addColorStop(0,t.ac2); tg.addColorStop(0.5,t.ac1); tg.addColorStop(1,t.ac2);
+  ctx.fillStyle=tg;
+  ctx.fillText(t.title,540,390);
+  ctx.restore();
+
+  // Subtitle
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillStyle='rgba(255,255,255,0.6)'; ctx.font='italic 26px serif';
+  ctx.shadowColor='rgba(0,0,0,0.8)'; ctx.shadowBlur=6;
+  ctx.fillText(t.sub,540,455);
+  ctx.shadowBlur=0;
+
+  // Bottom of card
+  hLine(ctx,260,600,820,t.ac1,0.6);
+
+  // CTA
+  ctx.fillStyle=t.ac2; ctx.font='20px sans-serif'; ctx.textAlign='center';
+  ctx.fillText('Find top vendors at',540,640);
+  ctx.fillStyle='#fff'; ctx.font='bold 26px sans-serif';
+  ctx.fillText('utsaav.in',540,672);
+
+  // ── CAPTION TEXT BOTTOM ──
+  const capLines = (window._lastCaption||caption||'').split('\n').filter(l=>l.trim()&&!l.trim().startsWith('#'));
+  const l1=capLines[0]||'Your dream wedding starts here';
+  const l2=capLines[1]||'Discover top vendors across West Bengal';
+
+  const btm=ctx.createLinearGradient(0,720,0,1080);
+  btm.addColorStop(0,'rgba(0,0,0,0)'); btm.addColorStop(0.4,'rgba(0,0,0,0.6)'); btm.addColorStop(1,'rgba(0,0,0,0.85)');
+  ctx.fillStyle=btm; ctx.fillRect(0,720,1080,360);
+
+  ctx.textAlign='center'; ctx.textBaseline='top';
+  ctx.fillStyle='#fff'; ctx.font='bold 30px sans-serif';
+  ctx.shadowColor='rgba(0,0,0,0.95)'; ctx.shadowBlur=10;
+  wrapC(ctx,l1,540,760,960,38);
+  ctx.fillStyle='rgba(255,255,255,0.8)'; ctx.font='24px sans-serif';
+  wrapC(ctx,l2,540,820,960,32);
+  ctx.shadowBlur=0;
+
+  // Watermark
+  ctx.fillStyle='rgba(255,255,255,0.3)'; ctx.font='18px sans-serif';
+  ctx.textAlign='right'; ctx.textBaseline='bottom';
+  ctx.fillText('utsaav.in',1048,1048);
+
+  // Dot row
+  for(let i=0;i<5;i++){
+    ctx.beginPath(); ctx.arc(540+(i-2)*28,700,i===2?7:4,0,Math.PI*2);
+    ctx.fillStyle=i===2?t.ac1:'rgba(255,255,255,0.25)'; ctx.fill();
   }
 
-  ctx.globalAlpha = 1;
+  return canvas.toDataURL('image/jpeg',0.93);
+}
 
-  // Center gradient glow
-  const glow = ctx.createRadialGradient(360,320,0,360,320,280);
-  glow.addColorStop(0,'rgba(255,255,255,0.18)');
-  glow.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle = glow;
-  ctx.fillRect(0,0,720,720);
-
-  // Big center emoji
-  ctx.font = '120px serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.globalAlpha = 0.9;
-  ctx.fillText(theme.emoji, 360, 280);
-  ctx.globalAlpha = 1;
-
-  // Category label
-  ctx.font = 'bold 32px Arial';
-  ctx.fillStyle = c3;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.shadowColor = 'rgba(0,0,0,0.8)';
-  ctx.shadowBlur = 10;
-  ctx.fillText(theme.label, 360, 390);
-  ctx.shadowBlur = 0;
-
-  // Decorative line under label
-  const lineGrad = ctx.createLinearGradient(200,420,520,420);
-  lineGrad.addColorStop(0,'transparent');
-  lineGrad.addColorStop(0.5,c3);
-  lineGrad.addColorStop(1,'transparent');
-  ctx.strokeStyle = lineGrad;
-  ctx.lineWidth = 2;
-  ctx.beginPath(); ctx.moveTo(200,420); ctx.lineTo(520,420); ctx.stroke();
-
-  // Bottom dark overlay for text
-  const btm = ctx.createLinearGradient(0,480,0,720);
-  btm.addColorStop(0,'rgba(0,0,0,0)');
-  btm.addColorStop(1,'rgba(0,0,0,0.75)');
-  ctx.fillStyle = btm;
-  ctx.fillRect(0,480,720,240);
-
-  return canvas.toDataURL('image/png');
+function rRect(ctx,x,y,w,h,r){
+  ctx.beginPath(); ctx.moveTo(x+r,y);
+  ctx.lineTo(x+w-r,y); ctx.arcTo(x+w,y,x+w,y+r,r);
+  ctx.lineTo(x+w,y+h-r); ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+  ctx.lineTo(x+r,y+h); ctx.arcTo(x,y+h,x,y+h-r,r);
+  ctx.lineTo(x,y+r); ctx.arcTo(x,y,x+r,y,r); ctx.closePath();
+}
+function hLine(ctx,x1,y,x2,color,alpha){
+  const g=ctx.createLinearGradient(x1,y,x2,y);
+  g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(0.2,color); g.addColorStop(0.8,color); g.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.save(); ctx.strokeStyle=g; ctx.lineWidth=1.5; ctx.globalAlpha=alpha;
+  ctx.beginPath(); ctx.moveTo(x1,y); ctx.lineTo(x2,y); ctx.stroke(); ctx.restore();
+}
+function wrapC(ctx,text,cx,y,maxW,lh){
+  if(!text)return; const words=text.split(' '); let line='';
+  for(const w of words){
+    const t=line+w+' ';
+    if(ctx.measureText(t).width>maxW&&line){ctx.fillText(line.trim(),cx,y);line=w+' ';y+=lh;}else line=t;
+  }
+  if(line)ctx.fillText(line.trim(),cx,y);
 }
 
 function showLoader(){
@@ -608,85 +659,15 @@ async function downloadPost(){
   if(!imgUrl){ alert('Pehle post generate karo!'); return; }
   const status=document.getElementById('statusEl');
   status.className='status'; status.textContent='⏳ Download ho rahi hai...';
-
   try {
-    const canvas = document.createElement('canvas');
-    canvas.width = 1080; canvas.height = 1080;
-    const ctx = canvas.getContext('2d');
-
-    // Load base64 image
-    const img = new Image();
-    await new Promise((resolve) => { img.onload = resolve; img.src = imgUrl; });
-
-    // Draw background image scaled to 1080
-    ctx.drawImage(img, 0, 0, 1080, 1080);
-
-    // Bottom gradient overlay
-    const grad = ctx.createLinearGradient(0, 500, 0, 1080);
-    grad.addColorStop(0, 'rgba(0,0,0,0)');
-    grad.addColorStop(0.5, 'rgba(0,0,0,0.65)');
-    grad.addColorStop(1, 'rgba(0,0,0,0.88)');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, 1080, 1080);
-
-    // Logo box top-left
-    const lgGrad = ctx.createLinearGradient(40,40,110,110);
-    lgGrad.addColorStop(0,'#E8472A'); lgGrad.addColorStop(1,'#F5A623');
-    ctx.fillStyle = lgGrad;
-    roundRect(ctx, 40, 40, 72, 72, 14); ctx.fill();
-    ctx.fillStyle='#fff'; ctx.font='bold 40px Arial';
-    ctx.textAlign='center'; ctx.fillText('U',76,91);
-    ctx.font='bold 30px Arial'; ctx.textAlign='left';
-    ctx.fillStyle='#fff'; ctx.fillText('UTSAAV',124,74);
-    ctx.font='16px Arial'; ctx.fillStyle='rgba(255,255,255,0.7)';
-    ctx.fillText('utsaav.in',124,97);
-
-    // Caption lines
-    const tLines = caption.split('\n').filter(l=>l.trim()&&!l.trim().startsWith('#'));
-    ctx.fillStyle='#fff'; ctx.font='bold 38px Arial'; ctx.textAlign='left';
-    ctx.shadowColor='rgba(0,0,0,0.9)'; ctx.shadowBlur=8;
-    wrapText(ctx, tLines[0]||'', 50, 800, 980, 48);
-    ctx.font='28px Arial'; ctx.fillStyle='rgba(255,255,255,0.85)';
-    wrapText(ctx, tLines[1]||'', 50, 860, 980, 36);
-    ctx.shadowBlur=0;
-
-    // Watermark
-    ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.font='20px Arial';
-    ctx.textAlign='right'; ctx.fillText('utsaav.in',1040,1055);
-
     const link=document.createElement('a');
-    link.download='utsaav-post.png';
-    link.href=canvas.toDataURL('image/png');
+    link.download='utsaav-post.jpg';
+    link.href=imgUrl;
     link.click();
     status.className='status ok'; status.textContent='✓ Downloaded!';
   } catch(e){
-    console.error(e);
-    status.className='status err'; status.textContent='✗ Download failed: '+e.message;
+    status.className='status err'; status.textContent='✗ Failed: '+e.message;
   }
-}
-
-function roundRect(ctx, x, y, w, h, r){
-  ctx.beginPath();
-  ctx.moveTo(x+r,y);
-  ctx.lineTo(x+w-r,y); ctx.arcTo(x+w,y,x+w,y+r,r);
-  ctx.lineTo(x+w,y+h-r); ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
-  ctx.lineTo(x+r,y+h); ctx.arcTo(x,y+h,x,y+h-r,r);
-  ctx.lineTo(x,y+r); ctx.arcTo(x,y,x+r,y,r);
-  ctx.closePath();
-}
-
-function wrapText(ctx, text, x, y, maxW, lineH){
-  if(!text) return;
-  const words = text.split(' ');
-  let line = '';
-  for(let w of words){
-    const test = line + w + ' ';
-    if(ctx.measureText(test).width > maxW && line){
-      ctx.fillText(line.trim(), x, y);
-      line = w + ' '; y += lineH;
-    } else { line = test; }
-  }
-  if(line) ctx.fillText(line.trim(), x, y);
 }
 
 </script>
