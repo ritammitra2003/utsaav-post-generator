@@ -271,7 +271,7 @@ async function groq(key,cat,tone,detail,lang){
   const res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
     method:'POST',
     headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
-    body:JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:900,messages:[{role:'user',content:
+    body:JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:900,temperature:0.9,messages:[{role:'user',content:
       `Instagram manager for Utsaav — West Bengal wedding marketplace utsaav.in.
 Write viral caption for: ${cat} | Tone: ${tone} | Language: ${lang}${detail?'\nDetail: '+detail:''}
 Rules: Start with impact. 3-5 lines. CTA utsaav.in. End 18-22 hashtags. Return ONLY caption+hashtags.`}]})
@@ -385,15 +385,20 @@ function drawCanvas(img){
   const cap=window._caption||'';
   const capLines=cap.split('\n').filter(l=>l.trim()&&!l.startsWith('#'));
   const l1=capLines[0]||'Your dream wedding starts here';
-  const l2=capLines[1]||'Discover vendors at utsaav.in';
-  const l3=capLines[2]||'';
+  const l2=capLines[1]||'';
 
-  ctx.shadowColor='rgba(0,0,0,1)'; ctx.shadowBlur=12;
-  ctx.fillStyle='#fff'; ctx.font='bold 36px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='top';
-  wrapText(ctx,l1,540,760,960,44);
-  ctx.font='28px sans-serif'; ctx.fillStyle='rgba(255,255,255,0.88)';
-  wrapText(ctx,l2,540,820,960,36);
-  if(l3){ ctx.font='24px sans-serif'; ctx.fillStyle='rgba(255,255,255,0.7)'; wrapText(ctx,l3,540,872,960,30); }
+  ctx.shadowColor='rgba(0,0,0,1)'; ctx.shadowBlur=14;
+  ctx.textAlign='center'; ctx.textBaseline='alphabetic';
+
+  // Line 1 - big bold
+  ctx.fillStyle='#fff'; ctx.font='bold 34px sans-serif';
+  const y1=wrapTextReturn(ctx,l1,540,820,940,42);
+
+  // Line 2 - smaller, below line 1 with gap
+  if(l2){
+    ctx.fillStyle='rgba(255,255,255,0.82)'; ctx.font='26px sans-serif';
+    wrapTextReturn(ctx,l2,540,y1+16,940,34);
+  }
   ctx.shadowBlur=0;
 
   // 7. utsaav.in watermark
@@ -413,15 +418,17 @@ function roundRect(ctx,x,y,w,h,r){
   ctx.lineTo(x+r,y+h); ctx.arcTo(x,y+h,x,y+h-r,r);
   ctx.lineTo(x,y+r); ctx.arcTo(x,y,x+r,y,r); ctx.closePath();
 }
-function wrapText(ctx,text,cx,y,maxW,lh){
-  if(!text) return;
+// Returns the Y position after last line drawn
+function wrapTextReturn(ctx,text,cx,y,maxW,lh){
+  if(!text) return y;
   const words=text.split(' '); let line='';
   for(const w of words){
     const t=line+w+' ';
     if(ctx.measureText(t).width>maxW&&line){ ctx.fillText(line.trim(),cx,y); line=w+' '; y+=lh; }
     else line=t;
   }
-  if(line) ctx.fillText(line.trim(),cx,y);
+  if(line){ ctx.fillText(line.trim(),cx,y); y+=lh; }
+  return y;
 }
 
 function download(){
